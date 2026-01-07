@@ -1,0 +1,14 @@
+.header {
+    position: relative;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.tribar {
+    font-size: 20px;
+    font-weight: 700;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
