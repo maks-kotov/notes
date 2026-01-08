@@ -1,11 +1,17 @@
+import EditButton from './editButton/editButton'
 import styles from './node.module.css'
 interface props {
-    title: string
+    text: string,
 }
-function Node({title}:props) {
+function Node({text}:props) {
     return (
         <>
-            <div className={styles.node}>{title}</div>
+            <div className={styles.container}>
+                <div className={styles.text}>{text}</div>
+                <button className={styles.made}>✔</button>
+                <button className={styles.delete}>✗</button>
+                <EditButton />
+            </div>
         </>
     )
 }

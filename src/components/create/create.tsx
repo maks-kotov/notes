@@ -1,11 +1,24 @@
+import { useState} from 'react'
 import styles from './create.module.css'
-function Create() {
+import EditButton from '../nodesList/node/editButton/editButton'
+interface props {
+    onButtonClick: (node:string) => void,
+    editModeIsClicked: boolean
+}
+function Create({onButtonClick, editModeIsClicked} : props) {
+    const [value, setValue] = useState<string>('')
+    function changeValue(e:React.ChangeEvent<HTMLTextAreaElement>) {
+        setValue(e.target.value)
+    }
     return (
         <>
-            <textarea name="#" className={styles.textarea} placeholder='Создать заметку...'>
+            <textarea onChange={changeValue} name="#" className={styles.textarea} placeholder='Создать заметку...' value={value}>
+                
             </textarea>
             <div className={styles.right}>
-                <button className={styles.button} type="submit">Добавить</button>
+                {editModeIsClicked === false ? (
+                    <button onClick={()=>onButtonClick(value)} className={styles.button} type="submit">Добавить</button>
+                ) : <EditButton />}
             </div>
         </>
     )
