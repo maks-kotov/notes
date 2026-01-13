@@ -1,20 +1,21 @@
+import type { NoteType } from '../../../../types/note'
 import styles from './editButton.module.css'
 interface props {
     switchEditMode: (isEdit:boolean)=>void,
     isEdit: boolean,
-    text: string, // эта кнопка может быть и не в заметке
-    getNoteText?: (text:string)=>void,
-    getTextareaText?: (text:string)=>void
+    note: NoteType, 
+    getCurrentNote?: (note:NoteType)=>void,
+    getEditedNote?: (note:NoteType)=>void
 }
-function EditButton({switchEditMode, text, isEdit, getNoteText, getTextareaText}:props) {
+function EditButton({switchEditMode, note, isEdit, getCurrentNote, getEditedNote}:props) {
     return (
                 <button onClick={()=>{
                     //!isEdit && getNodeText?.(text)
-                    if (getNoteText) {
-                    getNoteText(text)
+                    if (getCurrentNote) {
+                    getCurrentNote(note)
                     }
-                    if (getTextareaText) {
-                    getTextareaText(text)
+                    if (getEditedNote) {
+                    getEditedNote(note)
                     }
                     //getNodeText?.(text) //если isEdit false, то передаём текст заметки наверх
                     switchEditMode(!isEdit)

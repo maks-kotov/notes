@@ -1,20 +1,21 @@
+import type { NoteType } from '../../../types/note'
 import EditButton from './editButton/editButton'
 import styles from './note.module.css'
 interface props {
-    text: string,
+    note: NoteType,
     switchEditMode: (isEdit:boolean)=>void,
     isEdit: boolean,
     id: number,
-    getNoteText: (text:string)=>void
+    getCurrentNote: (note:NoteType)=>void
 }
-function Note({text, switchEditMode, isEdit, id, getNoteText}:props) {
+function Note({note, switchEditMode, isEdit, id, getCurrentNote}:props) {
     return (
         <>
             <div className={styles.container} data-node-id={id}>
-                <div className={styles.text}>{text}</div>
+                <div className={styles.text}>{note.content}</div>
                 <button className={styles.made}>✔</button>
                 <button className={styles.delete}>✗</button>
-                <EditButton isEdit={isEdit} switchEditMode={switchEditMode} text={text} getNoteText={getNoteText}/>
+                <EditButton isEdit={isEdit} switchEditMode={switchEditMode} note={note} getCurrentNote={getCurrentNote}/>
             </div>
         </>
     )
