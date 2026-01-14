@@ -14,15 +14,15 @@ function App() {
   //   content: string,
   //   completed: boolean
   // }; НАДО СДЕЛАТЬ ЧТОБЫ ТИП ИМПОРТИРОВАЛСЯ
-  const [noteArr, setNoteArr] = useState <NoteType[]>([]) 
+  const [noteArr, setNoteArr] = useState <NoteType[]>([]) //почему не nodesArr?))
   const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
-  const [editingNote, setEditingNote] = useState<NoteType>({
+  const [editingNote, setEditingNote] = useState<NoteType>({ // редактируемая
     id: 0,
     title: 'no',
     content: 'no',
     completed: false
 })
-  const [editedNote, setEditedNote] = useState<NoteType>({id: -1,
+  const [editedNote, setEditedNote] = useState<NoteType>({id: -1, //отредактированная
     title: 'я изменённая заметка по умолчанию',
     content: 'no',
     completed: false})
@@ -35,8 +35,8 @@ function App() {
   function switchEditMode(isEdit:boolean) {
     setIsEdit(isEdit)
   } 
-  function getCurrentNote(note:NoteType) { // получить текущую редактируемую заметку и вставить её текст в textarea (когда мы нажимаем на editedButton чтоб в textarea был текст последней заметки)
-    setEditingNote(note)
+  function getEditingNote(note:NoteType) { // получить текущую редактируемую заметку и вставить её текст в textarea (когда мы нажимаем на editedButton чтоб в textarea был текст последней заметки)
+    setEditingNote(note) // ОТ УЛЫБКИ СТАНЕТ МИР СВЕТЛЕЙ
     // console.log('текущая заметка: ', note);
   }
   function getEditedNote(note:NoteType) { // получить отредактированную заметку из textarea
@@ -50,7 +50,7 @@ function App() {
       {!isEdit && <Search />}
        <Create pushNote={pushNote} switchEditMode={switchEditMode} isEdit={isEdit} editingNote={editingNote} getEditedNote={getEditedNote}/> {/*редактируемый текст приходит из node, вставляется в textarea, затем мы отслеживаем что мы наизменяли в textarea и отправляем изменённый назад */}
       {!isEdit &&
-      <NodesList noteArr={noteArr} switchEditMode={switchEditMode} isEdit={isEdit} getCurrentNote={getCurrentNote} editedNote={editedNote}/>
+      <NodesList noteArr={noteArr} switchEditMode={switchEditMode} isEdit={isEdit} getEditingNote={getEditingNote} editedNote={editedNote}/>
       }
   </div>
   )

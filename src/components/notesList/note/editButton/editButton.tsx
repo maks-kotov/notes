@@ -4,18 +4,21 @@ interface props {
     switchEditMode: (isEdit:boolean)=>void,
     isEdit: boolean,
     note: NoteType, 
-    getCurrentNote?: (note:NoteType)=>void,
+    getEditingNote?: (note:NoteType)=>void,
     getEditedNote?: (note:NoteType)=>void
 }
-function EditButton({switchEditMode, note, isEdit, getCurrentNote, getEditedNote}:props) {
+function EditButton({switchEditMode, note, isEdit, getEditingNote, getEditedNote}:props) {
     return (
                 <button onClick={()=>{
                     //!isEdit && getNodeText?.(text)
-                    if (getCurrentNote) {
-                    getCurrentNote(note)
+                    if (getEditingNote) {
+                    getEditingNote(note)
+                    console.log('editing: ',note);
                     }
                     if (getEditedNote) {
                     getEditedNote(note)
+                    console.log('edited: ',note);
+                    
                     }
                     //getNodeText?.(text) //если isEdit false, то передаём текст заметки наверх
                     switchEditMode(!isEdit)

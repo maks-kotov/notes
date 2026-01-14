@@ -24,7 +24,7 @@ function Create({pushNote, isEdit, switchEditMode, editingNote, getEditedNote} :
     }
     useEffect(()=>{
         if(isEdit) {
-            setNote({...note, content: editingNote.content})
+            setNote({...note, id: editingNote.id, title: editingNote.title,content:editingNote.content, completed: editingNote.completed}) // при нажатии на кнопку готовая изменённая заметка приобретает все те же параметры, которые были у редактируемой. и  в nodesList я присваиваю свойствам редактируемой все значения изменённой  
         }
         else {
             setNote({...note, content: ''})
