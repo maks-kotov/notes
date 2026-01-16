@@ -5,16 +5,22 @@ import { NoteEditingActionsContext } from '../../../../contexts/noteEditingActio
 interface props {
     isEdit: boolean, //нужно для динамичной отрисовки и вставления текста в textarea
     note: NoteType, 
+    id: number,
+    changes: NoteType
 }
-function EditButton({note, isEdit}:props) {
+function EditButton({note, id, isEdit}:props) {
     const noteEditingActions = useContext(NoteEditingActionsContext)
     return (
                 <button onClick={()=>{
                     if (noteEditingActions?.getEditingNote) {
-                    noteEditingActions.getEditingNote(note)
+                        console.log(note);
+                        noteEditingActions.getEditingNote(note)
+                        
                     }
-                    if (noteEditingActions?.getEditedNote) {
-                    noteEditingActions.getEditedNote(note)
+                    if(noteEditingActions?.update) {
+                        console.log(note);
+                        noteEditingActions.update(id, note)
+                        
                     }
                     noteEditingActions?.switchEditMode(!isEdit)
                     }

@@ -3,11 +3,11 @@ import styles from './create.module.css'
 import EditButton from '../notesList/note/editButton/editButton'
 import type { NoteType } from '../../types/note'
 interface props {
-    pushNote: (node:NoteType) => void,
+    add: (node:NoteType) => void,
     isEdit: boolean,
     editingNote: NoteType,
 }
-function Create({pushNote, isEdit, editingNote} : props) {
+function Create({add, isEdit, editingNote} : props) {
     const [note, setNote] = useState<NoteType>({
                             id: 0,
                             title: 'no',
@@ -36,7 +36,7 @@ function Create({pushNote, isEdit, editingNote} : props) {
             <div className={styles.right}>
                 {isEdit === false ? (
                     <button onClick={()=>{
-                        pushNote({
+                        add({
                             id: counter,
                             title: 'no',
                             content: note.content,
@@ -45,7 +45,7 @@ function Create({pushNote, isEdit, editingNote} : props) {
                         setCounter((c)=>++c)
                         setNote({...note, content: ''})
                     }} className={styles.button} type="submit">Добавить</button>
-                ) : <EditButton isEdit={isEdit} note={note}/>}
+                ) : <EditButton isEdit={isEdit} note={note} id={editingNote.id} changes={editingNote}/>}
             </div>
         </>
     )

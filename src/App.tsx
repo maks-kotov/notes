@@ -9,7 +9,31 @@ import { NoteEditingActionsContext } from './contexts/noteEditingActions'
 
 
 function App() {
-  const [notesArr, setNotesArr] = useState <NoteType[]>([]) //почему не nodesArr?))
+  type useNotesReturn = {
+    notes: NoteType[],
+    update: (id:number, changes:NoteType) => void,
+    add: (note:NoteType)=>void
+  }
+
+  const useNotes = ():useNotesReturn =>  {
+    const [notes, setNotes] = useState <NoteType[]>([])
+    const add = (note:NoteType) => setNotes(prev => {
+      if(note.content.trim()) {
+        return [...prev, note]
+      }
+      return prev
+    });
+    // const remove = (id) => setNotes(prev => prev.filter(n => n.id !== id));
+    const update = (id:number, changes:NoteType) => setNotes(prev => 
+      prev.map(n => n.id === id ? {...n, ...changes} : n)
+    );
+    // const toggle = (id) => setNotes(prev =>
+      // prev.map(n => n.id === id ? {...n, done: !n.done} : n)
+    // );
+    
+    return { notes, add, update };
+  }
+  const {notes, update, add} = useNotes()
   const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
   const [editingNote, setEditingNote] = useState<NoteType>( // редактируемая
     { 
@@ -26,13 +50,8 @@ function App() {
       content: 'no',
       completed: false
     }
-  )
-  function pushNote(note:NoteType):void {
-    if(note.content.trim()) {
-      setNotesArr((prevArr:NoteType[])=>[...prevArr, note])
-    }
-  }  
-  const noteEditingActions = {
+  ) 
+  const noteEditingActions = { //только для editButton
     switchEditMode(isEdit:boolean) {
       setIsEdit(isEdit)
     },
@@ -42,27 +61,20 @@ function App() {
     getEditedNote(note:NoteType) {
       setEditedNote(note)
     },
+    update
   }
-  /* function switchEditMode(isEdit:boolean) {
-    setIsEdit(isEdit)
-  } 
-  function getEditingNote(note:NoteType) { // получить редактируемую заметку при клике на nodeList>editButton
-    setEditingNote(note) // ОТ УЛЫБКИ СТАНЕТ МИР СВЕТЛЕЙ
-  }
-  function getEditedNote(note:NoteType) { // получить отредактированную заметку из create
-    setEditedNote(note)
-  } */
+
   return (
   <div>
       {/*если настоящее значение false, то мы показываем. !isEdit даёт true и оно покажется  */}
       {!isEdit && <Header />} 
       {!isEdit && <Search />}
       <NoteEditingActionsContext.Provider value={noteEditingActions}>
-        <Create pushNote={pushNote}  isEdit={isEdit} editingNote={editingNote}/>
+        <Create add={add}  isEdit={isEdit} editingNote={editingNote}/>
       </NoteEditingActionsContext.Provider>
       {!isEdit &&
       <NoteEditingActionsContext.Provider value={noteEditingActions}>
-        <NotesList notesArr={notesArr} isEdit={isEdit} editedNote={editedNote}/>
+        <NotesList notes={notes} isEdit={isEdit}/>
       </NoteEditingActionsContext.Provider>
       }
   </div>
