@@ -3,11 +3,11 @@ import styles from './create.module.css'
 import EditButton from '../notesList/note/editButton/editButton'
 import type { NoteType } from '../../types/note'
 interface props {
-    add: (node:NoteType) => void,
     isEdit: boolean,
     editingNote: NoteType,
+    add: (note:NoteType)=>void
 }
-function Create({add, isEdit, editingNote} : props) {
+function Create({isEdit, editingNote, add} : props) {
     const [note, setNote] = useState<NoteType>({
                             id: 0,
                             title: 'no',

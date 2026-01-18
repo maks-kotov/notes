@@ -13,16 +13,7 @@ function NodesList({notes, isEdit} : props) {
                 <p className={styles.emptyMessage}>Создайте первую заметку</p>
             ) 
             : 
-            notes.map(note=> {
-
-                // if(note.id === editedNote.id) {
-                //     note = editedNote
-                // }
-                return (
-                    <Note isEdit={isEdit} note={note} key={note.id}/>
-                )
-            } 
-            )}
+            notes.map(note=> <Note isEdit={isEdit} note={note} key={note.id}/>)}
         </>
     )
 }

@@ -1,6 +1,7 @@
 import type { NoteType } from "../note"
-export type NoteEditingActionsType = {
+export type NoteContextType = {
     switchEditMode: (isEdit:boolean)=>void,
     getEditingNote:(note:NoteType)=>void,
-    update: (id:number, changes: NoteType)=>void
+    update: (id:number, changes: NoteType)=>void,
+    remove: (id:number)=>void,
 }

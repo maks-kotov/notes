@@ -1,28 +1,25 @@
 import { useContext } from 'react'
 import type { NoteType } from '../../../../types/note'
 import styles from './editButton.module.css'
-import { NoteEditingActionsContext } from '../../../../contexts/noteEditingActions'
+import { NoteContext } from '../../../../contexts/noteContext'
 interface props {
     isEdit: boolean, //нужно для динамичной отрисовки и вставления текста в textarea
     note: NoteType, 
-    id: number,
-    changes: NoteType
+    id?: number,
+    changes?: NoteType
 }
 function EditButton({note, id, isEdit}:props) {
-    const noteEditingActions = useContext(NoteEditingActionsContext)
+    const {getEditingNote, switchEditMode,update} = useContext(NoteContext)!
     return (
                 <button onClick={()=>{
-                    if (noteEditingActions?.getEditingNote) {
-                        console.log(note);
-                        noteEditingActions.getEditingNote(note)
+                    if (getEditingNote) {
+                        getEditingNote(note)
                         
                     }
-                    if(noteEditingActions?.update) {
-                        console.log(note);
-                        noteEditingActions.update(id, note)
-                        
+                    if(update && id !== undefined) {
+                        update(id, note)
                     }
-                    noteEditingActions?.switchEditMode(!isEdit)
+                    switchEditMode(!isEdit)
                     }
                 } className={styles.edit}>
                     <img src="./src/assets/icons/edit.png" alt="icon" />

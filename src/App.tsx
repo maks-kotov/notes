@@ -5,14 +5,15 @@ import Create from './components/create/create'
 import NotesList from './components/notesList/notesList'
 import { useState } from 'react'
 import type { NoteType } from './types/note'
-import { NoteEditingActionsContext } from './contexts/noteEditingActions'
+import { NoteContext } from './contexts/noteContext'
 
 
 function App() {
   type useNotesReturn = {
     notes: NoteType[],
     update: (id:number, changes:NoteType) => void,
-    add: (note:NoteType)=>void
+    add: (note:NoteType)=>void,
+    remove: (id:number)=>void,
   }
 
   const useNotes = ():useNotesReturn =>  {
@@ -23,7 +24,7 @@ function App() {
       }
       return prev
     });
-    // const remove = (id) => setNotes(prev => prev.filter(n => n.id !== id));
+    const remove = (id:number) => setNotes(prev => prev.filter(n => n.id !== id));
     const update = (id:number, changes:NoteType) => setNotes(prev => 
       prev.map(n => n.id === id ? {...n, ...changes} : n)
     );
@@ -31,9 +32,9 @@ function App() {
       // prev.map(n => n.id === id ? {...n, done: !n.done} : n)
     // );
     
-    return { notes, add, update };
+    return { notes, add, update, remove };
   }
-  const {notes, update, add} = useNotes()
+  const {notes, update, add, remove} = useNotes()
   const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
   const [editingNote, setEditingNote] = useState<NoteType>( // редактируемая
     { 
@@ -43,25 +44,15 @@ function App() {
       completed: false
     }
   )
-  const [editedNote, setEditedNote] = useState<NoteType>( //отредактированная
-    {
-      id: -1, 
-      title: 'я изменённая заметка по умолчанию',
-      content: 'no',
-      completed: false
-    }
-  ) 
-  const noteEditingActions = { //только для editButton
+  const noteActions = { //только для editButton
     switchEditMode(isEdit:boolean) {
       setIsEdit(isEdit)
     },
     getEditingNote(note:NoteType) {
       setEditingNote(note)
     },
-    getEditedNote(note:NoteType) {
-      setEditedNote(note)
-    },
-    update
+    update,
+    remove,
   }
 
   return (
@@ -69,13 +60,13 @@ function App() {
       {/*если настоящее значение false, то мы показываем. !isEdit даёт true и оно покажется  */}
       {!isEdit && <Header />} 
       {!isEdit && <Search />}
-      <NoteEditingActionsContext.Provider value={noteEditingActions}>
-        <Create add={add}  isEdit={isEdit} editingNote={editingNote}/>
-      </NoteEditingActionsContext.Provider>
+      <NoteContext.Provider value={noteActions}>
+        <Create add={add} isEdit={isEdit} editingNote={editingNote}/>
+      </NoteContext.Provider>
       {!isEdit &&
-      <NoteEditingActionsContext.Provider value={noteEditingActions}>
+      <NoteContext.Provider value={noteActions}>
         <NotesList notes={notes} isEdit={isEdit}/>
-      </NoteEditingActionsContext.Provider>
+      </NoteContext.Provider>
       }
   </div>
   )
