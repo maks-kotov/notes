@@ -19,17 +19,24 @@
 .crossedOut {
     text-decoration: line-through;
 }
-.delete {
+.remove {
     background-color: red;
     padding: 8px;
     cursor: pointer;
     flex-shrink: 0;
+}
+.remove img {
+    width: 22px;
+    height: 22px;
+    /* transform: translateX(3px); */
 }
 .toggle {
     background-color: green;
     padding: 8px;
     cursor: pointer;
     flex-shrink: 0;
+    font-size: 17px;
+    width: 35px;
 }
 .edit {
     padding: 8px;

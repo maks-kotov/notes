@@ -22,16 +22,12 @@ function Note({note, isEdit}:props) {
                 >
                     {note.content}
                 </div>
-                <button onClick={
-                    ()=>{
-                        toggle(note.id)
-                    }
-                } className={styles.toggle}>✔</button>
-                <button onClick={
-                    ()=>{
-                        remove(note.id)
-                    }
-                } className={styles.delete}>✗</button>
+                <button onClick={()=>toggle(note.id)} className={styles.toggle}>
+                    {note.completed ? '✘' : '✔'}    
+                </button>
+                <button onClick={()=>remove(note.id)} className={styles.remove}>
+                        <img src="./src/assets/icons/bin.png" alt="icon" />
+                </button>
                 <EditButton isEdit={isEdit} note={note}/>
             </div>
         </>
