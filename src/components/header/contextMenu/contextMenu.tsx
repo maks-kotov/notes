@@ -1,5 +1,6 @@
 import { useRef, useState } from "react"
 import styles from "./contextMenu.module.css"
+import NotesFilters from "./noteFilters/notesFilters"
 
 function ContextMenu() {
     const [stateContextMenu, setStateContextMenu] = useState<boolean>(false) 
@@ -28,13 +29,8 @@ function ContextMenu() {
             {stateContextMenu && (
             <>
                 <ul className={styles.contextMenu} tabIndex={0} ref={contextMenuRef}>
-                    <div>Фильтры:</div>
-                    <li className={styles.beginNew}>Cначала новые</li>
-                    <li className={styles.beginOld}>Cначала старые</li>
-                    <li className={styles.beginName}>Сортировать по алфавиту</li>
-                    <li className={styles.completeds}>Выполненные</li>
-                    <li className={styles.uncompleteds}>Невыполненные</li>
-                    <li className={styles.removeds}>Удалённые</li>
+                    <div className={styles.title}>Фильтры:</div>
+                    <NotesFilters />
                 </ul>
                 <div className={styles.overlay}></div>
             </>
