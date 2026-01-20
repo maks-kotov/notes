@@ -2,11 +2,13 @@ import { useContext } from "react"
 import styles from "./notesFilters.module.css"
 import { NoteContext } from "../../../../contexts/noteContext"
 function NotesFilters() {
-    const { sortByNew } = useContext(NoteContext)!
+    const { sortByNew, sortByOld } = useContext(NoteContext)!
     return (
             <div className={styles.filtersContainer}>
-                <li onClick={()=>sortByNew()} className={styles.beginNew}>Cначала новые</li>
-                <li className={styles.beginOld}>
+                <li onClick={()=>sortByNew()} className={styles.beginNew}>
+                    Cначала новые
+                </li>
+                <li onClick={()=>sortByOld()} className={styles.beginOld}>
                     Cначала старые
                 </li>
                 <li className={styles.beginName}>Сортировать по алфавиту</li>

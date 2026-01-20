@@ -16,7 +16,7 @@ function App() {
     remove: (id:number)=>void,
     toggle: (id:number)=>void,
     sortByNew: ()=>void,
-    // filterByNew: ()=>void,
+    sortByOld: ()=>void,
     // filterByAlphabet: ()=>void,
     // filterByCompleteds: ()=>void,
     // filterByUncompleteds: ()=>void,
@@ -45,9 +45,12 @@ function App() {
     const sortByNew = () => {
       setNotes([...notes].sort((a,b)=>b.createdAt.getTime() - a.createdAt.getTime()))
     }
-    return { notes, add, update, remove, toggle, sortByNew };
+    const sortByOld = () => {
+      setNotes([...notes].sort((a,b)=>a.createdAt.getTime() - b.createdAt.getTime()))
+    }
+    return { notes, add, update, remove, toggle, sortByNew, sortByOld };
   }
-  const {notes, update, add, remove, toggle, sortByNew} = useNotes()
+  const {notes, update, add, remove, toggle, sortByNew, sortByOld} = useNotes()
 
   const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
   const [editingNote, setEditingNote] = useState<NoteType>( // редактируемая
@@ -69,7 +72,8 @@ function App() {
     update,
     remove,
     toggle,
-    sortByNew
+    sortByNew,
+    sortByOld
   }
 
   return (
