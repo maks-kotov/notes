@@ -1,4 +1,11 @@
-.textarea {
+.makeTitle {
+    /* background-color: #fff; */
+    width: 100%;
+    /* min-height: 100px; */
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.makeText {
     background-color: #fff;
     width: 100%;
     min-height: 100px;

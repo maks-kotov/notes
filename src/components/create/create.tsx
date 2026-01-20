@@ -10,7 +10,7 @@ interface props {
 function Create({isEdit, editingNote, add} : props) {
     const [note, setNote] = useState<NoteType>({
                             id: 0,
-                            title: 'no',
+                            title: '',
                             content: '',
                             completed: false,
                             createdAt: new Date(),
@@ -18,8 +18,11 @@ function Create({isEdit, editingNote, add} : props) {
     const [counter, setCounter] = useState<number>(0)
     // console.log(counter);
     
-    function changeValue(e:React.ChangeEvent<HTMLTextAreaElement>) {
+    function changeValueTextarea(e:React.ChangeEvent<HTMLTextAreaElement>) {
         setNote({...note, content: e.target.value})
+    }
+    function changeValueInput(e:React.ChangeEvent<HTMLInputElement>) {
+        setNote({...note, title: e.target.value})
     }
     useEffect(()=>{
         if(isEdit) {
@@ -31,7 +34,8 @@ function Create({isEdit, editingNote, add} : props) {
     },[isEdit])
     return (
         <>
-            <textarea onChange={changeValue} name="#" className={styles.textarea} placeholder='Создать заметку...' value={note.content}>
+            <input onChange={changeValueInput} className={styles.makeTitle} type="text" placeholder='Заголовок...' value={note.title}/>
+            <textarea onChange={changeValueTextarea} name="#" className={styles.makeText} placeholder='Основной текст... (необязательно)' value={note.content}>
                 
             </textarea>
             <div className={styles.right}>
@@ -39,13 +43,15 @@ function Create({isEdit, editingNote, add} : props) {
                     <button onClick={()=>{
                         add({
                             id: counter, // каждое нажатие на button меняет counter
-                            title: note.title, // нам он ниоткуда не приходит.
-                            content: note.content, // onChange меняет note.content
-                            completed: note.completed, // нам он ниоткуда не приходит.
+                            title: note.title, // onChangeI меняет note.title
+                            content: note.content, // onChangeT меняет note.content
+                            completed: false, // нам он ниоткуда не приходит.
                             createdAt: new Date(), // каждый раз новая дата создания
                         })
                         setCounter((c)=>++c)
-                        setNote({...note, content: ''})
+                        setNote({...note, content: '', title: ''})
+                        console.log(note);
+                        
                     }} className={styles.button} type="submit">Добавить</button>
                 ) : <EditButton isEdit={isEdit} note={note} id={editingNote.id} changes={editingNote}/>}
             </div>

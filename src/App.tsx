@@ -1,6 +1,6 @@
 import './App.css'
 import Header from './components/header/header'
-import Search from './components/search/search'
+// import Search from './components/search/search'
 import Create from './components/create/create'
 import NotesList from './components/notesList/notesList'
 import { useState } from 'react'
@@ -112,7 +112,7 @@ function App() {
       <NoteContext.Provider value={noteActions}>
         
         {!isEdit && <Header />} 
-        {!isEdit && <Search />}
+        {/* {!isEdit && <Search />} */}
         <Create add={add} isEdit={isEdit} editingNote={editingNote}/>
         {!isEdit &&<NotesList displayedNotes={displayedNotes} isEdit={isEdit}/>}
 
