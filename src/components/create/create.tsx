@@ -51,8 +51,6 @@ function Create({isEdit, editingNote, add} : props) {
                         })
                         setCounter((c)=>++c)
                         setNote({...note, content: '', title: ''})
-                        console.log(note);
-                        
                     }} className={styles.button} type="submit">Добавить</button>
                 ) : <EditButton isEdit={isEdit} note={note} id={editingNote.id} changes={editingNote}/>}
             </div>

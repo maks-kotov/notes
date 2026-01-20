@@ -6,9 +6,11 @@ import NotesList from './components/notesList/notesList'
 import { useState } from 'react'
 import type { NoteType } from './types/note'
 import { NoteContext } from './contexts/noteContext'
+import Viewing from './components/viewing/viewing'
 
 
 function App() {
+  
   type useNotesReturn = {
     displayedNotes: NoteType[],
     update: (id:number, changes:NoteType) => void,
@@ -82,6 +84,8 @@ function App() {
         } = useNotes()
 
   const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
+  const [isView, setIsView] = useState<boolean>(false)
+  
   const [editingNote, setEditingNote] = useState<NoteType>( // редактируемая
     { 
       id: 0,
@@ -91,9 +95,13 @@ function App() {
       createdAt: new Date()
     }
   )
+  
   const noteActions = {
     switchEditMode(isEdit:boolean) {
       setIsEdit(isEdit)
+    },
+    switchViewMode(isView:boolean) {
+      setIsView(isView)
     },
     getEditingNote(note:NoteType) {
       setEditingNote(note)
@@ -111,11 +119,11 @@ function App() {
   return (
       <NoteContext.Provider value={noteActions}>
         
-        {!isEdit && <Header />} 
+        {!isEdit && !isView && <Header />} 
         {/* {!isEdit && <Search />} */}
-        <Create add={add} isEdit={isEdit} editingNote={editingNote}/>
-        {!isEdit &&<NotesList displayedNotes={displayedNotes} isEdit={isEdit}/>}
-
+        {!isView && <Create add={add} isEdit={isEdit} editingNote={editingNote}/>}
+        {!isEdit && !isView && <NotesList displayedNotes={displayedNotes} isEdit={isEdit} isView={isView}/>}
+        {!isEdit && isView && <Viewing />}
       </NoteContext.Provider>
   )
 }

@@ -4,8 +4,9 @@ import styles from './notesList.module.css'
 interface props {
     displayedNotes: NoteType[],
     isEdit: boolean,
+    isView: boolean,
 }
-function NotesList({displayedNotes, isEdit} : props) {
+function NotesList({displayedNotes, isEdit, isView} : props) {
     return (
         <>
             <span className={styles.title}>Список:</span>
@@ -13,7 +14,7 @@ function NotesList({displayedNotes, isEdit} : props) {
                 <p className={styles.emptyMessage}>Создайте первую заметку</p>
             ) 
             : 
-            displayedNotes.map(note=> <Note isEdit={isEdit} note={note} key={note.id}/>)}
+            displayedNotes.map(note=> <Note isEdit={isEdit} isView={isView} note={note} key={note.id}/>)}
         </>
     )
 }

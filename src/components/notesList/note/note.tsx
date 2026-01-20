@@ -6,10 +6,11 @@ import { NoteContext } from '../../../contexts/noteContext'
 interface props {
     note: NoteType,
     isEdit: boolean,
+    isView: boolean
 }
 
-function Note({note, isEdit}:props) {
-    const {remove, toggle} = useContext(NoteContext)!
+function Note({note, isEdit, isView}:props) {
+    const {remove, toggle, switchViewMode} = useContext(NoteContext)!
     return (
         <>
             <div className={styles.container}>
@@ -28,7 +29,7 @@ function Note({note, isEdit}:props) {
                 <button onClick={()=>remove(note.id)} className={styles.remove}>
                         <img src="./src/assets/icons/bin.png" alt="icon" />
                 </button>
-                <button className={styles.view}>
+                <button onClick={()=>switchViewMode(!isView)} className={styles.view}>
                         <img src="./src/assets/icons/eye.png" alt="icon" />
                 </button>
                 <EditButton isEdit={isEdit} note={note}/>
