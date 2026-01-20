@@ -2,5 +2,6 @@ export type NoteType = {
     id: number,
     title: string,
     content: string,
-    completed: boolean
+    completed: boolean,
+    createdAt: Date,
 }

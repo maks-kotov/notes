@@ -12,7 +12,8 @@ function Create({isEdit, editingNote, add} : props) {
                             id: 0,
                             title: 'no',
                             content: '',
-                            completed: false
+                            completed: false,
+                            createdAt: new Date(),
                         })
     const [counter, setCounter] = useState<number>(0)
     // console.log(counter);
@@ -22,7 +23,7 @@ function Create({isEdit, editingNote, add} : props) {
     }
     useEffect(()=>{
         if(isEdit) {
-            setNote({...note, id: editingNote.id, title: editingNote.title,content:editingNote.content, completed: editingNote.completed}) // при нажатии на кнопку готовая изменённая заметка приобретает все те же параметры, которые были у редактируемой. и  в nodesList я присваиваю свойствам редактируемой все значения изменённой  . рассказывать об этом в readme?
+            setNote({...note, id: editingNote.id, title: editingNote.title,content:editingNote.content, completed: editingNote.completed, createdAt: editingNote.createdAt}) // при нажатии на кнопку готовая изменённая заметка приобретает все те же параметры, которые были у редактируемой. и  в nodesList я присваиваю свойствам редактируемой все значения изменённой  . рассказывать об этом в readme?
         }
         else {
             setNote({...note, content: ''})
@@ -37,10 +38,11 @@ function Create({isEdit, editingNote, add} : props) {
                 {isEdit === false ? (
                     <button onClick={()=>{
                         add({
-                            id: counter,
-                            title: 'no',
-                            content: note.content,
-                            completed: false
+                            id: counter, // каждое нажатие на button меняет counter
+                            title: note.title, // нам он ниоткуда не приходит.
+                            content: note.content, // onChange меняет note.content
+                            completed: note.completed, // нам он ниоткуда не приходит.
+                            createdAt: new Date(), // каждый раз новая дата создания
                         })
                         setCounter((c)=>++c)
                         setNote({...note, content: ''})

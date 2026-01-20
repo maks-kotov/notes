@@ -15,9 +15,16 @@ function App() {
     add: (note:NoteType)=>void,
     remove: (id:number)=>void,
     toggle: (id:number)=>void,
+    sortByNew: ()=>void,
+    // filterByNew: ()=>void,
+    // filterByAlphabet: ()=>void,
+    // filterByCompleteds: ()=>void,
+    // filterByUncompleteds: ()=>void,
+    // filterByRemoveds: ()=>void,
   }
 
   const useNotes = ():useNotesReturn =>  {
+    //основные методы:
     const [notes, setNotes] = useState <NoteType[]>([])
     const add = (note:NoteType) => setNotes(prev => {
       if(note.content.trim()) {
@@ -33,9 +40,14 @@ function App() {
       prev.map(n => n.id === id ? {...n, completed: !n.completed} : n)
     );
     
-    return { notes, add, update, remove, toggle };
+    //фильтры:
+    // const sortByOld = notes.sort((a,b)=>b.createdAt.getTime() - a.createdAt.getTime())
+    const sortByNew = () => {
+      setNotes([...notes].sort((a,b)=>b.createdAt.getTime() - a.createdAt.getTime()))
+    }
+    return { notes, add, update, remove, toggle, sortByNew };
   }
-  const {notes, update, add, remove, toggle} = useNotes()
+  const {notes, update, add, remove, toggle, sortByNew} = useNotes()
 
   const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
   const [editingNote, setEditingNote] = useState<NoteType>( // редактируемая
@@ -43,7 +55,8 @@ function App() {
       id: 0,
       title: 'no',
       content: 'no',
-      completed: false
+      completed: false,
+      createdAt: new Date()
     }
   )
   const noteActions = {
@@ -55,7 +68,8 @@ function App() {
     },
     update,
     remove,
-    toggle
+    toggle,
+    sortByNew
   }
 
   return (

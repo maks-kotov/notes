@@ -5,4 +5,10 @@ export type NoteContextType = {
     update: (id:number, changes: NoteType)=>void,
     remove: (id:number)=>void,
     toggle: (id:number)=>void,
+    sortByNew: ()=>void,
+    // filterByNew: ()=>void,
+    // filterByAlphabet: ()=>void,
+    // filterByCompleteds: ()=>void,
+    // filterByUncompleteds: ()=>void,
+    // filterByRemoveds: ()=>void,
 }

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 import styles from "./contextMenu.module.css"
 import NotesFilters from "./noteFilters/notesFilters"
-
+//отвечает за появление contextMenu
 function ContextMenu() {
     const [stateContextMenu, setStateContextMenu] = useState<boolean>(false) 
     const contextMenuRef = useRef<HTMLUListElement>(null)
