@@ -5,17 +5,21 @@ import type { NoteType } from '../../types/note'
 interface props {
     isEdit: boolean,
     currentNote: NoteType,
-    add: (note:NoteType)=>void
+    add: (note:NoteType)=>void,
+    id: number,
+    incrementId: (id:number)=>void
 }
-function Create({isEdit, currentNote, add} : props) {
-    const [note, setNote] = useState<NoteType>({
+function Create({id, incrementId,isEdit, currentNote, add} : props) {
+    // console.log('я сработал (create)');
+    
+    const [note, setNote] = useState<NoteType>({ // только при первом рендере
                             id: 0,
                             title: '',
                             content: '',
                             completed: false,
                             createdAt: new Date(),
                         })
-    const [counter, setCounter] = useState<number>(0)
+    
     // console.log(counter);
     
     function changeValueTextarea(e:React.ChangeEvent<HTMLTextAreaElement>) {
@@ -43,13 +47,13 @@ function Create({isEdit, currentNote, add} : props) {
                 {isEdit === false ? (
                     <button onClick={()=>{
                         add({
-                            id: counter, // каждое нажатие на button меняет counter
+                            id: id, // каждое нажатие на button меняет counter
                             title: note.title, // onChangeI меняет note.title
                             content: note.content, // onChangeT меняет note.content
                             completed: false, // нам он ниоткуда не приходит.
                             createdAt: new Date(), // каждый раз новая дата создания
                         })
-                        setCounter((c)=>++c)
+                        incrementId(id)
                         setNote({...note, content: '', title: ''})
                     }} className={styles.button} type="submit">Добавить</button>
                 ) : <EditButton isEdit={isEdit} note={note} id={currentNote.id} changes={currentNote}/>}

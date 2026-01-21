@@ -8,6 +8,8 @@ interface props {
 }
 
 function Viewing({ isView, currentNote }:props) {
+    // console.log('я сработал (viewing)');
+    
     //работаем с viewing
     const {switchViewMode} = useContext(NoteContext)!
     return (

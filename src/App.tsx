@@ -13,6 +13,8 @@ function App() {
   
   type useNotesReturn = {
     displayedNotes: NoteType[],
+    id: number,
+    incrementId: (id:number)=>void
     update: (id:number, changes:NoteType) => void,
     add: (note:NoteType)=>void,
     remove: (id:number)=>void,
@@ -31,6 +33,10 @@ function App() {
     const [allNotes, setAllNotes] = useState <NoteType[]>([])
     const [filteredNotes, setFilteredNotes] = useState<null | NoteType[]>(null)
     const displayedNotes = filteredNotes === null ? allNotes : filteredNotes
+    const [id, setId] = useState<number>(0)
+    const incrementId = (id:number)=> {
+      setId(++id)
+    }
 
     const add = (note:NoteType) => setAllNotes(prev => {
       if(note.content.trim()) {
@@ -68,7 +74,7 @@ function App() {
       setFilteredNotes(filtered)
     }
 
-    return { displayedNotes, add, update, remove, toggle, sortByNew, sortByOld, filterByCompleteds, showAllNotes, filterByUnCompleteds };
+    return { displayedNotes, id, incrementId, add, update, remove, toggle, sortByNew, sortByOld, filterByCompleteds, showAllNotes, filterByUnCompleteds };
   }
   const {displayedNotes,
           update, 
@@ -79,9 +85,12 @@ function App() {
           sortByOld, 
           showAllNotes,
           filterByCompleteds,
-          filterByUnCompleteds
+          filterByUnCompleteds,
+          id,
+          incrementId
 
         } = useNotes()
+console.log(displayedNotes);
 
   const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
   const [isView, setIsView] = useState<boolean>(false)
@@ -115,13 +124,23 @@ function App() {
     showAllNotes,
     filterByUnCompleteds
   }
+//баг: если добавил заметку, сразу её посмотрел, затем создал новую и изменил, то изменения будут и на первой заметке.
+/* 
+  почему так происходит?
+  ответ: когда мы нажимаем кнопку view - вызывается функция switchViewMode, которая размонтирует header, notelist, create и монтирует viewing.  
+  =>
+  если мы повторно нажмём на кнопку view, то у create будет обновлённый счётчик id, который будет считать с 0. у каждой новодобавленной id идти от 0
 
+  также она вызывает функцию getCurrentNote. это  заставляет заново сработать app.tsx, меняет состояние currentNote и перерисовывает всё то, где используется currentNote (это create.tsx и view.tsx).
+  create.tsx срабатывает, но в нём ниче не происходит (useState'ы не перезаписываются при ререндере).
+  view.tsx срабатывает и рисует поле всё место для чтения
+*/
   return (
       <NoteContext.Provider value={noteActions}>
         
         {!isEdit && !isView && <Header />} 
         {/* {!isEdit && <Search />} */}
-        {!isView && <Create add={add} isEdit={isEdit} currentNote={currentNote}/>}
+        {!isView && <Create id={id} incrementId={incrementId} add={add} isEdit={isEdit} currentNote={currentNote}/>}
         {!isEdit && !isView && <NotesList displayedNotes={displayedNotes} isEdit={isEdit} isView={isView}/>}
         {!isEdit && isView && <Viewing currentNote={currentNote} isView={isView}/>}
       </NoteContext.Provider>

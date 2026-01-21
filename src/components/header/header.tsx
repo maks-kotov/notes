@@ -1,6 +1,7 @@
 import styles from './header.module.css'
 import ContextMenu from './contextMenu/contextMenu'
 function Header() {
+    
     return (
         <>
         <header className={styles.header}>
