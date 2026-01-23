@@ -3,14 +3,14 @@ import Header from './components/header/header'
 // import Search from './components/search/search'
 import Create from './components/create/create'
 import NotesList from './components/notesList/notesList'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { NoteType } from './types/note'
 import { NoteContext } from './contexts/noteContext'
 import Viewing from './components/viewing/viewing'
 import { supabase } from './lib/supabase.ts'
 
 function App() {
-  
+
   type useNotesReturn = {
     displayedNotes: NoteType[],
     id: number,
@@ -26,6 +26,7 @@ function App() {
     filterByCompleteds: ()=>void,
     filterByUnCompleteds: ()=>void,
     // filterByRemoveds: ()=>void,
+    fetchNotes: ()=>void 
   }
 
   const useNotes = ():useNotesReturn =>  {
@@ -37,18 +38,40 @@ function App() {
     const incrementId = (id:number)=> {
       setId(++id)
     }
+    const fetchNotes = ()=> {
+      console.log('e');
+      
+    }
 
-    const add = (note:NoteType) => setAllNotes(prev => {
-      // try {
-      //   const {data, error} = await supabase
-      // } catch (error) {
+    
+
+    const add = async (note:NoteType) => {
+      // const { data: { session } } = await supabase.auth.getSession()
         
-      // }
-      if(note.content.trim()) {
-        return [...prev, note]
-      }
-      return prev
-    });
+      setAllNotes(prev => {
+        if(note.content.trim()) {
+          return [...prev, note]
+        }
+        return prev
+      });
+
+      /* try {
+      const { data, error } = await supabase
+        .from('notes')
+        .insert(note)
+        .select();
+        
+        if(error) throw error;
+        if(data) {
+          alert('successs')
+          console.log('я не знаю что это: ', data);
+        }
+      } catch (error) {
+        alert('lose')
+        
+      } */
+      
+    }
     const remove = (id:number) => setAllNotes(prev => prev.filter(n => n.id !== id));
     const update = (id:number, changes:NoteType) => setAllNotes(prev => 
       prev.map(n => n.id === id ? {...n, ...changes} : n)
@@ -79,7 +102,7 @@ function App() {
       setFilteredNotes(filtered)
     }
 
-    return { displayedNotes, id, incrementId, add, update, remove, toggle, sortByNew, sortByOld, filterByCompleteds, showAllNotes, filterByUnCompleteds };
+    return { displayedNotes, id, incrementId, add, update, remove, toggle, sortByNew, sortByOld, filterByCompleteds, filterByUnCompleteds, showAllNotes,  fetchNotes };
   }
   const {displayedNotes,
           update, 
@@ -92,11 +115,14 @@ function App() {
           filterByCompleteds,
           filterByUnCompleteds,
           id,
-          incrementId
+          incrementId,
+          fetchNotes
 
         } = useNotes()
 console.log(displayedNotes);
-
+  useEffect(()=> {
+    fetchNotes()
+  }, [displayedNotes])
   const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
   const [isView, setIsView] = useState<boolean>(false)
   
