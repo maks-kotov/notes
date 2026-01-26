@@ -11,25 +11,7 @@ import { supabase } from './lib/supabase.ts'
 
 function App() {
 
-  type useNotesReturn = {
-    displayedNotes: NoteType[],
-    id: number,
-    incrementId: (id:number)=>void
-    update: (id:number, changes:NoteType) => void,
-    add: (note:NoteType)=>void,
-    remove: (id:number)=>void,
-    toggle: (id:number)=>void,
-    sortByNew: ()=>void,
-    sortByOld: ()=>void,
-    showAllNotes: ()=>void
-    // filterByAlphabet: ()=>void,
-    filterByCompleteds: ()=>void,
-    filterByUnCompleteds: ()=>void,
-    // filterByRemoveds: ()=>void,
-    fetchNotes: ()=>void 
-  }
-
-  const useNotes = ():useNotesReturn =>  {
+  const useNotes = () =>  {
 
     const [allNotes, setAllNotes] = useState <NoteType[]>([])
     const [filteredNotes, setFilteredNotes] = useState<null | NoteType[]>(null)
@@ -59,31 +41,12 @@ function App() {
     
 
     const add = async (note:NoteType) => {
-      // const { data: { session } } = await supabase.auth.getSession()
-        
       setAllNotes(prev => {
         if(note.content.trim()) {
           return [...prev, note]
         }
         return prev
       });
-
-      /* try {
-      const { data, error } = await supabase
-        .from('notes')
-        .insert(note)
-        .select();
-        
-        if(error) throw error;
-        if(data) {
-          alert('successs')
-          console.log('я не знаю что это: ', data);
-        }
-      } catch (error) {
-        alert('lose')
-        
-      } */
-      
     }
     const remove = (id:number) => setAllNotes(prev => prev.filter(n => n.id !== id));
     const update = (id:number, changes:NoteType) => setAllNotes(prev => 
@@ -132,7 +95,6 @@ function App() {
           fetchNotes
 
         } = useNotes()
-console.log(displayedNotes);
   
   const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
   const [isView, setIsView] = useState<boolean>(false)
