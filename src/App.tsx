@@ -8,6 +8,7 @@ import type { NoteType } from './types/note'
 import { NoteContext } from './contexts/noteContext'
 import Viewing from './components/viewing/viewing'
 import { supabase } from './lib/supabase.ts'
+import Notes from './components/Notes/notes.tsx'
 
 function App() {
 
@@ -140,6 +141,7 @@ function App() {
   view.tsx срабатывает и рисует поле всё место для чтения
 */
   return (
+    <>
       <NoteContext.Provider value={noteActions}>
         
         {!isEdit && !isView && <Header />} 
@@ -148,6 +150,8 @@ function App() {
         {!isEdit && !isView && <NotesList fetchNotes={fetchNotes} displayedNotes={displayedNotes} isEdit={isEdit} isView={isView}/>}
         {!isEdit && isView && <Viewing currentNote={currentNote} isView={isView}/>}
       </NoteContext.Provider>
+      <Notes />
+    </>
   )
 }
 
