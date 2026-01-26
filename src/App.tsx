@@ -1,25 +1,31 @@
+import { useEffect, useState } from 'react'
 import './App.css'
 import Notes from './components/Notes/notes.tsx'
+import { supabase } from './lib/supabase.ts'
+import type { Session } from '@supabase/supabase-js'
+import Auth from './components/Auth/auth.tsx'
 
 function App() {
+  const [session, setSession] = useState<Session | null>(null)
 
-  
-  
-  
-  
-/* 
-баг: если добавил заметку, сразу её посмотрел, затем создал новую и изменил, то изменения будут и на первой заметке.
-  почему так происходит?
-  ответ: когда мы нажимаем кнопку view - вызывается функция switchViewMode, которая размонтирует header, notelist, create и монтирует viewing.  
-  =>
-  если мы повторно нажмём на кнопку view, то у create будет обновлённый счётчик id, который будет считать с 0. у каждой новодобавленной id идти от 0
+  useEffect(()=> {
+    //1. при запуске устанавливем значение session
+    supabase.auth.getSession().then(({data: { session }})=> {
+      setSession(session)
+    })
+    //2. вешаем обработчик события который срабатывает когда меняется сессия (вышли из аккаунта, отчистили кэш) 
+    const { data: {subscription}  } = supabase.auth.onAuthStateChange((event,sesion)=>{
+      setSession(sesion)
+    })
+    //3. если закрыть страницу - обработчик перестаёт следить за состоянием сессии. 
+    return ()=> subscription.unsubscribe();
+  },[session])
 
-  также она вызывает функцию getCurrentNote. это  заставляет заново сработать app.tsx, меняет состояние currentNote и перерисовывает всё то, где используется currentNote (это create.tsx и view.tsx).
-  create.tsx срабатывает, но в нём ниче не происходит (useState'ы не перезаписываются при ререндере).
-  view.tsx срабатывает и рисует поле всё место для чтения
-*/
+
   return (
-      <Notes />
+      <>
+        {!session ? <Auth /> : <Notes />}
+      </>
   )
 }
 
