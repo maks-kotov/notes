@@ -6,7 +6,7 @@ import { useAuth } from "../contexts/authContext"
 export default function useNotes() {
     const [allNotes, setAllNotes] = useState <NoteType[]>([])
     const [filteredNotes, setFilteredNotes] = useState<null | NoteType[]>(null)
-    const displayedNotes = filteredNotes === null ? allNotes : filteredNotes
+    const displayedNotes = filteredNotes === null ? allNotes : filteredNotes // я забыл как displayedNotes попадают в notesList при изменении состояния allNotes
     const [note_id, setNote_Id] = useState<number>(0)
     const {session} = useAuth()
     const incrementNote_Id = (note_id:number)=> {
@@ -32,12 +32,26 @@ export default function useNotes() {
     
 
     const add = async (note:NoteType) => {
-      setAllNotes(prev => {
-        if(note.content.trim()) {
-          return [...prev, note]
-        }
-        return prev
-      });
+      if(session !== null) {
+        const {data, error} = await supabase
+        .from('notes')
+        .insert([
+          {
+            ...note,
+            user_id: session.user.id
+          }
+        ])
+        .select()
+
+      if(!error) {
+        setAllNotes(prev => {
+          if(note.content.trim()) {
+            return [...prev, data[0]]
+          }
+          return prev
+        });
+      }
+      }
     }
     const remove = (note_id:number) => setAllNotes(prev => prev.filter(n => n.note_id !== note_id));
     const update = (note_id:number, changes:NoteType) => setAllNotes(prev => 

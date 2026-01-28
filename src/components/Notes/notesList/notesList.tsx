@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import Note from './note/note'
 import styles from './notesList.module.css'
 import type { NoteType } from '../../../types/note'
+import { useAuth } from '../../../contexts/authContext'
+import BigSpinner from '../../bigSpinner/bigSpinner'
 interface props {
     displayedNotes: NoteType[],
     isEdit: boolean,
@@ -9,6 +11,7 @@ interface props {
     getNotes: ()=>void
 }
 function NotesList({displayedNotes, isEdit, isView, getNotes} : props) {
+    const {isLoading} = useAuth()
     useEffect(()=> {
         console.log('notesList перерисовался');
         getNotes()
@@ -16,11 +19,17 @@ function NotesList({displayedNotes, isEdit, isView, getNotes} : props) {
     return (
         <>
             <span className={styles.title}>Список:</span>
-            {displayedNotes.length === 0 ? (
+            {
+                //если isLoading true - показываем спиннер, если нет - то, код заметок
+            isLoading ?
+                <BigSpinner />  // загрузка не отображается потому что она зависит от session, а не от времени добавления заметки  
+            :
+            displayedNotes.length === 0 ? (
                 <p className={styles.emptyMessage}>Создайте первую заметку</p>
             ) 
             : 
-            displayedNotes.map(note=> <Note isEdit={isEdit} isView={isView} note={note} key={note.note_id}/>)}
+            displayedNotes.map(note=> <Note isEdit={isEdit} isView={isView} note={note} key={note.note_id}/>)
+            }
         </>
     )
 }
