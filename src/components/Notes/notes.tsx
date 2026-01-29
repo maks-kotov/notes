@@ -30,7 +30,7 @@ function Notes() {
       title: 'no',
       content: 'no',
       completed: false,
-      createdAt: new Date()
+      created_at: 'what?'
     }
 )
 

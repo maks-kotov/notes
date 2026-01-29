@@ -18,7 +18,7 @@ export type Database = {
         Row: {
           completed: boolean 
           content: string 
-          createdAt: Date
+          created_at: string
           note_id: number
           title: string 
           user_id: string
@@ -26,14 +26,13 @@ export type Database = {
         Insert: {
           completed: boolean
           content: string
-          createdAt: Date
           title: string
           user_id: string
         }
         Update: {
           completed: boolean
           content: string
-          createdAt: Date
+          created_at: string
           note_id: number
           title: string
           user_id: string 

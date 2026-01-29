@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 
@@ -13,6 +13,7 @@ const AuthContext = createContext<{
 export function AuthProvider({ children }: { children: React.ReactNode }) { // потом разберёмся как тут параметры работают
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const prevUserIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     // Получаем начальную сессию
@@ -23,10 +24,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) { // �
       console.log('get');
       
     });
-
     // Слушаем изменения
     const {data: {subscription} } = supabase.auth.onAuthStateChange((_event, session) => {
-      if(_event !== 'INITIAL_SESSION') {
+      if (_event === 'SIGNED_IN' && session?.user.id === prevUserIdRef.current) {
+        return; // для избежания перерендера на alt + tab
+      }
+      if (session?.user.id !== undefined) {
+        // console.log('игнор если сессия повторная');
+        prevUserIdRef.current = session.user.id;
+      }
+      if(_event !== 'INITIAL_SESSION') { //hz
         setSession(session);
         setIsLoading(false);
       }

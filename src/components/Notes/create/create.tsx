@@ -15,7 +15,7 @@ function Create({isEdit, currentNote, add} : props) {
                             title: '',
                             content: '',
                             completed: false,
-                            createdAt: new Date(),
+                            created_at: 'create',
                         })
     
     // console.log(counter);
@@ -28,7 +28,7 @@ function Create({isEdit, currentNote, add} : props) {
     }
     useEffect(()=>{
         if(isEdit) {
-            setNote({...note, note_id: currentNote.note_id, title: currentNote.title,content:currentNote.content, completed: currentNote.completed, createdAt: currentNote.createdAt}) // при нажатии на кнопку готовая изменённая заметка приобретает все те же параметры, которые были у редактируемой.
+            setNote({...note, note_id: currentNote.note_id, title: currentNote.title,content:currentNote.content, completed: currentNote.completed, created_at: currentNote.created_at}) // при нажатии на кнопку готовая изменённая заметка приобретает все те же параметры, которые были у редактируемой.
         }
         else {
             setNote({...note, content: '', title: ''})
@@ -49,7 +49,7 @@ function Create({isEdit, currentNote, add} : props) {
                             title: note.title, // onChangeI меняет note.title
                             content: note.content, // onChangeT меняет note.content
                             completed: false, // нам он ниоткуда не приходит.
-                            createdAt: new Date(), // каждый раз новая дата создания
+                            created_at: 'create2', // каждый раз новая дата создания
                         })
                         setNote({...note, content: '', title: ''})
                     }} className={styles.button} type="submit">Добавить</button>
