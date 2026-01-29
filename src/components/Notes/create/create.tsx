@@ -6,10 +6,8 @@ interface props {
     isEdit: boolean,
     currentNote: NoteType,
     add: (note:NoteType)=>void,
-    note_id: number,
-    incrementNote_Id: (note_id:number)=>void
 }
-function Create({note_id, incrementNote_Id,isEdit, currentNote, add} : props) {
+function Create({isEdit, currentNote, add} : props) {
     // console.log('я сработал (create)');
     
     const [note, setNote] = useState<NoteType>({ // только при первом рендере
@@ -47,13 +45,12 @@ function Create({note_id, incrementNote_Id,isEdit, currentNote, add} : props) {
                 {isEdit === false ? (
                     <button onClick={()=>{
                         add({
-                            note_id: note_id, // каждое нажатие на button меняет counter
+                            note_id: -6, // каждое нажатие на button меняет counter
                             title: note.title, // onChangeI меняет note.title
                             content: note.content, // onChangeT меняет note.content
                             completed: false, // нам он ниоткуда не приходит.
                             createdAt: new Date(), // каждый раз новая дата создания
                         })
-                        incrementNote_Id(note_id)
                         setNote({...note, content: '', title: ''})
                     }} className={styles.button} type="submit">Добавить</button>
                 ) : <EditButton isEdit={isEdit} note={note} id={currentNote.note_id} changes={currentNote}/>}

@@ -7,11 +7,11 @@ export default function useNotes() {
     const [allNotes, setAllNotes] = useState <NoteType[]>([])
     const [filteredNotes, setFilteredNotes] = useState<null | NoteType[]>(null)
     const displayedNotes = filteredNotes === null ? allNotes : filteredNotes // я забыл как displayedNotes попадают в notesList при изменении состояния allNotes
-    const [note_id, setNote_Id] = useState<number>(0)
+    // const [note_id, setNote_Id] = useState<number>(0)
     const {session} = useAuth()
-    const incrementNote_Id = (note_id:number)=> {
-      setNote_Id(++note_id)
-    }
+    // const incrementNote_Id = (note_id:number)=> {
+    //   setNote_Id(++note_id)
+    // }
     const getNotes = async () => {
       try {
         if (session !== null) {
@@ -31,8 +31,6 @@ export default function useNotes() {
     const add = async (note: NoteType) => {
       try {
         if (session !== null) {
-          console.log(note);
-          
           const { data, error } = await supabase
             .from("notes")
             .insert([ //note_id будет добавляться автоматически бдшкой 
@@ -41,7 +39,6 @@ export default function useNotes() {
                 content: note.content,
                 createdAt: note.createdAt,
                 completed: note.completed,
-                // ...note,
                 user_id: session.user.id,
               },
             ])
@@ -104,5 +101,5 @@ export default function useNotes() {
       setFilteredNotes(filtered)
     }
 
-    return { displayedNotes, note_id, incrementNote_Id, add, update, remove, toggle, sortByNew, sortByOld, filterByCompleteds, filterByUnCompleteds, showAllNotes,  getNotes };
+    return { displayedNotes, add, update, remove, toggle, sortByNew, sortByOld, filterByCompleteds, filterByUnCompleteds, showAllNotes,  getNotes };
 }

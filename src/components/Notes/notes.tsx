@@ -19,8 +19,6 @@ function Notes() {
         showAllNotes,
         filterByCompleteds,
         filterByUnCompleteds,
-        note_id,
-        incrementNote_Id,
         getNotes
         } = useNotes()
 
@@ -57,7 +55,7 @@ function Notes() {
                 {/* {!isEdit && <Search />} */}
                 {
                 !isView && 
-                <Create note_id={note_id} incrementNote_Id={incrementNote_Id} add={add} isEdit={isEdit} currentNote={currentNote}/>
+                <Create add={add} isEdit={isEdit} currentNote={currentNote}/>
                 }
                 {
                 !isEdit && !isView && 
