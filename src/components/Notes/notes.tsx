@@ -8,6 +8,7 @@ import NotesList from "./notesList/notesList"
 import Viewing from "./viewing/viewing"
 
 function Notes() {
+    
     const { //тут методы заметок и информация про них
         displayedNotes,
         update, 
@@ -19,7 +20,7 @@ function Notes() {
         showAllNotes,
         filterByCompleteds,
         filterByUnCompleteds,
-        getNotes
+        gettingLoading
         } = useNotes()
 
     const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
@@ -48,7 +49,7 @@ function Notes() {
                     filterByUnCompleteds,
                     switchEditMode: (isEdit:boolean)=>setIsEdit(isEdit),
                     switchViewMode: (isView:boolean)=>setIsView(isView),
-                    getCurrentNote: (note:NoteType)=>setCurrentNote(note)
+                    getCurrentNote: (note:NoteType)=>setCurrentNote(note),
                 }
             }>
                 {!isEdit && !isView && <Header />} 
@@ -59,7 +60,7 @@ function Notes() {
                 }
                 {
                 !isEdit && !isView && 
-                <NotesList getNotes={getNotes} displayedNotes={displayedNotes} isEdit={isEdit} isView={isView}/>
+                <NotesList gettingLoading={gettingLoading} displayedNotes={displayedNotes} isEdit={isEdit} isView={isView}/>
                 }
                 {
                 !isEdit && isView && 

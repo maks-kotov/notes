@@ -1,4 +1,7 @@
-import { useState } from "react";
+//getNotes - первый вывод заметок.
+//addNote - добавляет заметку в бд и в возвращает её. в случае успеха заносит её в displayedNotes
+
+import { useEffect, useState } from "react";
 import type { NoteType } from "../types/note";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/authContext";
@@ -8,24 +11,35 @@ export default function useNotes() {
   const [filteredNotes, setFilteredNotes] = useState<null | NoteType[]>(null);
   const displayedNotes = filteredNotes === null ? allNotes : filteredNotes;
   const { session } = useAuth();
-  const getNotes = async () => {
-    try {
-      if (session !== null) {
-        const { data, error } = await supabase
-          .from("notes")
-          .select("*")
-          .eq("user_id", session.user.id)
-          .order("created_at", { ascending: false });
-        if (!error) {
-          setAllNotes(data || []);
-        } else if (error) {
-          console.log(error.message);
+  const [gettingLoading, setGettingLoading] = useState<boolean>(false)
+
+  useEffect(()=> { //первая загрузка
+    const getNotes = async () => {
+      setGettingLoading(true)
+      try {
+        if (session !== null) {
+          const { data, error } = await supabase
+            .from("notes")
+            .select("*")
+            .eq("user_id", session.user.id)
+            .order("created_at", { ascending: false });
+          if (!error) {
+            setAllNotes(data || []);
+          } else if (error) {
+            console.log(error.message);
+          }
         }
+        else {
+          console.log('session is null bro');
+        }
+      } catch (error) {
+        console.log("непредвиденная ОШИБОЧКА: ", error);
+      } finally {
+        setGettingLoading(false)
       }
-    } catch (error) {
-      console.log("непредвиденная ОШИБОЧКА: ", error);
     }
-  };
+          getNotes()
+  }, [session?.user.id])
 
   const add = async (note: NoteType) => {
     //note - заметка из textarea, с её текстом.
@@ -64,6 +78,7 @@ export default function useNotes() {
   };
 
   const remove = async (note_id: number) => {
+    
     await supabase.from("notes").delete().eq("note_id", note_id); //удаление с бд
     setAllNotes((prev) => prev.filter((n) => n.note_id !== note_id)); //удаление с локального массива
     //затем перерисовка displayedNotes will be changed
@@ -114,6 +129,6 @@ export default function useNotes() {
     filterByCompleteds,
     filterByUnCompleteds,
     showAllNotes,
-    getNotes,
+    gettingLoading
   };
 }
