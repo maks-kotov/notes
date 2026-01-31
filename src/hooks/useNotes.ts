@@ -1,7 +1,7 @@
 //getNotes - первый вывод заметок.
 //addNote - добавляет заметку в бд и в возвращает её. в случае успеха заносит её в displayedNotes
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { NoteType } from "../types/note";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/authContext";
@@ -13,6 +13,8 @@ export default function useNotes() {
   const { session } = useAuth();
   const [gettingLoading, setGettingLoading] = useState<boolean>(false)
   const [addingLoading, setAddingLoading] = useState<boolean>(false)
+  const [errorWhenAdding, setErrorWhenAdding] = useState<null | string>(null)
+  const [removingLoading, setRemovingLoading] = useState<null | number>(null)
   //появились ещё рендеры
   useEffect(()=> { //первая загрузка
     const getNotes = async () => {
@@ -42,49 +44,58 @@ export default function useNotes() {
           getNotes()
   }, [session?.user.id])
 
-  const add = async (note: NoteType) => {
+  const add = useCallback(async (note: NoteType) => {
     //note - заметка из textarea, с её текстом.
     //мы вставляем её в бд (кроме note_id)
     //получаем её из бд и вставляем в allNotes
-    setAddingLoading(true)
-    try {
-      if (session !== null) {
-        const { data, error } = await supabase
-          .from("notes")
-          .insert([
-            //note_id будет добавляться автоматически бдшкой
-            {
-              title: note.title,
-              content: note.content,
-              completed: note.completed,
-              user_id: session.user.id,
-            },
-          ])
-          .select();
-
-        if (error) {
-          console.log("ошибка: ", error.message);
-          return;
-        } else {
-          setAllNotes((prev) => {
-            if (note.content.trim()) {
-              return [...prev, data[0]];
-            }
-            return prev;
-          });
+    if(note.title.trim()) {
+      try {
+        setErrorWhenAdding(null)
+        setAddingLoading(true)
+        if (session !== null) {
+          const { data, error } = await supabase
+            .from("notes")
+            .insert([
+              //note_id будет добавляться автоматически бдшкой
+              {
+                title: note.title,
+                content: note.content,
+                completed: note.completed,
+                user_id: session.user.id,
+              },
+            ])
+            .select();
+  
+          if (error) {
+            console.log("ошибка: ", error.message);
+            return;
+          } else {
+            setAllNotes((prev) => {
+                return [...prev, data[0]];
+            });
+          }
         }
+      } catch (error) {
+        console.log("Непредвиденная ошибка: ", error);
+      } finally {
+        setAddingLoading(false)
       }
-    } catch (error) {
-      console.log("Непредвиденная ошибка: ", error);
-    } finally {
-      setAddingLoading(false)
     }
-  };
+    else {
+      setErrorWhenAdding("Пожалуйста, добавьте заголовок")
+    }
+  }, [])
 
   const remove = async (note_id: number) => {
-    
-    await supabase.from("notes").delete().eq("note_id", note_id); //удаление с бд
-    setAllNotes((prev) => prev.filter((n) => n.note_id !== note_id)); //удаление с локального массива
+    setRemovingLoading(note_id)
+    try {
+      await supabase.from("notes").delete().eq("note_id", note_id); //удаление с бд
+      setAllNotes((prev) => prev.filter((n) => n.note_id !== note_id)); //удаление с локального массива
+    } catch (error) {
+      console.log('ошибка при удалении');
+    } finally {
+      setRemovingLoading(null)
+    }
     //затем перерисовка displayedNotes will be changed
     //мы не можем не писать setAllNotes, тк notesList чтобы перерисоваться нужно чтобы изменился displayedNotes
   };
@@ -134,6 +145,8 @@ export default function useNotes() {
     filterByUnCompleteds,
     showAllNotes,
     gettingLoading,
-    addingLoading
+    addingLoading,
+    removingLoading,
+    errorWhenAdding
   };
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState} from 'react'
+import { memo, useEffect, useState} from 'react'
 import styles from './create.module.css'
 import EditButton from '../notesList/note/editButton/editButton'
 import type { NoteType } from '../../../types/note'
@@ -7,9 +7,10 @@ interface props {
     isEdit: boolean,
     currentNote: NoteType,
     add: (note:NoteType)=>void,
-    addingLoading: boolean
+    addingLoading: boolean,
+    errorWhenAdding: string | null
 }
-function Create({isEdit, currentNote, add, addingLoading} : props) {
+function Create({isEdit, currentNote, add, addingLoading, errorWhenAdding} : props) {
     // console.log('я сработал (create)');
     
     const [note, setNote] = useState<NoteType>({ // только при первом рендере
@@ -41,12 +42,12 @@ function Create({isEdit, currentNote, add, addingLoading} : props) {
             <input onChange={changeValueInput} className={styles.makeTitle} type="text" placeholder='Заголовок...' value={note.title}/>
             <textarea onChange={changeValueTextarea} name="#" className={styles.makeText} placeholder='Основной текст... (необязательно)' 
             value={note.content}>
-                
             </textarea>
             <div className={styles.right}>
+                {errorWhenAdding && <div>{errorWhenAdding}</div>}
                 {
                 isEdit === false ? (
-                    <button onClick={()=>{
+                    <button onClick={(event)=>{
                         add({
                             note_id: -6, // каждое нажатие на button меняет counter
                             title: note.title, // onChangeI меняет note.title
@@ -55,14 +56,21 @@ function Create({isEdit, currentNote, add, addingLoading} : props) {
                             created_at: 'create2', // каждый раз новая дата создания
                         })
                         setNote({...note, content: '', title: ''})
-                    }} className={styles.button} type="submit" disabled={addingLoading}>
+                        console.log(event.target);
+                        
+                    }} 
+                    className={styles.button} 
+                    type="submit" 
+                    disabled={addingLoading}
+                    style={addingLoading ? {opacity: 0.5} : {opacity: 1}}>
+
                     {addingLoading ? <Spinner /> : 'Добавить'}
+                    
                     </button>
                 ) : <EditButton isEdit={isEdit} note={note} id={currentNote.note_id} changes={currentNote}/>
-                
                 }
             </div>
         </>
     )
 }
-export default Create
+export default memo(Create)

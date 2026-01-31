@@ -21,5 +21,6 @@
 }
 .right {
     display: flex;
-    justify-content: end;
+    flex-flow: column wrap;
+    align-items: flex-end;
 }

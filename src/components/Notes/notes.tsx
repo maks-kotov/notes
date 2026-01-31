@@ -21,7 +21,9 @@ function Notes() {
         filterByCompleteds,
         filterByUnCompleteds,
         gettingLoading,
-        addingLoading
+        addingLoading,
+        errorWhenAdding,
+        removingLoading
         } = useNotes()
 
     const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
@@ -51,13 +53,14 @@ function Notes() {
                     switchEditMode: (isEdit:boolean)=>setIsEdit(isEdit),
                     switchViewMode: (isView:boolean)=>setIsView(isView),
                     getCurrentNote: (note:NoteType)=>setCurrentNote(note),
+                    removingLoading: removingLoading
                 }
             }>
                 {!isEdit && !isView && <Header />} 
                 {/* {!isEdit && <Search />} */}
                 {
                 !isView && 
-                <Create  add={add} addingLoading={addingLoading} isEdit={isEdit} currentNote={currentNote}/>
+                <Create  add={add} addingLoading={addingLoading} errorWhenAdding={errorWhenAdding} isEdit={isEdit} currentNote={currentNote}/>
                 }
                 {
                 !isEdit && !isView && 
