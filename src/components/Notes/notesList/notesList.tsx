@@ -2,7 +2,7 @@ import Note from './note/note'
 import styles from './notesList.module.css'
 import type { NoteType } from '../../../types/note'
 import BigSpinner from '../../bigSpinner/bigSpinner';
-// import { useAuth } from '../../../contexts/authContext'
+import { memo } from 'react';
 interface props {
     displayedNotes: NoteType[],
     isEdit: boolean,
@@ -10,9 +10,7 @@ interface props {
     gettingLoading: boolean
 }
 function NotesList({displayedNotes, isEdit, isView, gettingLoading} : props) {
-    // const {isLoading} = useAuth()
-    
-    console.log('перерисовка. видоизменённый массив: ', displayedNotes, gettingLoading);
+    console.log('перерисовка. видоизменённый массив: ', displayedNotes);
     return (
         <>
             <span className={styles.title}>Список:</span>
@@ -30,4 +28,4 @@ function NotesList({displayedNotes, isEdit, isView, gettingLoading} : props) {
         </>
     )
 }
-export default NotesList
+export default memo(NotesList)

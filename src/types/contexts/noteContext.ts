@@ -12,6 +12,7 @@ export type NoteContextType = {
     // filterByAlphabet: ()=>void,
     filterByCompleteds: ()=>void,
     filterByUnCompleteds: ()=>void,
-    removingLoading: number | null
+    removingLoading: number | null,
+    editingLoading: number | null,
     // filterByRemoveds: ()=>void,
 }

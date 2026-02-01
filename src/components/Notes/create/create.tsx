@@ -47,17 +47,15 @@ function Create({isEdit, currentNote, add, addingLoading, errorWhenAdding} : pro
                 {errorWhenAdding && <div>{errorWhenAdding}</div>}
                 {
                 isEdit === false ? (
-                    <button onClick={(event)=>{
+                    <button onClick={()=>{
                         add({
-                            note_id: -6, // каждое нажатие на button меняет counter
+                            note_id: -6, //auto from db
                             title: note.title, // onChangeI меняет note.title
                             content: note.content, // onChangeT меняет note.content
                             completed: false, // нам он ниоткуда не приходит.
                             created_at: 'create2', // каждый раз новая дата создания
                         })
                         setNote({...note, content: '', title: ''})
-                        console.log(event.target);
-                        
                     }} 
                     className={styles.button} 
                     type="submit" 

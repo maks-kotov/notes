@@ -27,8 +27,8 @@ function Note({note, isEdit, isView}:props) {
                 <button onClick={()=>toggle(note.note_id)} className={styles.toggle}>
                     {note.completed ? '✘' : '✔'}    
                 </button>
-                <button onClick={()=>remove(note.note_id)} className={styles.remove} disabled={!removingLoading ? false : true}>
-                        
+                <button onClick={()=>remove(note.note_id)} className={styles.remove} disabled={!removingLoading ? false : true}
+                style={removingLoading === note.note_id ? {opacity: 0.5} : {opacity: 1}}>    
                         {removingLoading === note.note_id ?  <Spinner /> : <img src="./src/assets/icons/bin.png" alt="icon"/>}
                 </button>
                 <button onClick={()=>
@@ -36,8 +36,9 @@ function Note({note, isEdit, isView}:props) {
                         switchViewMode(!isView)
                         getCurrentNote(note)
                     }} className={styles.view}>
-                        <img src="./src/assets/icons/eye.png" alt="icon" />
+                    <img src="./src/assets/icons/eye.png" alt="icon" />
                 </button>
+                
                 <EditButton isEdit={isEdit} note={note}/>
             </div>
         </>

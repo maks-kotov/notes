@@ -15,6 +15,7 @@ export default function useNotes() {
   const [addingLoading, setAddingLoading] = useState<boolean>(false)
   const [errorWhenAdding, setErrorWhenAdding] = useState<null | string>(null)
   const [removingLoading, setRemovingLoading] = useState<null | number>(null)
+  const [editingLoading, setEditingLoading] = useState<null | number>(null)
   //появились ещё рендеры
   useEffect(()=> { //первая загрузка
     const getNotes = async () => {
@@ -84,9 +85,9 @@ export default function useNotes() {
     else {
       setErrorWhenAdding("Пожалуйста, добавьте заголовок")
     }
-  }, [])
+  }, [addingLoading, errorWhenAdding])
 
-  const remove = async (note_id: number) => {
+  const remove = useCallback( async (note_id: number) => {
     setRemovingLoading(note_id)
     try {
       await supabase.from("notes").delete().eq("note_id", note_id); //удаление с бд
@@ -98,12 +99,45 @@ export default function useNotes() {
     }
     //затем перерисовка displayedNotes will be changed
     //мы не можем не писать setAllNotes, тк notesList чтобы перерисоваться нужно чтобы изменился displayedNotes
-  };
+  }, [removingLoading])
 
-  const update = (note_id: number, changes: NoteType) =>
-    setAllNotes((prev) =>
-      prev.map((n) => (n.note_id === note_id ? { ...n, ...changes } : n)),
-    );
+  const update = useCallback(async (note_id: number, changes: NoteType) => { //при нажатии на update будет 2 перерисовки: тк меняется пропс isEdit, а потом displayedNotes
+    try {
+      setEditingLoading(note_id)
+      if(session?.user.id) {
+        const { data, error } = await supabase
+          .from('notes')
+          .update({ // оставит старое значение createdAt, note_id, completed, user_id
+            title: changes.title,
+            content: changes.content,
+          })
+          .eq('user_id', session.user.id)
+          .eq('note_id', note_id)
+          .select() // вернуть обновлённую запись
+          .single()
+        
+        if(error) {
+          console.log(error.message);
+        }
+        else {
+          setAllNotes((prev) => 
+          prev.map((n) => 
+            n.note_id === note_id 
+              ? { ...n, ...(data || {}) } 
+              : n
+          )
+        );
+        }
+      }
+      //вроде я сделал чтобы можно было обновлять синхронизированно с бд
+    } catch (error) {
+      console.log('ошибка при редактировании: ', error);
+    } finally {
+      setEditingLoading(null)
+    }
+    
+
+  }, [editingLoading])
   const toggle = (note_id: number) =>
     setAllNotes((prev) =>
       prev.map((n) =>
@@ -147,6 +181,7 @@ export default function useNotes() {
     gettingLoading,
     addingLoading,
     removingLoading,
-    errorWhenAdding
+    errorWhenAdding,
+    editingLoading
   };
 }

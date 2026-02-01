@@ -23,7 +23,8 @@ function Notes() {
         gettingLoading,
         addingLoading,
         errorWhenAdding,
-        removingLoading
+        removingLoading,
+        editingLoading
         } = useNotes()
 
     const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
@@ -53,7 +54,8 @@ function Notes() {
                     switchEditMode: (isEdit:boolean)=>setIsEdit(isEdit),
                     switchViewMode: (isView:boolean)=>setIsView(isView),
                     getCurrentNote: (note:NoteType)=>setCurrentNote(note),
-                    removingLoading: removingLoading
+                    removingLoading: removingLoading,
+                    editingLoading: editingLoading
                 }
             }>
                 {!isEdit && !isView && <Header />} 
