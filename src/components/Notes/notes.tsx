@@ -16,7 +16,8 @@ function Notes() {
         remove, 
         toggle, 
         sortByNew, 
-        sortByOld, 
+        sortByOld,
+        sortByAlphabet, 
         showAllNotes,
         filterByCompleteds,
         filterByUnCompleteds,
@@ -30,7 +31,8 @@ function Notes() {
         sortByOldIsActive,
         showAllNotesIsActive,
         filterByCompletedsIsActive,
-        filterByUnCompletedsIsActive
+        filterByUnCompletedsIsActive,
+        sortByAlphabetIsActive
         } = useNotes()
 
     const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
@@ -67,7 +69,9 @@ function Notes() {
                     sortByOldIsActive,
                     showAllNotesIsActive,
                     filterByCompletedsIsActive,
-                    filterByUnCompletedsIsActive
+                    filterByUnCompletedsIsActive,
+                    sortByAlphabet,
+                    sortByAlphabetIsActive
                 }
             }>
                 {!isEdit && !isView && <Header />} 

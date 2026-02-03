@@ -19,6 +19,7 @@ export default function useNotes() {
   const [toggleLoading, setToggleLoading] = useState<null | number>(null)
   const [sortByNewIsActive, setSortByNewIsActive] = useState<boolean>(true)
   const [sortByOldIsActive, setSortByOldIsActive] = useState<boolean>(false)
+  const [sortByAlphabetIsActive, setSortByAlphabetIsActive] = useState<boolean>(false)
   const [showAllNotesIsActive, setShowAllNotesIsActive] = useState<boolean>(true)
   const [filterByCompletedsIsActive, setFilterByCompletedsIsActive] = useState<boolean>(false)
   const [filterByUnCompletedsIsActive, setFilterByUnCompletedsIsActive] = useState<boolean>(false)
@@ -63,7 +64,7 @@ export default function useNotes() {
           const { data, error } = await supabase
             .from("notes")
             .insert([
-              //note_id будет добавляться автоматически бдшкой
+              //note_id && created_at будет добавляться автоматически бдшкой
               {
                 title: note.title,
                 content: note.content,
@@ -71,14 +72,15 @@ export default function useNotes() {
                 user_id: session.user.id,
               },
             ])
-            .select();
+            .select()
+            .single()
   
           if (error) {
             console.log("ошибка: ", error.message);
             return;
           } else {
             setAllNotes((prev) => {
-                return [...prev, data[0]];
+                return [data, ...prev];
             });
           }
         }
@@ -180,12 +182,22 @@ export default function useNotes() {
   const sortByNew = () => {
     setSortByNewIsActive(true)
     setSortByOldIsActive(false)
+    setSortByAlphabetIsActive(false)
+
     setAllNotes([...allNotes].sort((a,b)=>new Date(b.created_at).getTime() - new Date(a.created_at).getTime()))
   };
   const sortByOld = () => {
     setSortByOldIsActive(true)
     setSortByNewIsActive(false)
+    setSortByAlphabetIsActive(false)
+
     setAllNotes([...allNotes].sort((a,b)=>new Date(a.created_at).getTime() - new Date(b.created_at).getTime()))
+  };
+  const sortByAlphabet = () => {
+    setSortByAlphabetIsActive(true)
+    setSortByOldIsActive(false)
+    setSortByNewIsActive(false)
+    setAllNotes([...allNotes].sort((a,b)=> a.title.toLowerCase().localeCompare(b.title.toLowerCase()))) //изменение самого массива allNotes
   };
   //фильтры:
   const showAllNotes = () => {
@@ -232,6 +244,8 @@ export default function useNotes() {
     sortByOldIsActive,
     showAllNotesIsActive,
     filterByCompletedsIsActive,
-    filterByUnCompletedsIsActive
+    filterByUnCompletedsIsActive,
+    sortByAlphabet,
+    sortByAlphabetIsActive
   };
 }

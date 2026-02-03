@@ -20,6 +20,8 @@ export type NoteContextType = {
     showAllNotesIsActive: boolean,
     filterByCompletedsIsActive: boolean,
     filterByUnCompletedsIsActive: boolean,
+    sortByAlphabet: ()=>void,
+    sortByAlphabetIsActive: boolean
     
     // filterByRemoveds: ()=>void,
 }

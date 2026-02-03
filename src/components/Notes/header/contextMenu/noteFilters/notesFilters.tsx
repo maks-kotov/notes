@@ -2,7 +2,7 @@ import { useContext } from "react"
 import styles from "./notesFilters.module.css"
 import { NoteContext } from "../../../../../contexts/noteContext"
 function NotesFilters() {
-    const { sortByNew, sortByOld, filterByCompleteds, showAllNotes, filterByUnCompleteds, sortByNewIsActive, sortByOldIsActive, filterByCompletedsIsActive, filterByUnCompletedsIsActive, showAllNotesIsActive } = useContext(NoteContext)!
+    const { sortByNew, sortByOld, filterByCompleteds, showAllNotes, filterByUnCompleteds, sortByNewIsActive, sortByOldIsActive, sortByAlphabet, filterByCompletedsIsActive, filterByUnCompletedsIsActive, showAllNotesIsActive, sortByAlphabetIsActive } = useContext(NoteContext)!
     return (
         <div className={styles.filtersContainer}>
             <div className={styles.title}>Фильтры:</div>
@@ -34,7 +34,10 @@ function NotesFilters() {
                 Cначала старые
                 <input onChange={()=>null} type="checkbox" checked={sortByOldIsActive}/>
             </li>
-            <li className={styles.beginName}>По алфавиту</li>
+            <li onClick={()=>sortByAlphabet()} className={styles.beginName}>
+                По алфавиту
+                <input onChange={()=>null} type="checkbox" checked={sortByAlphabetIsActive}/>
+            </li>
         </div>
     )
 }
