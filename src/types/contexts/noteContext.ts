@@ -5,7 +5,7 @@ export type NoteContextType = {
     getCurrentNote:(note:NoteType)=>void,
     update: (id:number, changes: NoteType)=>void,
     remove: (id:number)=>void,
-    toggle: (id:number)=>void,
+    toggle: (id:number, completed: boolean)=>void,
     sortByNew: ()=>void,
     sortByOld: ()=>void,
     showAllNotes: ()=>void,
@@ -14,5 +14,6 @@ export type NoteContextType = {
     filterByUnCompleteds: ()=>void,
     removingLoading: number | null,
     editingLoading: number | null,
+    toggleLoading: number | null
     // filterByRemoveds: ()=>void,
 }

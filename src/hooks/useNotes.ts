@@ -16,6 +16,7 @@ export default function useNotes() {
   const [errorWhenAdding, setErrorWhenAdding] = useState<null | string>(null)
   const [removingLoading, setRemovingLoading] = useState<null | number>(null)
   const [editingLoading, setEditingLoading] = useState<null | number>(null)
+  const [toggleLoading, setToggleLoading] = useState<null | number>(null)
   //появились ещё рендеры
   useEffect(()=> { //первая загрузка
     const getNotes = async () => {
@@ -101,7 +102,7 @@ export default function useNotes() {
     //мы не можем не писать setAllNotes, тк notesList чтобы перерисоваться нужно чтобы изменился displayedNotes
   }, [removingLoading])
 
-  const update = useCallback(async (note_id: number, changes: NoteType) => { //при нажатии на update будет 2 перерисовки: тк меняется пропс isEdit, а потом displayedNotes
+  const update = useCallback(async (note_id: number, changes: NoteType) => { //при нажатии на update будет 2 перерисовки: тк меняется пропс isEdit, а потом  displayedNotes. также в changes лишние данные хранятся
     try {
       setEditingLoading(note_id)
       if(session?.user.id) {
@@ -113,8 +114,8 @@ export default function useNotes() {
           })
           .eq('user_id', session.user.id)
           .eq('note_id', note_id)
-          .select() // вернуть обновлённую запись
-          .single()
+          .select() // вернуть обновлённые записи (массив объектов)
+          .single() // если в массиве всего 1 элемент - он преобразуется в объект. если более 1 элемента - выбросит ошибку.
         
         if(error) {
           console.log(error.message);
@@ -138,12 +139,37 @@ export default function useNotes() {
     
 
   }, [editingLoading])
-  const toggle = (note_id: number) =>
-    setAllNotes((prev) =>
-      prev.map((n) =>
-        n.note_id === note_id ? { ...n, completed: !n.completed } : n,
-      ),
-    );
+
+  const toggle = async (note_id: number, completed: boolean) => {
+    if(session) {
+      try {
+        setToggleLoading(note_id)
+        const {data,error} = await supabase
+        .from('notes')
+        .update({completed: !completed})
+        .eq('user_id', session.user.id)
+        .eq('note_id', note_id)
+        .select()
+        .single()
+
+        if(!error) {
+          setAllNotes((prev) => {
+            return prev.map((n) =>
+              n.note_id === note_id ? { ...data } : n,)
+          })
+        }
+        else {
+          console.log('ошибка переключения статуса заметки: ', error.message);          
+        }
+      } catch (error) {
+        console.log('nepr error: ', error);
+      } finally {
+        setToggleLoading(null)
+      }
+    }
+  }
+
+
 
   //сортировка::
   const sortByNew = () => {
@@ -182,6 +208,7 @@ export default function useNotes() {
     addingLoading,
     removingLoading,
     errorWhenAdding,
-    editingLoading
+    editingLoading,
+    toggleLoading
   };
 }

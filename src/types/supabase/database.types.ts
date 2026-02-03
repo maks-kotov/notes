@@ -30,8 +30,9 @@ export type Database = {
           user_id: string
         }
         Update: {
-          content: string
-          title: string
+          content?: string
+          title?: string
+          completed?: boolean
         }
         Relationships: []
       }
