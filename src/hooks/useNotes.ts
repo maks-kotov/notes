@@ -101,19 +101,36 @@ export default function useNotes() {
   }, [addingLoading, errorWhenAdding])
 
   const remove = useCallback( async (note_id: number) => {
-    setRemovingLoading(note_id)
-    try {
+    if(showRemovedNotesIsActive) {
+      console.log('code of removing');
+      try {
+        setRemovingLoading(note_id)
+      await supabase
+      .from("notes")
+      .delete()
+      .eq("note_id", note_id) //удаление с бд
+
+      setAllNotes((prev) => prev.filter((n) => n.note_id !== note_id)); //удаление с локального массива
+      } catch (error) {
+        console.log('ошибка при удалении', error);
+      } finally {
+        setRemovingLoading(null)
+      }
+    }
+    else {
+      console.log('code of updating');
+      try {
+      setRemovingLoading(note_id)
       const {data, error} = await supabase
       .from("notes")
       .update({
         removed_in_ui: true,
         removed_at: new Date().toISOString()
       })
-      .eq("note_id", note_id) //удаление с бд
+      .eq("note_id", note_id)
       .select()
       .single()
 
-      //setAllNotes((prev) => prev.filter((n) => n.note_id !== note_id)); //удаление с локального массива
       if(!error) {
         setAllNotes((prev) => 
           prev.map((n) => 
@@ -126,14 +143,14 @@ export default function useNotes() {
       else {
         console.log('ошибочка: ', error.message);
       }
-    } catch (error) {
+      } catch (error) {
       console.log('ошибка при удалении', error);
-    } finally {
+      } finally {
       setRemovingLoading(null)
+      }
     }
-    //затем перерисовка displayedNotes will be changed
-    //мы не можем не писать setAllNotes, тк notesList чтобы перерисоваться нужно чтобы изменился displayedNotes
-  }, [removingLoading])
+    
+  }, [removingLoading, showRemovedNotesIsActive])
 
   const update = useCallback(async (note_id: number, changes: NoteType) => { //при нажатии на update будет 2 перерисовки: тк меняется пропс isEdit, а потом  displayedNotes. также в changes лишние данные хранятся
     try {

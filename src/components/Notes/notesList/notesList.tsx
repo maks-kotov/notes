@@ -25,8 +25,10 @@ function NotesList({displayedNotes, isEdit, isView, gettingLoading, showRemovedN
             ) 
             : 
             displayedNotes.map(note=> {
-                if(showRemovedNotesIsActive){
-                    return <Note isEdit={isEdit} isView={isView} note={note} key={note.note_id}/>
+                if(showRemovedNotesIsActive) {
+                    if(note.removed_in_ui) {
+                        return <Note isEdit={isEdit} isView={isView} note={note} key={note.note_id}/>
+                    }
                 }
                 else {
                     if(!note.removed_in_ui) {
