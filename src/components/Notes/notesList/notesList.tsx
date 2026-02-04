@@ -7,9 +7,10 @@ interface props {
     displayedNotes: NoteType[],
     isEdit: boolean,
     isView: boolean,
-    gettingLoading: boolean
+    gettingLoading: boolean,
+    showRemovedNotesIsActive: boolean
 }
-function NotesList({displayedNotes, isEdit, isView, gettingLoading} : props) {
+function NotesList({displayedNotes, isEdit, isView, gettingLoading, showRemovedNotesIsActive} : props) {
     console.log('перерисовка. видоизменённый массив: ', displayedNotes);
     return (
         <>
@@ -23,7 +24,16 @@ function NotesList({displayedNotes, isEdit, isView, gettingLoading} : props) {
                 <p className={styles.emptyMessage}>Создайте первую заметку</p>
             ) 
             : 
-            displayedNotes.map(note=> <Note isEdit={isEdit} isView={isView} note={note} key={note.note_id}/>)
+            displayedNotes.map(note=> {
+                if(showRemovedNotesIsActive){
+                    return <Note isEdit={isEdit} isView={isView} note={note} key={note.note_id}/>
+                }
+                else {
+                    if(!note.removed_in_ui) {
+                        return <Note isEdit={isEdit} isView={isView} note={note} key={note.note_id}/>
+                    }
+                }
+            })
             }
         </>
     )

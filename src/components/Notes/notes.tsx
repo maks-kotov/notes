@@ -32,7 +32,9 @@ function Notes() {
         showAllNotesIsActive,
         filterByCompletedsIsActive,
         filterByUnCompletedsIsActive,
-        sortByAlphabetIsActive
+        sortByAlphabetIsActive,
+        showRemovedNotes,
+        showRemovedNotesIsActive
         } = useNotes()
 
     const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
@@ -59,6 +61,8 @@ function Notes() {
                     toggle,
                     sortByNew,
                     sortByOld,
+                    sortByAlphabet,
+                    showRemovedNotes,
                     filterByCompleteds,
                     showAllNotes,
                     filterByUnCompleteds,
@@ -73,8 +77,8 @@ function Notes() {
                     showAllNotesIsActive,
                     filterByCompletedsIsActive,
                     filterByUnCompletedsIsActive,
-                    sortByAlphabet,
-                    sortByAlphabetIsActive
+                    sortByAlphabetIsActive,
+                    showRemovedNotesIsActive
                 }
             }>
                 {!isEdit && !isView && <Header />} 
@@ -85,7 +89,7 @@ function Notes() {
                 }
                 {
                 !isEdit && !isView && 
-                <NotesList gettingLoading={gettingLoading} displayedNotes={displayedNotes} isEdit={isEdit} isView={isView}/>
+                <NotesList gettingLoading={gettingLoading} displayedNotes={displayedNotes} isEdit={isEdit} isView={isView} showRemovedNotesIsActive={showRemovedNotesIsActive}/>
                 }
                 {
                 !isEdit && isView && 

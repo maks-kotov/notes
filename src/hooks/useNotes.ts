@@ -23,6 +23,8 @@ export default function useNotes() {
   const [showAllNotesIsActive, setShowAllNotesIsActive] = useState<boolean>(true)
   const [filterByCompletedsIsActive, setFilterByCompletedsIsActive] = useState<boolean>(false)
   const [filterByUnCompletedsIsActive, setFilterByUnCompletedsIsActive] = useState<boolean>(false)
+  const [showRemovedNotesIsActive, setShowRemovedNotesIsActive] = useState<boolean>(false)
+
   //появились ещё рендеры
   useEffect(()=> { //первая загрузка
     const getNotes = async () => {
@@ -101,10 +103,31 @@ export default function useNotes() {
   const remove = useCallback( async (note_id: number) => {
     setRemovingLoading(note_id)
     try {
-      await supabase.from("notes").delete().eq("note_id", note_id); //удаление с бд
-      setAllNotes((prev) => prev.filter((n) => n.note_id !== note_id)); //удаление с локального массива
+      const {data, error} = await supabase
+      .from("notes")
+      .update({
+        removed_in_ui: true,
+        removed_at: new Date().toISOString()
+      })
+      .eq("note_id", note_id) //удаление с бд
+      .select()
+      .single()
+
+      //setAllNotes((prev) => prev.filter((n) => n.note_id !== note_id)); //удаление с локального массива
+      if(!error) {
+        setAllNotes((prev) => 
+          prev.map((n) => 
+            n.note_id === note_id 
+              ? data 
+              : n
+          )
+        );
+      }
+      else {
+        console.log('ошибочка: ', error.message);
+      }
     } catch (error) {
-      console.log('ошибка при удалении');
+      console.log('ошибка при удалении', error);
     } finally {
       setRemovingLoading(null)
     }
@@ -114,7 +137,6 @@ export default function useNotes() {
 
   const update = useCallback(async (note_id: number, changes: NoteType) => { //при нажатии на update будет 2 перерисовки: тк меняется пропс isEdit, а потом  displayedNotes. также в changes лишние данные хранятся
     try {
-      const updated_at = new Date().toISOString();
       setEditingLoading(note_id)
       if(session?.user.id) {
         const { data, error } = await supabase
@@ -122,7 +144,7 @@ export default function useNotes() {
           .update({ // оставит старое значение createdAt, note_id, completed, user_id, updated_at
             title: changes.title,
             content: changes.content,
-            updated_at: updated_at
+            updated_at: new Date().toISOString()
           })
           .eq('user_id', session.user.id)
           .eq('note_id', note_id)
@@ -136,7 +158,7 @@ export default function useNotes() {
           setAllNotes((prev) => 
           prev.map((n) => 
             n.note_id === note_id 
-              ? { ...n, ...(data || {}) } 
+              ? data 
               : n
           )
         );
@@ -207,13 +229,21 @@ export default function useNotes() {
   //фильтры:
   const showAllNotes = () => {
     setShowAllNotesIsActive(true)
+    setShowRemovedNotesIsActive(false)
     setFilterByCompletedsIsActive(false)
     setFilterByUnCompletedsIsActive(false)
     setFilteredNotes(null);
   };
+  const showRemovedNotes = () => {
+    setShowAllNotesIsActive(false)
+    setFilterByCompletedsIsActive(false)
+    setFilterByUnCompletedsIsActive(false)
+    setShowRemovedNotesIsActive(true)
+  }
   const filterByCompleteds = () => {
     setFilteredNotes(null);
     setShowAllNotesIsActive(false)
+    setShowRemovedNotesIsActive(false)
     setFilterByCompletedsIsActive(true)
     setFilterByUnCompletedsIsActive(false)
     const filtered = allNotes.filter((note) => note.completed);
@@ -221,6 +251,7 @@ export default function useNotes() {
   };
   const filterByUnCompleteds = () => {
     setShowAllNotesIsActive(false)
+    setShowRemovedNotesIsActive(false)
     setFilterByCompletedsIsActive(false)
     setFilterByUnCompletedsIsActive(true)
     setFilteredNotes(null);
@@ -251,6 +282,8 @@ export default function useNotes() {
     filterByCompletedsIsActive,
     filterByUnCompletedsIsActive,
     sortByAlphabet,
-    sortByAlphabetIsActive
+    sortByAlphabetIsActive,
+    showRemovedNotes,
+    showRemovedNotesIsActive
   };
 }

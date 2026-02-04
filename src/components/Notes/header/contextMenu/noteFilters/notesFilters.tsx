@@ -2,7 +2,7 @@ import { useContext } from "react"
 import styles from "./notesFilters.module.css"
 import { NoteContext } from "../../../../../contexts/noteContext"
 function NotesFilters() {
-    const { sortByNew, sortByOld, filterByCompleteds, showAllNotes, filterByUnCompleteds, sortByNewIsActive, sortByOldIsActive, sortByAlphabet, filterByCompletedsIsActive, filterByUnCompletedsIsActive, showAllNotesIsActive, sortByAlphabetIsActive } = useContext(NoteContext)!
+    const { sortByNew, sortByOld, filterByCompleteds, showAllNotes, filterByUnCompleteds, sortByNewIsActive, sortByOldIsActive, sortByAlphabet, filterByCompletedsIsActive, filterByUnCompletedsIsActive, showAllNotesIsActive, sortByAlphabetIsActive, showRemovedNotes, showRemovedNotesIsActive } = useContext(NoteContext)!
     return (
         <div className={styles.filtersContainer}>
             <div className={styles.title}>Фильтры:</div>
@@ -19,9 +19,9 @@ function NotesFilters() {
                 Невыполненные 
                 {filterByUnCompletedsIsActive&&<span className={styles.galochka}>✔</span>}
             </li>
-            <li className={styles.removeds}>
+            <li onClick={()=>showRemovedNotes()} className={styles.removeds}>
                 Удалённые 
-                <span className={styles.inDevelopmenting}>(пока в разработке)</span>
+                {showRemovedNotesIsActive&&<span className={styles.galochka}>✔</span>}
             </li>
             
             <div className={styles.title2}>Порядок:</div>

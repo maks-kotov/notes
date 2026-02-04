@@ -8,10 +8,11 @@ export type NoteContextType = {
     toggle: (id:number, completed: boolean)=>void,
     sortByNew: ()=>void,
     sortByOld: ()=>void,
+    sortByAlphabet: ()=>void,
     showAllNotes: ()=>void,
-    // filterByAlphabet: ()=>void,
     filterByCompleteds: ()=>void,
     filterByUnCompleteds: ()=>void,
+    showRemovedNotes: ()=>void,
     removingLoading: number | null,
     editingLoading: number | null,
     toggleLoading: number | null,
@@ -20,8 +21,6 @@ export type NoteContextType = {
     showAllNotesIsActive: boolean,
     filterByCompletedsIsActive: boolean,
     filterByUnCompletedsIsActive: boolean,
-    sortByAlphabet: ()=>void,
-    sortByAlphabetIsActive: boolean
-    
-    // filterByRemoveds: ()=>void,
+    sortByAlphabetIsActive: boolean,
+    showRemovedNotesIsActive: boolean    
 }

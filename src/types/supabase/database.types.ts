@@ -40,6 +40,8 @@ export type Database = {
           title?: string
           completed?: boolean
           updated_at?: null | string
+          removed_at?: string | null
+          removed_in_ui?: boolean
         }
         Relationships: []
       }
