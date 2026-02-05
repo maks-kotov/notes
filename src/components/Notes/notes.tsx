@@ -13,7 +13,8 @@ function Notes() {
         displayedNotes,
         update, 
         add, 
-        remove, 
+        remove,
+        recover, 
         toggle, 
         sortByNew, 
         sortByOld,
@@ -25,6 +26,7 @@ function Notes() {
         addingLoading,
         errorWhenAdding,
         removingLoading,
+        recoveringLoading,
         editingLoading,
         toggleLoading,
         sortByNewIsActive,
@@ -48,7 +50,8 @@ function Notes() {
       created_at: 'what?',
       updated_at: 'hello bro',
       removed_at: 'im fine',
-      removed_in_ui: false
+      recovered_at: 'pipipip',
+      removed_in_ui: false,
     }
 )
 
@@ -58,6 +61,7 @@ function Notes() {
                 {
                     update,
                     remove,
+                    recover,
                     toggle,
                     sortByNew,
                     sortByOld,
@@ -70,6 +74,7 @@ function Notes() {
                     switchViewMode: (isView:boolean)=>setIsView(isView),
                     getCurrentNote: (note:NoteType)=>setCurrentNote(note),
                     removingLoading: removingLoading,
+                    recoveringLoading,
                     editingLoading: editingLoading,
                     toggleLoading: toggleLoading,
                     sortByNewIsActive,

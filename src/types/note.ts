@@ -6,5 +6,6 @@ export type NoteType = {
     created_at: string,
     updated_at: string | null,
     removed_at: string | null,
-    removed_in_ui: boolean
+    recovered_at: null | string
+    removed_in_ui: boolean,
 }

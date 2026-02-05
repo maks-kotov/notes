@@ -21,7 +21,8 @@ function Create({isEdit, currentNote, add, addingLoading, errorWhenAdding} : pro
                             created_at: 'create',
                             updated_at: 'pupupup',
                             removed_at: 'upupup',
-                            removed_in_ui: false
+                            recovered_at: '!!',
+                            removed_in_ui: false,
                         })
     
     // console.log(counter);
@@ -34,7 +35,7 @@ function Create({isEdit, currentNote, add, addingLoading, errorWhenAdding} : pro
     }
     useEffect(()=>{
         if(isEdit) {
-            setNote({...note, note_id: currentNote.note_id, title: currentNote.title,content:currentNote.content, completed: currentNote.completed, created_at: currentNote.created_at, updated_at: currentNote.updated_at, removed_at: currentNote.removed_at, removed_in_ui: currentNote.removed_in_ui}) // при нажатии на кнопку готовая изменённая заметка приобретает все те же параметры, которые были у редактируемой.
+            setNote({...note, note_id: currentNote.note_id, title: currentNote.title,content:currentNote.content, completed: currentNote.completed, created_at: currentNote.created_at, updated_at: currentNote.updated_at, removed_at: currentNote.removed_at, removed_in_ui: currentNote.removed_in_ui, recovered_at: currentNote.recovered_at}) // при нажатии на кнопку готовая изменённая заметка приобретает все те же параметры, которые были у редактируемой.
         }
         else {
             setNote({...note, content: '', title: ''})
@@ -59,7 +60,8 @@ function Create({isEdit, currentNote, add, addingLoading, errorWhenAdding} : pro
                             created_at: 'create2', // каждый раз новая дата создания
                             updated_at: 'чд кд?',
                             removed_at: 'bibiib',
-                            removed_in_ui: false    
+                            recovered_at: '???',
+                            removed_in_ui: false,    
                         })
                         setNote({...note, content: '', title: ''})
                     }} 

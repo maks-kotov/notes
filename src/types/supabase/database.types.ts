@@ -25,6 +25,7 @@ export type Database = {
           updated_at: string | null
           removed_at: string | null
           removed_in_ui: boolean
+          recovered_at: null | string
         }
         Insert: {
           completed: boolean
@@ -34,6 +35,7 @@ export type Database = {
           updated_at: null | string
           removed_at: string | null
           removed_in_ui: boolean
+          recovered_at: null | string
         }
         Update: {
           content?: string
@@ -42,6 +44,7 @@ export type Database = {
           updated_at?: null | string
           removed_at?: string | null
           removed_in_ui?: boolean
+          recovered_at?: null | string
         }
         Relationships: []
       }

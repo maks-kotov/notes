@@ -1,9 +1,12 @@
 import styles from "./spinner.module.css"
-function Spinner() {
+interface props {
+    style?: React.CSSProperties
+}
+function Spinner({style}:props) {
     return (
         <>
                 <div className={styles.el2}>
-                    <div>
+                    <div style={style}>
                     
                     </div>
                 </div>

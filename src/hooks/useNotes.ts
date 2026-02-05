@@ -17,6 +17,7 @@ export default function useNotes() {
   const [removingLoading, setRemovingLoading] = useState<null | number>(null)
   const [editingLoading, setEditingLoading] = useState<null | number>(null)
   const [toggleLoading, setToggleLoading] = useState<null | number>(null)
+  const [recoveringLoading, setRecoveringLoading] = useState<null | number>(null)
   const [sortByNewIsActive, setSortByNewIsActive] = useState<boolean>(true)
   const [sortByOldIsActive, setSortByOldIsActive] = useState<boolean>(false)
   const [sortByAlphabetIsActive, setSortByAlphabetIsActive] = useState<boolean>(false)
@@ -74,7 +75,8 @@ export default function useNotes() {
                 user_id: session.user.id,
                 updated_at: null,
                 removed_at: null,
-                removed_in_ui: false
+                removed_in_ui: false,
+                recovered_at: null
               },
             ])
             .select()
@@ -151,6 +153,38 @@ export default function useNotes() {
     }
     
   }, [removingLoading, showRemovedNotesIsActive])
+
+  const recover = useCallback(async (note_id:number) => {
+    try {
+      setRecoveringLoading(note_id)
+      const {data, error} = await supabase
+      .from("notes")
+      .update({
+        removed_in_ui: false,
+        recovered_at: new Date().toISOString()
+      })
+      .eq("note_id", note_id)
+      .select()
+      .single()
+
+      if(!error) {
+        setAllNotes((prev) => 
+          prev.map((n) => 
+            n.note_id === note_id 
+              ? data 
+              : n
+          )
+        );
+      }
+      else {
+        console.log('ошибочка: ', error.message);
+      }
+      } catch (error) {
+      console.log('ошибка при восстановлении', error);
+      } finally {
+      setRecoveringLoading(null)
+      }
+  },[recoveringLoading])
 
   const update = useCallback(async (note_id: number, changes: NoteType) => { //при нажатии на update будет 2 перерисовки: тк меняется пропс isEdit, а потом  displayedNotes. также в changes лишние данные хранятся
     try {
@@ -281,15 +315,19 @@ export default function useNotes() {
     add,
     update,
     remove,
+    recover,
     toggle,
     sortByNew,
     sortByOld,
+    sortByAlphabet,
     filterByCompleteds,
     filterByUnCompleteds,
     showAllNotes,
+    showRemovedNotes,
     gettingLoading,
     addingLoading,
     removingLoading,
+    recoveringLoading,
     errorWhenAdding,
     editingLoading,
     toggleLoading,
@@ -298,9 +336,7 @@ export default function useNotes() {
     showAllNotesIsActive,
     filterByCompletedsIsActive,
     filterByUnCompletedsIsActive,
-    sortByAlphabet,
     sortByAlphabetIsActive,
-    showRemovedNotes,
-    showRemovedNotesIsActive
+    showRemovedNotesIsActive,
   };
 }
