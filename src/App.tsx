@@ -6,13 +6,13 @@ import BigSpinnerCenter from './components/bigSpinnerCenter/bigSpinnerCenter.tsx
 
 function App() {
   // const [session, setSession] = useState<Session | null>(null)
-  const {session, isLoading} = useAuth() // когда session меняется внутри AuthContext.Provider - тут происходит перерисовка
+  const {session, signInIsLoading} = useAuth() // когда session меняется внутри AuthContext.Provider - тут происходит перерисовка
 
   return (
       <>
         {
         // если загрузка - показываем загрузку. если нет - то форму или заметки, взависимости от session
-        isLoading ? <BigSpinnerCenter /> : !session ? <Auth /> :<Notes/>
+        signInIsLoading ? <BigSpinnerCenter /> : !session ? <Auth /> :<Notes/>
         }
       </>
   )

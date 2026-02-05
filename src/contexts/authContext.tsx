@@ -3,21 +3,25 @@ import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 
 const AuthContext = createContext<{
-  session: Session | null;
-  isLoading: boolean;
-  signOut: null | (()=>void) 
+  session: Session | null,
+  signInIsLoading: boolean,
+  signOut: null | (()=>void),
+  signOutIsLoading: boolean 
 }>({
   session: null,
-  isLoading: true,
-  signOut: null
+  signInIsLoading: true,
+  signOut: null,
+  signOutIsLoading: false
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) { // потом разберёмся как тут параметры работают
   const [session, setSession] = useState<Session | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [signInIsLoading, setSignInIsLoading] = useState(true);
+  const [signOutIsLoading, setSignOutIsLoading] = useState(false);
   const prevUserIdRef = useRef<string | null>(null); // для избежания перерендера на alt + tab
   const signOut = async () => {
     try {
+      setSignOutIsLoading(true)
       const { error } = await supabase.auth.signOut()
       window.location.href = '/'
       if (error) {
@@ -26,6 +30,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) { // �
     } catch (error) {
       console.log('ошибка при выходе: ', error);
       window.location.href = '/'
+    } finally {
+      setSignOutIsLoading(false)
     }
   }
   useEffect(() => {
@@ -33,7 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) { // �
     //не async await потму что это оч сильно усложнит
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      setIsLoading(false);
+      setSignInIsLoading(false);
       console.log('get');
     });
     // Слушаем изменения
@@ -47,7 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) { // �
       }
       if(_event !== 'INITIAL_SESSION') { //hz
         setSession(session);
-        setIsLoading(false);
+        setSignInIsLoading(false);
       }
     });
 
@@ -55,7 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) { // �
   }, []);
 
   return (
-    <AuthContext.Provider value={{ session, isLoading, signOut }}>
+    <AuthContext.Provider value={{ session, signInIsLoading, signOut, signOutIsLoading }}>
       {children}
     </AuthContext.Provider>
   );
