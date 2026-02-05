@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import styles from "./contextMenu.module.css"
 import NotesFilters from "./noteFilters/notesFilters"
+import SignOut from "./signOut/signOut"
 //отвечает за появление contextMenu
 function ContextMenu() {
     const [stateContextMenu, setStateContextMenu] = useState<boolean>(false) 
@@ -9,7 +10,9 @@ function ContextMenu() {
     const signOutRef = useRef<HTMLImageElement>(null)
     const [filtersIsActive, setFiltersIsActive] = useState<boolean>(false) 
     const [signOutIsActive, setSignOutIsActive] = useState<boolean>(false) 
-    
+    function closeModalWindow() {
+        setStateContextMenu(false)
+    }
     function handleOnClickOutside(e: MouseEvent) {
         if(e.target instanceof Node 
             && tribarRef.current !== null
@@ -18,7 +21,7 @@ function ContextMenu() {
             && signOutRef.current !== null
             && !signOutRef.current.contains(e.target) 
         ) {
-            setStateContextMenu(false)  
+            closeModalWindow()  
         }
     }
     if(stateContextMenu) {
@@ -30,25 +33,27 @@ function ContextMenu() {
     return (
             <>
                 <div ref={tribarRef} className={styles.tribar} onClick={()=>{
-                    setStateContextMenu((prev)=>!prev)
+                    setStateContextMenu(true)
                     setSignOutIsActive(false)
                     setFiltersIsActive(true)
                 }}>
                     ≡
                 </div>
                 <img ref={signOutRef} className={styles.signOut} src="./src/assets/icons/opened_door.png" alt="sign out" onClick={()=>{
-                    setStateContextMenu((prev)=>!prev)
+                    setStateContextMenu(true)
                     setFiltersIsActive(false)
                     setSignOutIsActive(true)
                 }}/>
             {stateContextMenu && (
-            <>
-                <ul className={styles.contextMenu} tabIndex={0} ref={contextMenuRef}>
-                    {filtersIsActive&&<NotesFilters />}
-                    {signOutIsActive&&'привки'}
-                </ul>
-                <div className={styles.overlay}></div>
-            </>
+                <>
+                    <ul className={styles.contextMenu} tabIndex={0} ref={contextMenuRef}>
+                        {filtersIsActive&&<NotesFilters />}
+                        {signOutIsActive&&
+                        <SignOut closeModalWindow={closeModalWindow}/>
+                        }
+                    </ul>
+                    <div className={styles.overlay}></div>
+                </>
             )}
             </>
     )

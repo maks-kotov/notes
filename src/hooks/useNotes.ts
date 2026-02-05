@@ -253,8 +253,7 @@ export default function useNotes() {
       }
     }
   }
-
-
+  
 
   //сортировка::
   const sortByNew = () => {

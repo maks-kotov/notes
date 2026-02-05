@@ -13,7 +13,6 @@ function Auth() {
       e.preventDefault(); // 1. Предотвращаем перезагрузку страницы
       setLoading(true);   // 2. Показываем "Загрузка..."
       setMessage('');     // 3. Очищаем предыдущие сообщения
-    
       try {
         if (isLogin) {
           // 4. ВХОД по email и паролю

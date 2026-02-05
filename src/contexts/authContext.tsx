@@ -5,16 +5,29 @@ import { supabase } from "../lib/supabase";
 const AuthContext = createContext<{
   session: Session | null;
   isLoading: boolean;
+  signOut: null | (()=>void) 
 }>({
   session: null,
   isLoading: true,
+  signOut: null
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) { // потом разберёмся как тут параметры работают
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const prevUserIdRef = useRef<string | null>(null);
-
+  const prevUserIdRef = useRef<string | null>(null); // для избежания перерендера на alt + tab
+  const signOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut()
+      window.location.href = '/'
+      if (error) {
+        console.error('Ошибка при выходе: ', error.message)
+      }
+    } catch (error) {
+      console.log('ошибка при выходе: ', error);
+      window.location.href = '/'
+    }
+  }
   useEffect(() => {
     // Получаем начальную сессию
     //не async await потму что это оч сильно усложнит
@@ -22,7 +35,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) { // �
       setSession(session);
       setIsLoading(false);
       console.log('get');
-      
     });
     // Слушаем изменения
     const {data: {subscription} } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -43,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) { // �
   }, []);
 
   return (
-    <AuthContext.Provider value={{ session, isLoading }}>
+    <AuthContext.Provider value={{ session, isLoading, signOut }}>
       {children}
     </AuthContext.Provider>
   );

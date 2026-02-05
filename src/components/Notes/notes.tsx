@@ -15,7 +15,7 @@ function Notes() {
         add, 
         remove,
         recover, 
-        toggle, 
+        toggle,
         sortByNew, 
         sortByOld,
         sortByAlphabet, 
