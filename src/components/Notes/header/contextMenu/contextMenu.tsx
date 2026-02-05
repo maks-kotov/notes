@@ -4,7 +4,7 @@ import NotesFilters from "./noteFilters/notesFilters"
 //отвечает за появление contextMenu
 function ContextMenu() {
     const [stateContextMenu, setStateContextMenu] = useState<boolean>(false) 
-    const contextMenuRef = useRef<HTMLUListElement>(null)
+    const contextMenuRef = useRef<HTMLUListElement>(null) //нужно для нажатия снаружи 
     const tribarRef = useRef<HTMLDivElement>(null)
     function handleOnClickOutside(e: MouseEvent) {
         if(e.target instanceof Node 
@@ -26,6 +26,7 @@ function ContextMenu() {
                 <div ref={tribarRef} className={styles.tribar} onClick={()=>setStateContextMenu((prev)=>!prev)}>
                     ≡
                 </div>
+                <img className={styles.signOut} src="./src/assets/icons/opened_door.png" alt="sign out" />
             {stateContextMenu && (
             <>
                 <ul className={styles.contextMenu} tabIndex={0} ref={contextMenuRef}>
