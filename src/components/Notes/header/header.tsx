@@ -1,5 +1,5 @@
 import styles from './header.module.css'
-import ContextMenu from './contextMenu/contextMenu'
+import ModalWindow from './modalWindow/modalWindow'
 function Header() {
     
     return (
@@ -8,7 +8,7 @@ function Header() {
             Мои заметки
         </header>
             
-        <ContextMenu />
+        <ModalWindow />
         </>
     )
 }

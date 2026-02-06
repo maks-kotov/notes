@@ -1,11 +1,11 @@
 import { useRef, useState } from "react"
-import styles from "./contextMenu.module.css"
+import styles from "./modalWindow.module.css"
 import NotesFilters from "./noteFilters/notesFilters"
 import SignOut from "./signOut/signOut"
 //отвечает за появление contextMenu
-function ContextMenu() {
+function ModalWindow() {
     const [stateContextMenu, setStateContextMenu] = useState<boolean>(false) 
-    const contextMenuRef = useRef<HTMLUListElement>(null) //нужно для нажатия снаружи 
+    const modalWindowRef = useRef<HTMLUListElement>(null) //нужно для нажатия снаружи 
     const tribarRef = useRef<HTMLDivElement>(null)
     const signOutRef = useRef<HTMLImageElement>(null)
     const [filtersIsActive, setFiltersIsActive] = useState<boolean>(false) 
@@ -17,7 +17,7 @@ function ContextMenu() {
         if(e.target instanceof Node 
             && tribarRef.current !== null
             && !tribarRef.current.contains(e.target) 
-            && !contextMenuRef.current?.contains(e.target)
+            && !modalWindowRef.current?.contains(e.target)
             && signOutRef.current !== null
             && !signOutRef.current.contains(e.target) 
         ) {
@@ -46,7 +46,7 @@ function ContextMenu() {
                 }}/>
             {stateContextMenu && (
                 <>
-                    <ul className={styles.contextMenu} tabIndex={0} ref={contextMenuRef}>
+                    <ul className={styles.contextMenu} tabIndex={0} ref={modalWindowRef}>
                         {filtersIsActive&&<NotesFilters />}
                         {signOutIsActive&&
                         <SignOut closeModalWindow={closeModalWindow}/>
@@ -58,4 +58,4 @@ function ContextMenu() {
             </>
     )
 }
-export default ContextMenu
+export default ModalWindow
