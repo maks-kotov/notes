@@ -218,6 +218,16 @@ export default function useNotes() {
   },[recoveringLoading, allNotes])
 
   const update = useCallback(async (note_id: number, changes: NoteType) => { //при нажатии на update будет 2 перерисовки: тк меняется пропс isEdit, а потом  displayedNotes. также в changes лишние данные хранятся
+    const updatingNote = allNotes.find(n=>n.note_id===note_id)
+      if (!updatingNote) {
+        console.log('я не нашёл заметку для редактирования здесь: ', allNotes);
+        return;
+      }
+      setAllNotes(prev => prev.map(n => n.note_id === note_id ? 
+        {...n, title: changes.title, content: changes.content} 
+        : n
+      ));
+      console.log('code of editing');
     try {
       setEditingLoading(note_id)
       if(session?.user.id) {
@@ -233,28 +243,27 @@ export default function useNotes() {
           .select() // вернуть обновлённые записи (массив объектов)
           .single() // если в массиве всего 1 элемент - он преобразуется в объект. если более 1 элемента - выбросит ошибку.
         
-        if(error) {
-          console.log(error.message);
-        }
-        else {
-          setAllNotes((prev) => 
+        if(error) throw error
+          setAllNotes((prev) => // чтобы поменять note_id, updated_at. 
           prev.map((n) => 
             n.note_id === note_id 
               ? data 
               : n
           )
         );
-        }
       }
-      //вроде я сделал чтобы можно было обновлять синхронизированно с бд
     } catch (error) {
-      console.log('ошибка при редактировании: ', error);
+      console.log('редактирование не удалось: ', error);
+      setAllNotes(prev => prev.map(n => n.note_id === note_id ? 
+      {...n, title: updatingNote.title, content: updatingNote.content, updated_at: null} 
+      : n
+      ))
     } finally {
       setEditingLoading(null)
     }
     
 
-  }, [editingLoading])
+  }, [editingLoading, allNotes])
 
   const toggle = async (note_id: number, completed: boolean) => {
     if(session) {
