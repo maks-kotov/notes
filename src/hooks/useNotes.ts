@@ -26,7 +26,6 @@ export default function useNotes() {
   const [filterByUnCompletedsIsActive, setFilterByUnCompletedsIsActive] = useState<boolean>(false)
   const [showRemovedNotesIsActive, setShowRemovedNotesIsActive] = useState<boolean>(false)
 
-  //появились ещё рендеры
   useEffect(()=> { //первая загрузка
     const getNotes = async () => {
       setGettingLoading(true)
@@ -56,11 +55,8 @@ export default function useNotes() {
   }, [session?.user.id])
 
   const add = useCallback(async (note: NoteType) => {
-    //note - заметка из textarea, с её текстом.
-    //мы вставляем её в бд (кроме note_id)
-    //получаем её из бд и вставляем в allNotes
+    //note - заметка из create.tsx
     const tempId : number = Date.now() // temporary id (временный id)
-    console.log(tempId);
     
     const tempNote : NoteType = {
       ...note, note_id: tempId
@@ -110,22 +106,44 @@ export default function useNotes() {
 
   const remove = useCallback( async (note_id: number) => {
     if(showRemovedNotesIsActive) {
+      const removingNote = allNotes.find(n=>n.note_id===note_id)
+      
+      if (!removingNote) {
+        console.log('я не нашёл заметку для удаления здесь: ', allNotes);
+        return;
+      }
+      setAllNotes(prev => prev.filter(n => n.note_id !== note_id));
+
       console.log('code of removing');
       try {
-        setRemovingLoading(note_id)
-      await supabase
+      setRemovingLoading(note_id)
+      const {error} = await supabase
       .from("notes")
       .delete()
       .eq("note_id", note_id) //удаление с бд
-
-      setAllNotes((prev) => prev.filter((n) => n.note_id !== note_id)); //удаление с локального массива
+      if(error) throw error
+      //setAllNotes((prev) => prev.filter((n) => n.note_id !== note_id)); //удаление с локального массива
       } catch (error) {
         console.log('ошибка при удалении', error);
+        setAllNotes(prev => [...prev,removingNote].sort((a, b) => a.note_id - b.note_id));
       } finally {
         setRemovingLoading(null)
       }
     }
     else {
+      console.log(note_id);
+      
+      const removingNote = allNotes.find(n=>n.note_id===note_id)
+      
+      if (!removingNote) {
+        console.log('я не нашёл заметку для удаления здесь: ', allNotes);
+        return;
+      }
+      setAllNotes(prev => prev.map(n => n.note_id === note_id ? 
+        {...n, removed_in_ui: true} 
+        : n
+      ));
+
       console.log('code of updating');
       try {
       setRemovingLoading(note_id)
@@ -138,8 +156,8 @@ export default function useNotes() {
       .eq("note_id", note_id)
       .select()
       .single()
-
-      if(!error) {
+      //лишний спиннер, как мне кажется.
+        if(error) throw error
         setAllNotes((prev) => 
           prev.map((n) => 
             n.note_id === note_id 
@@ -147,18 +165,18 @@ export default function useNotes() {
               : n
           )
         );
-      }
-      else {
-        console.log('ошибочка: ', error.message);
-      }
       } catch (error) {
-      console.log('ошибка при удалении', error);
+        console.log('ошибка при обновлении статуса removed_in_ui: ', error);
+        setAllNotes(prev => prev.map(n => n.note_id === note_id ? 
+        {...n, removed_in_ui: false} 
+        : n
+      ))
       } finally {
       setRemovingLoading(null)
       }
     }
     
-  }, [removingLoading, showRemovedNotesIsActive])
+  }, [removingLoading, showRemovedNotesIsActive, allNotes])
 
   const recover = useCallback(async (note_id:number) => {
     try {
