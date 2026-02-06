@@ -59,9 +59,17 @@ export default function useNotes() {
     //note - заметка из textarea, с её текстом.
     //мы вставляем её в бд (кроме note_id)
     //получаем её из бд и вставляем в allNotes
+    const tempId : number = Date.now() // temporary id (временный id)
+    console.log(tempId);
+    
+    const tempNote : NoteType = {
+      ...note, note_id: tempId
+    }
+
     if(note.title.trim()) {
+      setErrorWhenAdding(null)
+      setAllNotes((prev)=>[tempNote, ...prev])
       try {
-        setErrorWhenAdding(null)
         setAddingLoading(true)
         if (session !== null) {
           const { data, error } = await supabase
@@ -81,18 +89,16 @@ export default function useNotes() {
             ])
             .select()
             .single()
-  
-          if (error) {
-            console.log("ошибка: ", error.message);
-            return;
-          } else {
-            setAllNotes((prev) => {
-                return [data, ...prev];
-            });
-          }
+            
+            if(error) throw error
+            setAllNotes(prev => {
+                return prev.map(note => note.note_id === tempId ? data : note)
+              }
+            )
         }
       } catch (error) {
-        console.log("Непредвиденная ошибка: ", error);
+        console.log("error during adding: ", error);
+        setAllNotes(prev => prev.filter(note => note.note_id !== tempId));
       } finally {
         setAddingLoading(false)
       }
