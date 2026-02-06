@@ -131,10 +131,7 @@ export default function useNotes() {
       }
     }
     else {
-      console.log(note_id);
-      
       const removingNote = allNotes.find(n=>n.note_id===note_id)
-      
       if (!removingNote) {
         console.log('я не нашёл заметку для удаления здесь: ', allNotes);
         return;
@@ -179,6 +176,17 @@ export default function useNotes() {
   }, [removingLoading, showRemovedNotesIsActive, allNotes])
 
   const recover = useCallback(async (note_id:number) => {
+    const recoveringNote = allNotes.find(n=>n.note_id===note_id)
+      if (!recoveringNote) {
+        console.log('я не нашёл заметку для восстановления здесь: ', allNotes);
+        return;
+      }
+      setAllNotes(prev => prev.map(n => n.note_id === note_id ? 
+        {...n, removed_in_ui: false} 
+        : n
+      ));
+      console.log('code of recovering');
+      
     try {
       setRecoveringLoading(note_id)
       const {data, error} = await supabase
@@ -190,25 +198,24 @@ export default function useNotes() {
       .eq("note_id", note_id)
       .select()
       .single()
-
-      if(!error) {
-        setAllNotes((prev) => 
+      if(error) throw error
+        setAllNotes((prev) => //чтобы изменить свойство recovered_at
           prev.map((n) => 
             n.note_id === note_id 
               ? data 
               : n
           )
         );
-      }
-      else {
-        console.log('ошибочка: ', error.message);
-      }
       } catch (error) {
       console.log('ошибка при восстановлении', error);
-      } finally {
+      setAllNotes(prev => prev.map(n => n.note_id === note_id ? 
+      {...n, removed_in_ui: true} 
+      : n
+      ))
+    } finally {
       setRecoveringLoading(null)
-      }
-  },[recoveringLoading])
+    }
+  },[recoveringLoading, allNotes])
 
   const update = useCallback(async (note_id: number, changes: NoteType) => { //при нажатии на update будет 2 перерисовки: тк меняется пропс isEdit, а потом  displayedNotes. также в changes лишние данные хранятся
     try {
