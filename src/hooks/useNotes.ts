@@ -244,7 +244,7 @@ export default function useNotes() {
           .single() // если в массиве всего 1 элемент - он преобразуется в объект. если более 1 элемента - выбросит ошибку.
         
         if(error) throw error
-          setAllNotes((prev) => // чтобы поменять note_id, updated_at. 
+          setAllNotes((prev) => // чтобы поменять updated_at. 
           prev.map((n) => 
             n.note_id === note_id 
               ? data 
@@ -265,34 +265,38 @@ export default function useNotes() {
 
   }, [editingLoading, allNotes])
 
-  const toggle = async (note_id: number, completed: boolean) => {
+  const toggle = useCallback(async (note_id: number, completed: boolean) => {
+    const toggleNote = allNotes.find(n=>n.note_id===note_id)
+      if (!toggleNote) {
+        console.log('я не нашёл заметку для пометки здесь: ', allNotes);
+        return;
+      }
+      setAllNotes(prev => prev.map(n => n.note_id === note_id ? 
+        {...n, completed: !completed} 
+        : n
+      ));
+      console.log('code of toggle');
+
     if(session) {
       try {
         setToggleLoading(note_id)
-        const {data,error} = await supabase
+        const {error} = await supabase
         .from('notes')
         .update({completed: !completed})
         .eq('user_id', session.user.id)
         .eq('note_id', note_id)
-        .select()
-        .single()
+        if(error) throw error
 
-        if(!error) {
-          setAllNotes((prev) => {
-            return prev.map((n) =>
-              n.note_id === note_id ? { ...data } : n,)
-          })
-        }
-        else {
-          console.log('ошибка переключения статуса заметки: ', error.message);          
-        }
       } catch (error) {
-        console.log('nepr error: ', error);
+        setAllNotes(prev => prev.map(n => n.note_id === note_id ? 
+        {...n, completed: toggleNote.completed} 
+        : n
+        ));
       } finally {
         setToggleLoading(null)
       }
     }
-  }
+  }, [toggleLoading, allNotes])
   
 
   //сортировка::
