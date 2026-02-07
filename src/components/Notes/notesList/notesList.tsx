@@ -3,6 +3,7 @@ import styles from './notesList.module.css'
 import type { NoteType } from '../../../types/note'
 import BigSpinner from '../../bigSpinner/bigSpinner';
 import { memo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 interface props {
     displayedNotes: NoteType[],
     isEdit: boolean,
@@ -24,18 +25,45 @@ function NotesList({displayedNotes, isEdit, isView, gettingLoading, showRemovedN
                 <p className={styles.emptyMessage}>Создайте первую заметку</p>
             ) 
             : 
-            displayedNotes.map(note=> {
-                if(showRemovedNotesIsActive) {
-                    if(note.removed_in_ui) {
-                        return <Note isEdit={isEdit} isView={isView} note={note} key={note.note_id}/>
+            // <>
+            <AnimatePresence>
+                {displayedNotes.map(note=> {
+                    if(showRemovedNotesIsActive) {
+                        if(note.removed_in_ui) {
+                            return (
+                                <motion.div 
+                                initial={{ opacity: 0, x: -50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 50 }}
+                                transition={{ duration: 0.3 }}
+                                layout
+                                key={note.note_id}
+                                >
+                                    <Note isEdit={isEdit} isView={isView} note={note} key={note.note_id}/>
+                                </motion.div>
+                            )
+                        }
                     }
-                }
-                else {
-                    if(!note.removed_in_ui) {
-                        return <Note isEdit={isEdit} isView={isView} note={note} key={note.note_id}/>
+                    else {
+                        if(!note.removed_in_ui) {
+                            return (
+                                <motion.div 
+                                initial={{ opacity: 0, x: -50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 50 }}
+                                transition={{ duration: 0.3 }}
+                                layout
+                                key={note.note_id}
+                                >
+                                    <Note isEdit={isEdit} isView={isView} note={note} key={note.note_id}/>
+                                </motion.div>
+                            )
+                        }
                     }
-                }
-            })
+                    return null
+                })}
+            </AnimatePresence>
+            // </>
             }
         </>
     )

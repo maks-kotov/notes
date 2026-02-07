@@ -298,7 +298,6 @@ export default function useNotes() {
     }
   }, [toggleLoading, allNotes])
   
-
   //сортировка::
   const sortByNew = () => {
     setSortByNewIsActive(true)
