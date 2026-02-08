@@ -17,7 +17,7 @@ export default function useNotes() {
   const [removingLoading, setRemovingLoading] = useState<null | number>(null)
   const [editingLoading, setEditingLoading] = useState<null | number>(null)
   const [toggleLoading, setToggleLoading] = useState<null | number>(null)
-  const [recoveringLoading, setRecoveringLoading] = useState<null | number>(null)
+  const [recoveryIsClicked, setRecoveryIsClicked] = useState<boolean>(false)
   const [sortByNewIsActive, setSortByNewIsActive] = useState<boolean>(true)
   const [sortByOldIsActive, setSortByOldIsActive] = useState<boolean>(false)
   const [sortByAlphabetIsActive, setSortByAlphabetIsActive] = useState<boolean>(false)
@@ -188,7 +188,7 @@ export default function useNotes() {
       console.log('code of recovering');
       
     try {
-      setRecoveringLoading(note_id)
+      // setRecoveringLoading(note_id)
       const {data, error} = await supabase
       .from("notes")
       .update({
@@ -212,10 +212,8 @@ export default function useNotes() {
       {...n, removed_in_ui: true} 
       : n
       ))
-    } finally {
-      setRecoveringLoading(null)
     }
-  },[recoveringLoading, allNotes])
+  },[recoveryIsClicked, allNotes])
 
   const update = useCallback(async (note_id: number, changes: NoteType) => { //при нажатии на update будет 2 перерисовки: тк меняется пропс isEdit, а потом  displayedNotes. также в changes лишние данные хранятся
     const updatingNote = allNotes.find(n=>n.note_id===note_id)
@@ -369,7 +367,7 @@ export default function useNotes() {
     gettingLoading,
     addingLoading,
     removingLoading,
-    recoveringLoading,
+    recoveryIsClicked,
     errorWhenAdding,
     editingLoading,
     toggleLoading,
@@ -380,5 +378,6 @@ export default function useNotes() {
     filterByUnCompletedsIsActive,
     sortByAlphabetIsActive,
     showRemovedNotesIsActive,
+    setRecoveryIsClicked
   };
 }

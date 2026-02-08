@@ -11,7 +11,7 @@ interface props {
 }
 
 function Note({note, isEdit, isView}:props) {
-    const {remove, removingLoading, recover, recoveringLoading, toggleLoading, toggle, switchViewMode, getCurrentNote, showRemovedNotesIsActive} = useContext(NoteContext)!
+    const {remove, removingLoading, recover, recoveryIsClicked, setRecoveryIsClicked,toggleLoading, toggle, switchViewMode, getCurrentNote, showRemovedNotesIsActive} = useContext(NoteContext)!
     return (
         <>
             <div className={styles.container}>
@@ -38,13 +38,22 @@ function Note({note, isEdit, isView}:props) {
                     </button>
                 }
                 {showRemovedNotesIsActive && 
-                    <button onClick={()=>recover(note.note_id)} className={styles.recover} disabled={!recoveringLoading ? false : true}
-                    style={recoveringLoading === note.note_id ? {opacity: 0.5} : {opacity: 1,}}>    
-                            {recoveringLoading === note.note_id ?  <Spinner style={{marginLeft: "9px"}}/> : <span className={styles.recoverPlus}>+</span>}
+                    <button onClick={()=>{
+                        setRecoveryIsClicked(true)
+                        setTimeout(() => {
+                            recover(note.note_id)
+                        }, 10);
+                    }} className={styles.recover}>    
+                            <span className={styles.recoverPlus}>+</span>
                     </button>
                 }
-                <button onClick={()=>remove(note.note_id)} className={styles.remove} disabled={!removingLoading ? false : true}
-                style={removingLoading === note.note_id ? {opacity: 0.5} : {opacity: 1}}>    
+                <button onClick={()=>{
+                    setRecoveryIsClicked(false)
+                    setTimeout(() => {
+                        remove(note.note_id)
+                    }, 10);
+                }} className={styles.remove} 
+>    
                         {removingLoading === note.note_id ?  <Spinner /> : <img src="./src/assets/icons/bin.png" alt="icon"/>}
                 </button>
                 <button onClick={()=>

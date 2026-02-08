@@ -9,9 +9,10 @@ interface props {
     isEdit: boolean,
     isView: boolean,
     gettingLoading: boolean,
-    showRemovedNotesIsActive: boolean
+    showRemovedNotesIsActive: boolean,
+    recoveryIsClicked: boolean
 }
-function NotesList({displayedNotes, isEdit, isView, gettingLoading, showRemovedNotesIsActive} : props) {
+function NotesList({displayedNotes, isEdit, isView, gettingLoading, showRemovedNotesIsActive, recoveryIsClicked} : props) {
     console.log('перерисовка. видоизменённый массив: ', displayedNotes);
     return (
         <>
@@ -34,7 +35,12 @@ function NotesList({displayedNotes, isEdit, isView, gettingLoading, showRemovedN
                                 <motion.div 
                                 initial={{ opacity: 0, x: -50 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: 50 }}
+                                exit={
+                                    recoveryIsClicked ?
+                                    { opacity: 0, x: -50 } 
+                                    : 
+                                    { opacity: 0, x: 50 }
+                                }
                                 transition={{ duration: 0.3 }}
                                 layout
                                 key={note.note_id}

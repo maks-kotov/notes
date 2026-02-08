@@ -26,7 +26,7 @@ function Notes() {
         addingLoading,
         errorWhenAdding,
         removingLoading,
-        recoveringLoading,
+        recoveryIsClicked,
         editingLoading,
         toggleLoading,
         sortByNewIsActive,
@@ -36,7 +36,8 @@ function Notes() {
         filterByUnCompletedsIsActive,
         sortByAlphabetIsActive,
         showRemovedNotes,
-        showRemovedNotesIsActive
+        showRemovedNotesIsActive,
+        setRecoveryIsClicked
         } = useNotes()
 
     const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
@@ -74,7 +75,8 @@ function Notes() {
                     switchViewMode: (isView:boolean)=>setIsView(isView),
                     getCurrentNote: (note:NoteType)=>setCurrentNote(note),
                     removingLoading: removingLoading,
-                    recoveringLoading,
+                    recoveryIsClicked,
+                    setRecoveryIsClicked,
                     editingLoading: editingLoading,
                     toggleLoading: toggleLoading,
                     sortByNewIsActive,
@@ -94,7 +96,7 @@ function Notes() {
                 }
                 {
                 !isEdit && !isView && 
-                <NotesList gettingLoading={gettingLoading} displayedNotes={displayedNotes} isEdit={isEdit} isView={isView} showRemovedNotesIsActive={showRemovedNotesIsActive}/>
+                <NotesList recoveryIsClicked={recoveryIsClicked} gettingLoading={gettingLoading} displayedNotes={displayedNotes} isEdit={isEdit} isView={isView} showRemovedNotesIsActive={showRemovedNotesIsActive}/>
                 }
                 {
                 !isEdit && isView && 
