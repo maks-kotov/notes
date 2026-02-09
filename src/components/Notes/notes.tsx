@@ -37,7 +37,7 @@ function Notes() {
         sortByAlphabetIsActive,
         showRemovedNotes,
         showRemovedNotesIsActive,
-        setRecoveryIsClicked
+        setRecoveryIsClicked,
         } = useNotes()
 
     const [isEdit, setIsEdit] = useState<boolean>(false) //isEdit - edit mode state
@@ -53,6 +53,7 @@ function Notes() {
       removed_at: 'im fine',
       recovered_at: 'pipipip',
       removed_in_ui: false,
+      temp_note_id: '.........'
     }
 )
 

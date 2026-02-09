@@ -26,6 +26,7 @@ export type Database = {
           removed_at: string | null
           removed_in_ui: boolean
           recovered_at: null | string
+          temp_note_id: string
         }
         Insert: {
           completed: boolean
@@ -36,6 +37,7 @@ export type Database = {
           removed_at: string | null
           removed_in_ui: boolean
           recovered_at: null | string
+          temp_note_id: string
         }
         Update: {
           content?: string

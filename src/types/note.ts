@@ -1,5 +1,6 @@
 export type NoteType = {
     note_id: number,
+    temp_note_id: string
     title: string,
     content: string,
     completed: boolean,

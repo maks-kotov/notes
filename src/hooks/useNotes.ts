@@ -25,6 +25,7 @@ export default function useNotes() {
   const [filterByCompletedsIsActive, setFilterByCompletedsIsActive] = useState<boolean>(false)
   const [filterByUnCompletedsIsActive, setFilterByUnCompletedsIsActive] = useState<boolean>(false)
   const [showRemovedNotesIsActive, setShowRemovedNotesIsActive] = useState<boolean>(false)
+  
 
   useEffect(()=> { //первая загрузка
     const getNotes = async () => {
@@ -56,10 +57,11 @@ export default function useNotes() {
 
   const add = useCallback(async (note: NoteType) => {
     //note - заметка из create.tsx
-    const tempId : number = Date.now() // temporary id (временный id)
+  
+    const temp_note_id : string = `temp_${Date.now()}` // temporary id (временный id)
     
     const tempNote : NoteType = {
-      ...note, note_id: tempId
+      ...note, temp_note_id:temp_note_id
     }
 
     if(note.title.trim()) {
@@ -80,7 +82,8 @@ export default function useNotes() {
                 updated_at: null,
                 removed_at: null,
                 removed_in_ui: false,
-                recovered_at: null
+                recovered_at: null,
+                temp_note_id: temp_note_id
               },
             ])
             .select()
@@ -88,13 +91,13 @@ export default function useNotes() {
             
             if(error) throw error
             setAllNotes(prev => {
-                return prev.map(note => note.note_id === tempId ? data : note)
+                return prev.map(note => note.temp_note_id === temp_note_id ? data : note)
               }
             )
         }
       } catch (error) {
         console.log("error during adding: ", error);
-        setAllNotes(prev => prev.filter(note => note.note_id !== tempId));
+        setAllNotes(prev => prev.filter(note => note.temp_note_id !== temp_note_id));
       } finally {
         setAddingLoading(false)
       }
@@ -378,6 +381,6 @@ export default function useNotes() {
     filterByUnCompletedsIsActive,
     sortByAlphabetIsActive,
     showRemovedNotesIsActive,
-    setRecoveryIsClicked
+    setRecoveryIsClicked,
   };
 }

@@ -10,9 +10,9 @@ interface props {
     isView: boolean,
     gettingLoading: boolean,
     showRemovedNotesIsActive: boolean,
-    recoveryIsClicked: boolean
+    recoveryIsClicked: boolean,
 }
-function NotesList({displayedNotes, isEdit, isView, gettingLoading, showRemovedNotesIsActive, recoveryIsClicked} : props) {
+function NotesList({displayedNotes, isEdit, isView, gettingLoading, showRemovedNotesIsActive, recoveryIsClicked, } : props) {
     console.log('перерисовка. видоизменённый массив: ', displayedNotes);
     return (
         <>
@@ -43,9 +43,10 @@ function NotesList({displayedNotes, isEdit, isView, gettingLoading, showRemovedN
                                 }
                                 transition={{ duration: 0.3 }}
                                 layout
-                                key={note.note_id}
+                                key={note.temp_note_id}
+                                //я хочу чтобы при нажатии на добавить появлялась новая заметка, которая вставляется в разметку, у которой будет temp_note_id произвольный (к примеру `temp${Date.now(). у базы не будет значения по умолчанию для него.}`)
                                 >
-                                    <Note isEdit={isEdit} isView={isView} note={note} key={note.note_id}/>
+                                    <Note isEdit={isEdit} isView={isView} note={note} />
                                 </motion.div>
                             )
                         }
@@ -59,9 +60,12 @@ function NotesList({displayedNotes, isEdit, isView, gettingLoading, showRemovedN
                                 exit={{ opacity: 0, x: 50 }}
                                 transition={{ duration: 0.3 }}
                                 layout
-                                key={note.note_id}
+                                key={note.temp_note_id}
+                                onAnimationComplete={()=>{
+                                    
+                                }}
                                 >
-                                    <Note isEdit={isEdit} isView={isView} note={note} key={note.note_id}/>
+                                    <Note isEdit={isEdit} isView={isView} note={note} key={note.temp_note_id}/>
                                 </motion.div>
                             )
                         }

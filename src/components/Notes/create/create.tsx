@@ -23,6 +23,7 @@ function Create({isEdit, currentNote, add, addingLoading, errorWhenAdding} : pro
                             removed_at: 'upupup',
                             recovered_at: '!!',
                             removed_in_ui: false,
+                            temp_note_id: 'qw'
                         })
     
     // console.log(counter);
@@ -35,7 +36,7 @@ function Create({isEdit, currentNote, add, addingLoading, errorWhenAdding} : pro
     }
     useEffect(()=>{
         if(isEdit) {
-            setNote({...note, note_id: currentNote.note_id, title: currentNote.title,content:currentNote.content, completed: currentNote.completed, created_at: currentNote.created_at, updated_at: currentNote.updated_at, removed_at: currentNote.removed_at, removed_in_ui: currentNote.removed_in_ui, recovered_at: currentNote.recovered_at}) // при нажатии на кнопку готовая изменённая заметка приобретает все те же параметры, которые были у редактируемой.
+            setNote({...note, note_id: currentNote.note_id, title: currentNote.title,content:currentNote.content, completed: currentNote.completed, created_at: currentNote.created_at, updated_at: currentNote.updated_at, removed_at: currentNote.removed_at, removed_in_ui: currentNote.removed_in_ui, recovered_at: currentNote.recovered_at, temp_note_id: currentNote.temp_note_id}) // при нажатии на кнопку готовая изменённая заметка приобретает все те же параметры, которые были у редактируемой.
         }
         else {
             setNote({...note, content: '', title: ''})
@@ -62,6 +63,7 @@ function Create({isEdit, currentNote, add, addingLoading, errorWhenAdding} : pro
                             removed_at: 'bibiib',
                             recovered_at: '???',
                             removed_in_ui: false,    
+                            temp_note_id: 'w'
                         })
                         setNote({...note, content: '', title: ''})
                     }} 
