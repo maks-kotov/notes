@@ -20,7 +20,7 @@ function NotesList({displayedNotes, isEdit, isView, gettingLoading, showRemovedN
             {
                 //если gettingLoading true - показываем спиннер, если нет - то, код заметок
             gettingLoading ?
-               <BigSpinner />
+            <BigSpinner />
             :
             displayedNotes.length === 0 ? (
                 <p className={styles.emptyMessage}>Создайте первую заметку</p>
@@ -46,7 +46,7 @@ function NotesList({displayedNotes, isEdit, isView, gettingLoading, showRemovedN
                                 key={note.temp_note_id}
                                 //я хочу чтобы при нажатии на добавить появлялась новая заметка, которая вставляется в разметку, у которой будет temp_note_id произвольный (к примеру `temp${Date.now(). у базы не будет значения по умолчанию для него.}`)
                                 >
-                                    <Note isEdit={isEdit} isView={isView} note={note} />
+                                <Note isEdit={isEdit} isView={isView} note={note} />
                                 </motion.div>
                             )
                         }
@@ -61,9 +61,6 @@ function NotesList({displayedNotes, isEdit, isView, gettingLoading, showRemovedN
                                 transition={{ duration: 0.3 }}
                                 layout
                                 key={note.temp_note_id}
-                                onAnimationComplete={()=>{
-                                    
-                                }}
                                 >
                                     <Note isEdit={isEdit} isView={isView} note={note} key={note.temp_note_id}/>
                                 </motion.div>

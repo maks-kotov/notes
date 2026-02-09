@@ -16,7 +16,6 @@ export default function useNotes() {
   const [errorWhenAdding, setErrorWhenAdding] = useState<null | string>(null)
   const [removingLoading, setRemovingLoading] = useState<null | number>(null)
   const [editingLoading, setEditingLoading] = useState<null | number>(null)
-  const [toggleLoading, setToggleLoading] = useState<null | number>(null)
   const [recoveryIsClicked, setRecoveryIsClicked] = useState<boolean>(false)
   const [sortByNewIsActive, setSortByNewIsActive] = useState<boolean>(true)
   const [sortByOldIsActive, setSortByOldIsActive] = useState<boolean>(false)
@@ -280,7 +279,6 @@ export default function useNotes() {
 
     if(session) {
       try {
-        setToggleLoading(note_id)
         const {error} = await supabase
         .from('notes')
         .update({completed: !completed})
@@ -293,11 +291,9 @@ export default function useNotes() {
         {...n, completed: toggleNote.completed} 
         : n
         ));
-      } finally {
-        setToggleLoading(null)
       }
     }
-  }, [toggleLoading, allNotes])
+  }, [allNotes])
   
   //сортировка::
   const sortByNew = () => {
@@ -373,7 +369,6 @@ export default function useNotes() {
     recoveryIsClicked,
     errorWhenAdding,
     editingLoading,
-    toggleLoading,
     sortByNewIsActive,
     sortByOldIsActive,
     showAllNotesIsActive,

@@ -11,7 +11,7 @@ interface props {
 }
 
 function Note({note, isEdit, isView}:props) {
-    const {remove, removingLoading, recover, recoveryIsClicked, setRecoveryIsClicked,toggleLoading, toggle, switchViewMode, getCurrentNote, showRemovedNotesIsActive} = useContext(NoteContext)!
+    const {remove, removingLoading, recover, setRecoveryIsClicked, toggle, switchViewMode, getCurrentNote, showRemovedNotesIsActive} = useContext(NoteContext)!
     return (
         <>
             <div className={styles.container}>
@@ -28,13 +28,8 @@ function Note({note, isEdit, isView}:props) {
                     <button 
                     onClick={()=>toggle(note.note_id, note.completed)} 
                     className={styles.toggle} 
-                    disabled={!toggleLoading ? false : true}
-                    style={toggleLoading === note.note_id ? {opacity: 0.5} : {opacity: 1}}>
-                        {
-                        toggleLoading === note.note_id ?  <Spinner /> 
-                        : 
-                        <>{note.completed ? '✘' : '✔'}</>
-                        }
+                    >
+                        {note.completed ? '✘' : '✔'}
                     </button>
                 }
                 {showRemovedNotesIsActive && 
