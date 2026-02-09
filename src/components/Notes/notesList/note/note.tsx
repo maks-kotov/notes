@@ -3,7 +3,6 @@ import EditButton from './editButton/editButton'
 import styles from './note.module.css'
 import type { NoteType } from '../../../../types/note'
 import { NoteContext } from '../../../../contexts/noteContext'
-import Spinner from '../../../Auth/spinner/spinner'
 interface props {
     note: NoteType,
     isEdit: boolean,
@@ -11,7 +10,14 @@ interface props {
 }
 
 function Note({note, isEdit, isView}:props) {
-    const {remove, removingLoading, recover, setRecoveryIsClicked, toggle, switchViewMode, getCurrentNote, showRemovedNotesIsActive} = useContext(NoteContext)!
+    const {
+        remove, 
+        recover, 
+        toggle, 
+        switchViewMode, 
+        getCurrentNote,
+        setRecoveryIsClicked,   
+        showRemovedNotesIsActive} = useContext(NoteContext)!
     return (
         <>
             <div className={styles.container}>
@@ -49,7 +55,7 @@ function Note({note, isEdit, isView}:props) {
                     }, 10);
                 }} className={styles.remove} 
 >    
-                        {removingLoading === note.note_id ?  <Spinner /> : <img src="./src/assets/icons/bin.png" alt="icon"/>}
+                <img src="./src/assets/icons/bin.png" alt="icon"/>
                 </button>
                 <button onClick={()=>
                     {

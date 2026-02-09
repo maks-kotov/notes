@@ -14,8 +14,6 @@ export default function useNotes() {
   const [gettingLoading, setGettingLoading] = useState<boolean>(false)
   const [addingLoading, setAddingLoading] = useState<boolean>(false)
   const [errorWhenAdding, setErrorWhenAdding] = useState<null | string>(null)
-  const [removingLoading, setRemovingLoading] = useState<null | number>(null)
-  const [editingLoading, setEditingLoading] = useState<null | number>(null)
   const [recoveryIsClicked, setRecoveryIsClicked] = useState<boolean>(false)
   const [sortByNewIsActive, setSortByNewIsActive] = useState<boolean>(true)
   const [sortByOldIsActive, setSortByOldIsActive] = useState<boolean>(false)
@@ -118,7 +116,6 @@ export default function useNotes() {
 
       console.log('code of removing');
       try {
-      setRemovingLoading(note_id)
       const {error} = await supabase
       .from("notes")
       .delete()
@@ -128,8 +125,6 @@ export default function useNotes() {
       } catch (error) {
         console.log('ошибка при удалении', error);
         setAllNotes(prev => [...prev,removingNote].sort((a, b) => a.note_id - b.note_id));
-      } finally {
-        setRemovingLoading(null)
       }
     }
     else {
@@ -145,7 +140,6 @@ export default function useNotes() {
 
       console.log('code of updating');
       try {
-      setRemovingLoading(note_id)
       const {data, error} = await supabase
       .from("notes")
       .update({
@@ -170,12 +164,10 @@ export default function useNotes() {
         {...n, removed_in_ui: false} 
         : n
       ))
-      } finally {
-      setRemovingLoading(null)
-      }
+      } 
     }
     
-  }, [removingLoading, showRemovedNotesIsActive, allNotes])
+  }, [showRemovedNotesIsActive, allNotes])
 
   const recover = useCallback(async (note_id:number) => {
     const recoveringNote = allNotes.find(n=>n.note_id===note_id)
@@ -229,7 +221,6 @@ export default function useNotes() {
       ));
       console.log('code of editing');
     try {
-      setEditingLoading(note_id)
       if(session?.user.id) {
         const { data, error } = await supabase
           .from('notes')
@@ -258,12 +249,10 @@ export default function useNotes() {
       {...n, title: updatingNote.title, content: updatingNote.content, updated_at: null} 
       : n
       ))
-    } finally {
-      setEditingLoading(null)
-    }
+    } 
     
 
-  }, [editingLoading, allNotes])
+  }, [allNotes])
 
   const toggle = useCallback(async (note_id: number, completed: boolean) => {
     const toggleNote = allNotes.find(n=>n.note_id===note_id)
@@ -365,10 +354,8 @@ export default function useNotes() {
     showRemovedNotes,
     gettingLoading,
     addingLoading,
-    removingLoading,
     recoveryIsClicked,
     errorWhenAdding,
-    editingLoading,
     sortByNewIsActive,
     sortByOldIsActive,
     showAllNotesIsActive,

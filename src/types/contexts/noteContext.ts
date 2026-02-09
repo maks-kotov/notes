@@ -14,8 +14,6 @@ export type NoteContextType = {
     filterByCompleteds: ()=>void,
     filterByUnCompleteds: ()=>void,
     showRemovedNotes: ()=>void,
-    removingLoading: number | null,
-    editingLoading: number | null,
     sortByNewIsActive: boolean,
     sortByOldIsActive: boolean,
     showAllNotesIsActive: boolean,
@@ -23,5 +21,5 @@ export type NoteContextType = {
     filterByUnCompletedsIsActive: boolean,
     sortByAlphabetIsActive: boolean,
     showRemovedNotesIsActive: boolean,
-    setRecoveryIsClicked: (b:boolean)=>void
+    setRecoveryIsClicked: (b:boolean)=>void // нужен для анимаций
 }
