@@ -24,6 +24,11 @@ function Note({ note, isEdit, isView }: props) {
     <>
       <div className={styles.container}>
         <div
+          style={
+            note.update_loading
+              ? { opacity: 0.2 }
+              : { transition: "opacity .3s ease", opacity: 1 }
+          }
           className={
             note.completed ? `${styles.text} ${styles.crossedOut}` : styles.text
           }>

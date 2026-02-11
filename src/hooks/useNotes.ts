@@ -62,7 +62,7 @@ export default function useNotes() {
             const { data, error } = await supabase
               .from("notes")
               .insert([
-                //note_id && created_at будет добавляться автоматически бдшкой
+                //note_id && created_at && update_loading будет добавляться автоматически бдшкой
                 {
                   title: note.title,
                   content: note.content,
@@ -209,7 +209,7 @@ export default function useNotes() {
   );
 
   const update = useCallback(
-    async (note_id: number, changes: NoteType) => {
+    (note_id: number, changes: NoteType) => {
       //при нажатии на update будет 2 перерисовки: тк меняется пропс isEdit, а потом  displayedNotes. также в changes лишние данные хранятся
       const updatingNote = allNotes.find((n) => n.note_id === note_id);
       if (!updatingNote) {
@@ -219,48 +219,68 @@ export default function useNotes() {
       setAllNotes((prev) =>
         prev.map((n) =>
           n.note_id === note_id
-            ? { ...n, title: changes.title, content: changes.content }
+            ? {
+                ...n,
+                title: changes.title,
+                content: changes.content,
+                update_loading: true,
+              }
             : n,
         ),
       );
-      console.log("code of editing");
-      try {
-        if (session?.user.id) {
-          const { data, error } = await supabase
-            .from("notes")
-            .update({
-              // оставит старое значение createdAt, note_id, completed, user_id, updated_at
-              title: changes.title,
-              content: changes.content,
-              updated_at: new Date().toISOString(),
-            })
-            .eq("user_id", session.user.id)
-            .eq("note_id", note_id)
-            .select() // вернуть обновлённые записи (массив объектов)
-            .single(); // если в массиве всего 1 элемент - он преобразуется в объект. если более 1 элемента - выбросит ошибку.
-
-          if (error) throw error;
-          setAllNotes(
-            (
-              prev, // чтобы поменять updated_at.
-            ) => prev.map((n) => (n.note_id === note_id ? data : n)),
-          );
-        }
-      } catch (error) {
-        console.log("редактирование не удалось: ", error);
+      setTimeout(async () => {
         setAllNotes((prev) =>
           prev.map((n) =>
             n.note_id === note_id
               ? {
                   ...n,
-                  title: updatingNote.title,
-                  content: updatingNote.content,
-                  updated_at: null,
+                  title: changes.title,
+                  content: changes.content,
+                  update_loading: true,
                 }
               : n,
           ),
         );
-      }
+
+        console.log("code of editing");
+        try {
+          if (session?.user.id) {
+            const { data, error } = await supabase
+              .from("notes")
+              .update({
+                // оставит старое значение createdAt, note_id, completed, user_id, updated_at
+                title: changes.title,
+                content: changes.content,
+                updated_at: new Date().toISOString(),
+              })
+              .eq("user_id", session.user.id)
+              .eq("note_id", note_id)
+              .select() // вернуть обновлённые записи (массив объектов)
+              .single(); // если в массиве всего 1 элемент - он преобразуется в объект. если более 1 элемента - выбросит ошибку.
+
+            if (error) throw error;
+            setAllNotes(
+              (
+                prev, // чтобы поменять updated_at.
+              ) => prev.map((n) => (n.note_id === note_id ? data : n)),
+            );
+          }
+        } catch (error) {
+          console.log("редактирование не удалось: ", error);
+          setAllNotes((prev) =>
+            prev.map((n) =>
+              n.note_id === note_id
+                ? {
+                    ...n,
+                    title: updatingNote.title,
+                    content: updatingNote.content,
+                    updated_at: null,
+                  }
+                : n,
+            ),
+          );
+        }
+      }, 300);
     },
     [allNotes],
   );

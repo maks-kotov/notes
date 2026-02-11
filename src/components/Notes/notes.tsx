@@ -57,6 +57,7 @@ function Notes() {
     recovered_at: "pipipip",
     removed_in_ui: false,
     temp_note_id: ".........",
+    update_loading: false,
   });
 
   return (
