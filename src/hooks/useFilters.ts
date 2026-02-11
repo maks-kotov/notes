@@ -68,6 +68,7 @@ export default function useFilters(
     setFilterByCompletedsIsActive(false);
     setFilterByUnCompletedsIsActive(false);
     setShowRemovedNotesIsActive(true);
+    setFilteredNotes(null);
   };
   const filterByCompleteds = () => {
     setFilteredNotes(null);
