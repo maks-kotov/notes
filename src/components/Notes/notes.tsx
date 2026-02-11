@@ -7,37 +7,42 @@ import Header from "./header/header";
 import NotesList from "./notesList/notesList";
 import Viewing from "./viewing/viewing";
 import { FiltersContext } from "../../contexts/filtersContext";
+import useFilters from "../../hooks/useFilters";
 
 function Notes() {
   const {
     //тут методы заметок и информация про них
-    displayedNotes,
+    allNotes,
+    setAllNotes,
     update,
     add,
     remove,
     recover,
     toggle,
+    addingLoading,
+    gettingLoading,
+    errorWhenAdding,
+    recoveryIsClicked,
+    setRecoveryIsClicked,
+  } = useNotes();
+
+  const {
+    displayedNotes,
     sortByNew,
     sortByOld,
     sortByAlphabet,
     showAllNotes,
     filterByCompleteds,
     filterByUnCompleteds,
-    gettingLoading,
-    addingLoading,
-    errorWhenAdding,
-    recoveryIsClicked,
+    showRemovedNotes,
     sortByNewIsActive,
     sortByOldIsActive,
     showAllNotesIsActive,
     filterByCompletedsIsActive,
     filterByUnCompletedsIsActive,
     sortByAlphabetIsActive,
-    showRemovedNotes,
     showRemovedNotesIsActive,
-    setRecoveryIsClicked,
-  } = useNotes();
-
+  } = useFilters(allNotes, setAllNotes);
   const [isEdit, setIsEdit] = useState<boolean>(false); //isEdit - edit mode state
   const [isView, setIsView] = useState<boolean>(false);
   const [currentNote, setCurrentNote] = useState<NoteType>({
@@ -62,24 +67,10 @@ function Notes() {
           remove,
           recover,
           toggle,
-          sortByNew,
-          sortByOld,
-          sortByAlphabet,
-          showRemovedNotes,
-          filterByCompleteds,
-          showAllNotes,
-          filterByUnCompleteds,
           switchEditMode: (isEdit: boolean) => setIsEdit(isEdit),
           switchViewMode: (isView: boolean) => setIsView(isView),
           getCurrentNote: (note: NoteType) => setCurrentNote(note),
           setRecoveryIsClicked,
-          sortByNewIsActive,
-          sortByOldIsActive,
-          showAllNotesIsActive,
-          filterByCompletedsIsActive,
-          filterByUnCompletedsIsActive,
-          sortByAlphabetIsActive,
-          showRemovedNotesIsActive,
         }}>
         <FiltersContext.Provider
           value={{

@@ -1,25 +1,11 @@
-import type { NoteType } from "../note"
+import type { NoteType } from "../note";
 export type NoteContextType = {
-    switchEditMode: (isEdit:boolean)=>void,
-    switchViewMode: (isView:boolean)=>void,
-    getCurrentNote:(note:NoteType)=>void,
-    update: (id:number, changes: NoteType)=>void,
-    remove: (id:number)=>void,
-    recover: (id:number)=>void,
-    toggle: (id:number, completed: boolean)=>void,
-    sortByNew: ()=>void,
-    sortByOld: ()=>void,
-    sortByAlphabet: ()=>void,
-    showAllNotes: ()=>void,
-    filterByCompleteds: ()=>void,
-    filterByUnCompleteds: ()=>void,
-    showRemovedNotes: ()=>void,
-    sortByNewIsActive: boolean,
-    sortByOldIsActive: boolean,
-    showAllNotesIsActive: boolean,
-    filterByCompletedsIsActive: boolean,
-    filterByUnCompletedsIsActive: boolean,
-    sortByAlphabetIsActive: boolean,
-    showRemovedNotesIsActive: boolean,
-    setRecoveryIsClicked: (b:boolean)=>void // нужен для анимаций
-}
+  switchEditMode: (isEdit: boolean) => void;
+  switchViewMode: (isView: boolean) => void;
+  getCurrentNote: (note: NoteType) => void;
+  update: (id: number, changes: NoteType) => void;
+  remove: (id: number) => void;
+  recover: (id: number) => void;
+  toggle: (id: number, completed: boolean) => void;
+  setRecoveryIsClicked: (b: boolean) => void; // нужен для анимаций
+};
