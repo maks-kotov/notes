@@ -280,7 +280,7 @@ export default function useNotes() {
             ),
           );
         }
-      }, 300);
+      }, 10);
     },
     [allNotes],
   );
