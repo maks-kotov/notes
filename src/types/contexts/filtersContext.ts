@@ -1,0 +1,16 @@
+export type FiltersContextType = {
+    sortByNew: ()=>void,
+    sortByOld: ()=>void,
+    sortByAlphabet: ()=>void,
+    showAllNotes: ()=>void,
+    filterByCompleteds: ()=>void,
+    filterByUnCompleteds: ()=>void,
+    showRemovedNotes: ()=>void,
+    sortByNewIsActive: boolean,
+    sortByOldIsActive: boolean,
+    showAllNotesIsActive: boolean,
+    filterByCompletedsIsActive: boolean,
+    filterByUnCompletedsIsActive: boolean,
+    sortByAlphabetIsActive: boolean,
+    showRemovedNotesIsActive: boolean,
+}

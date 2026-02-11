@@ -3,6 +3,7 @@ import styles from "./notesFilters.module.css"
 import { NoteContext } from "../../../../../contexts/noteContext"
 function NotesFilters() {
     const { sortByNew, sortByOld, filterByCompleteds, showAllNotes, filterByUnCompleteds, sortByNewIsActive, sortByOldIsActive, sortByAlphabet, filterByCompletedsIsActive, filterByUnCompletedsIsActive, showAllNotesIsActive, sortByAlphabetIsActive, showRemovedNotes, showRemovedNotesIsActive } = useContext(NoteContext)!
+    
     return (
         <div className={styles.filtersContainer}>
             <div className={styles.title}>Фильтры:</div>

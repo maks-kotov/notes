@@ -207,7 +207,7 @@ export default function useNotes() {
       : n
       ))
     }
-  },[recoveryIsClicked, allNotes])
+  },[allNotes])
 
   const update = useCallback(async (note_id: number, changes: NoteType) => { //при нажатии на update будет 2 перерисовки: тк меняется пропс isEdit, а потом  displayedNotes. также в changes лишние данные хранятся
     const updatingNote = allNotes.find(n=>n.note_id===note_id)
