@@ -5,7 +5,6 @@ export default function useFilters(
   allNotes: NoteType[],
   setAllNotes: (allNotes: NoteType[]) => void,
 ) {
-  //сортировка:
   const [filteredNotes, setFilteredNotes] = useState<null | NoteType[]>(null);
   const displayedNotes = filteredNotes === null ? allNotes : filteredNotes;
   const [sortByNewIsActive, setSortByNewIsActive] = useState<boolean>(true);

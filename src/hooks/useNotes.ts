@@ -308,11 +308,11 @@ export default function useNotes() {
     update,
     remove,
     recover,
+    setRecoveryIsClicked,
     toggle,
     gettingLoading,
     addingLoading,
     recoveryIsClicked,
     errorWhenAdding,
-    setRecoveryIsClicked,
   };
 }
