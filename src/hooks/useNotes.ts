@@ -116,9 +116,8 @@ export default function useNotes() {
 
   const remove = useCallback(
     async (note_id: number) => {
-      if (showRemovedNotesIsActive) {
-        const removingNote = allNotes.find((n) => n.note_id === note_id);
-
+      const removingNote = allNotes.find((n) => n.note_id === note_id);
+      if (removingNote?.removed_in_ui === true) {
         if (!removingNote) {
           console.log("я не нашёл заметку для удаления здесь: ", allNotes);
           return;
@@ -140,7 +139,6 @@ export default function useNotes() {
           );
         }
       } else {
-        const removingNote = allNotes.find((n) => n.note_id === note_id);
         if (!removingNote) {
           console.log("я не нашёл заметку для удаления здесь: ", allNotes);
           return;
@@ -162,7 +160,6 @@ export default function useNotes() {
             .eq("note_id", note_id)
             .select()
             .single();
-          //лишний спиннер, как мне кажется.
           if (error) throw error;
           setAllNotes((prev) =>
             prev.map((n) => (n.note_id === note_id ? data : n)),
@@ -177,7 +174,7 @@ export default function useNotes() {
         }
       }
     },
-    [showRemovedNotesIsActive, allNotes],
+    [allNotes],
   );
 
   const recover = useCallback(
