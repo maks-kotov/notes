@@ -79,12 +79,13 @@ export default function useFilters(
     setFilteredNotes(filtered);
   };
   const filterByUnCompleteds = () => {
+    setFilteredNotes(null);
     setShowAllNotesIsActive(false);
     setShowRemovedNotesIsActive(false);
     setFilterByCompletedsIsActive(false);
     setFilterByUnCompletedsIsActive(true);
-    setFilteredNotes(null);
     const filtered = allNotes.filter((note) => !note.completed);
+
     setFilteredNotes(filtered);
   };
   return {
