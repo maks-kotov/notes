@@ -24,7 +24,7 @@ export default function useFilters(
       return allNotes.filter((note) => !note.completed);
     }
     return allNotes;
-  }, [allNotes, filterByCompletedsIsActive]);
+  }, [allNotes, filterByCompletedsIsActive, filterByUnCompletedsIsActive]);
 
   const sortByNew = () => {
     setSortByNewIsActive(true);
