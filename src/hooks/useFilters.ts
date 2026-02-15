@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { NoteType } from "../types/note";
 
 export default function useFilters(
   allNotes: NoteType[],
   setAllNotes: (allNotes: NoteType[]) => void,
 ) {
-  const [filteredNotes, setFilteredNotes] = useState<null | NoteType[]>(null);
-  const displayedNotes = filteredNotes === null ? allNotes : filteredNotes;
   const [sortByNewIsActive, setSortByNewIsActive] = useState<boolean>(true);
   const [sortByOldIsActive, setSortByOldIsActive] = useState<boolean>(false);
   const [sortByAlphabetIsActive, setSortByAlphabetIsActive] =
@@ -19,6 +17,14 @@ export default function useFilters(
     useState<boolean>(false);
   const [showRemovedNotesIsActive, setShowRemovedNotesIsActive] =
     useState<boolean>(false);
+  const displayedNotes = useMemo(() => {
+    if (filterByCompletedsIsActive) {
+      return allNotes.filter((note) => note.completed);
+    } else if (filterByUnCompletedsIsActive) {
+      return allNotes.filter((note) => !note.completed);
+    }
+    return allNotes;
+  }, [allNotes, filterByCompletedsIsActive]);
 
   const sortByNew = () => {
     setSortByNewIsActive(true);
@@ -56,37 +62,29 @@ export default function useFilters(
   };
   //фильтры:
   const showAllNotes = () => {
-    setShowAllNotesIsActive(true);
     setShowRemovedNotesIsActive(false);
     setFilterByCompletedsIsActive(false);
     setFilterByUnCompletedsIsActive(false);
-    setFilteredNotes(null);
+    setShowAllNotesIsActive(true);
   };
   const showRemovedNotes = () => {
     setShowAllNotesIsActive(false);
     setFilterByCompletedsIsActive(false);
     setFilterByUnCompletedsIsActive(false);
     setShowRemovedNotesIsActive(true);
-    setFilteredNotes(null);
   };
   const filterByCompleteds = () => {
-    setFilteredNotes(null);
+    //эта фигня должна только менять галочку
     setShowAllNotesIsActive(false);
     setShowRemovedNotesIsActive(false);
-    setFilterByCompletedsIsActive(true);
     setFilterByUnCompletedsIsActive(false);
-    const filtered = allNotes.filter((note) => note.completed);
-    setFilteredNotes(filtered);
+    setFilterByCompletedsIsActive(true);
   };
   const filterByUnCompleteds = () => {
-    setFilteredNotes(null);
     setShowAllNotesIsActive(false);
     setShowRemovedNotesIsActive(false);
     setFilterByCompletedsIsActive(false);
     setFilterByUnCompletedsIsActive(true);
-    const filtered = allNotes.filter((note) => !note.completed);
-
-    setFilteredNotes(filtered);
   };
   return {
     displayedNotes,
