@@ -1,26 +1,29 @@
 .makeTitle {
-    /* background-color: #fff; */
-    width: 100%;
-    /* min-height: 100px; */
-    padding: 10px;
-    margin-bottom: 10px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  color: #000000;
 }
+
 .makeText {
-    background-color: #fff;
-    width: 100%;
-    min-height: 100px;
-    padding: 10px;
+  background-color: #fff;
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  color: #000000;
 }
+
 .button {
-    background-color: blue;
-    color: #fff;
-    padding: 5px 20px;
-    bottom: 5px;
-    right: 0;
-    float: inline-end;
+  background-color: rgb(106, 90, 205);
+  color: #fff;
+  padding: 5px 20px;
+  bottom: 5px;
+  right: 0;
+  float: inline-end;
 }
+
 .right {
-    display: flex;
-    flex-flow: column wrap;
-    align-items: flex-end;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: flex-end;
 }

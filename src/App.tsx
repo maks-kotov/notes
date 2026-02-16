@@ -1,4 +1,3 @@
-import "./App.css";
 import Notes from "./components/Notes/notes.tsx";
 import Auth from "./components/Auth/auth.tsx";
 import { useAuth } from "./contexts/authContext.tsx";

@@ -7,67 +7,90 @@
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 0;
 }
-.container {
-    background-color: #d9d9d9;
-     position: absolute;
-    top: 50%;           
-    left: 50%;          
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    text-align: center;
-    border-radius: 3%;
-}
-.form {
-    display: flex;
-    flex-flow: column wrap;
-}
+
 .title {
-    margin-bottom: 20px;
+  color: #202020;
 }
+
+.container {
+  background-color: #d9d9d9;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  text-align: center;
+  border-radius: 3%;
+}
+
+.form {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.title {
+  margin-bottom: 20px;
+}
+
 .input {
-    padding: 5px;
-    margin-bottom: 10px;
+  padding: 5px;
+  margin-bottom: 10px;
+  color: #202020;
 }
+
 .message {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
+  color: #202020;
 }
+
 .button {
-    background-color: #fff;
-    padding: 10px 30px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
+  background-color: #fff;
+  padding: 10px 30px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  color: #202020;
+  font-size: 18px;
+  font-weight: 700;
 }
+
 .loadingStatus {
-    display: flex;
-    align-items: center;
-    gap: 0 7px;
+  display: flex;
+  align-items: center;
+  gap: 0 7px;
 }
+
 .hasAccount {
-    font-size: 14px;
-    max-width: 242px;
-    margin-bottom: 20px;
-    color: #2b2b2b;
+  font-size: 14px;
+  max-width: 242px;
+  margin-bottom: 20px;
+  color: #2b2b2b;
 }
+
 .makeAction {
-    color: blue;
-    text-decoration: underline;
-    font-size: 14px;
+  color: blue;
+  text-decoration: underline;
+  font-size: 14px;
+  color: #202020;
 }
+
 .socialButtons {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
+
 .socialLogin {
-    display: flex;
-    flex-flow: column wrap;
-    align-items: center;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
 }
+
 .socialImg {
-    width: 35px;
+  width: 35px;
 }
+
 .socialText {
-    font-size: 12px;
-    max-width: 115px;
-    color: #918f8f;
+  font-size: 12px;
+  max-width: 115px;
+  color: #918f8f;
 }
