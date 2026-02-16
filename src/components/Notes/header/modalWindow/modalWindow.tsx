@@ -59,7 +59,7 @@ function ModalWindow() {
           style={
             stateContextMenu
               ? {
-                  transform: "translate(-50%, -50%)",
+                  transform: "translate(-50%, -75%)",
                 }
               : {
                   transform: "translate(-50%, -600px)",
@@ -75,7 +75,7 @@ function ModalWindow() {
           style={
             stateContextMenu
               ? {
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
                 }
               : {
                   backgroundColor: "rgba(0, 0, 0, 0)",
