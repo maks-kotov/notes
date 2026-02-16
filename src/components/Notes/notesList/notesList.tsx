@@ -1,7 +1,7 @@
 import Note from "./note/note";
 import styles from "./notesList.module.css";
 import type { NoteType } from "../../../types/note";
-import BigSpinner from "../../bigSpinner/bigSpinner";
+import BigSpinner from "../../../assets/bigSpinner/bigSpinner";
 import { memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 interface props {
