@@ -59,7 +59,7 @@ function Notes() {
     temp_note_id: ".........",
     update_loading: false,
   });
-
+  const [stateContextMenu, setStateContextMenu] = useState<boolean>(false);
   return (
     <>
       <NoteContext.Provider
@@ -72,6 +72,8 @@ function Notes() {
           switchViewMode: (isView: boolean) => setIsView(isView),
           getCurrentNote: (note: NoteType) => setCurrentNote(note),
           setRecoveryIsClicked,
+          stateContextMenu,
+          setStateContextMenu,
         }}>
         <FiltersContext.Provider
           value={{

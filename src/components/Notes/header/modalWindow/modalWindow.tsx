@@ -1,15 +1,18 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import styles from "./modalWindow.module.css";
 import NotesFilters from "./noteFilters/notesFilters";
 import SignOut from "./signOut/signOut";
+import { NoteContext } from "../../../../contexts/noteContext";
 //отвечает за появление contextMenu
+
 function ModalWindow() {
-  const [stateContextMenu, setStateContextMenu] = useState<boolean>(false);
-  const modalWindowRef = useRef<HTMLUListElement>(null); //нужно для нажатия снаружи
+  const { stateContextMenu, setStateContextMenu } = useContext(NoteContext)!;
+  const modalWindowRef = useRef<HTMLDivElement>(null); //нужно для нажатия снаружи
   const tribarRef = useRef<HTMLDivElement>(null);
   const signOutRef = useRef<HTMLImageElement>(null);
   const [filtersIsActive, setFiltersIsActive] = useState<boolean>(false);
   const [signOutIsActive, setSignOutIsActive] = useState<boolean>(false);
+  console.log(stateContextMenu);
   function closeModalWindow() {
     setStateContextMenu(false);
   }
@@ -53,9 +56,8 @@ function ModalWindow() {
           setSignOutIsActive(true);
         }}
       />
-      {/* {stateContextMenu && ( */}
       <>
-        <ul
+        <div
           style={
             stateContextMenu
               ? {
@@ -70,7 +72,7 @@ function ModalWindow() {
           ref={modalWindowRef}>
           {filtersIsActive && <NotesFilters />}
           {signOutIsActive && <SignOut closeModalWindow={closeModalWindow} />}
-        </ul>
+        </div>
         <div
           style={
             stateContextMenu
@@ -84,7 +86,6 @@ function ModalWindow() {
           }
           className={styles.overlay}></div>
       </>
-      {/* )} */}
     </>
   );
 }

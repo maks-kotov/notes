@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import EditButton from "./editButton/editButton";
 import styles from "./note.module.css";
 import type { NoteType } from "../../../../types/note";
@@ -18,8 +18,11 @@ function Note({ note, isEdit, isView }: props) {
     switchViewMode,
     getCurrentNote,
     setRecoveryIsClicked,
+    setStateContextMenu,
   } = useContext(NoteContext)!;
   const { showRemovedNotesIsActive } = useContext(FiltersContext)!;
+  const [dropdownIsClicked, setDropdownIsClicked] = useState<boolean>(false);
+  const buttonRef = useRef(null);
   return (
     <>
       <div className={styles.container}>
@@ -74,6 +77,12 @@ function Note({ note, isEdit, isView }: props) {
         {!showRemovedNotesIsActive && (
           <EditButton isEdit={isEdit} note={note} />
         )}
+        <button
+          ref={buttonRef}
+          onClick={() => setStateContextMenu(true)}
+          className={styles.button_dropdown}>
+          <div className={styles.dots}>...</div>
+        </button>
       </div>
     </>
   );

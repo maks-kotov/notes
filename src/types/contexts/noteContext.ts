@@ -8,4 +8,6 @@ export type NoteContextType = {
   recover: (id: number) => void;
   toggle: (id: number, completed: boolean) => void;
   setRecoveryIsClicked: (b: boolean) => void; // нужен для анимаций
+  setStateContextMenu: (b: boolean) => void;
+  stateContextMenu: boolean;
 };
