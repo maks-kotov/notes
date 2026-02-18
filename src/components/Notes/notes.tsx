@@ -8,6 +8,7 @@ import NotesList from "./notesList/notesList";
 import Viewing from "./viewing/viewing";
 import { FiltersContext } from "../../contexts/filtersContext";
 import useFilters from "../../hooks/useFilters";
+import useModalWindow from "../../hooks/useModalWindow";
 
 function Notes() {
   const {
@@ -59,7 +60,8 @@ function Notes() {
     temp_note_id: ".........",
     update_loading: false,
   });
-  const [stateContextMenu, setStateContextMenu] = useState<boolean>(false);
+  const { stateModalWindow, setStateModalWindow, ref, setRef } =
+    useModalWindow();
   return (
     <>
       <NoteContext.Provider
@@ -72,8 +74,10 @@ function Notes() {
           switchViewMode: (isView: boolean) => setIsView(isView),
           getCurrentNote: (note: NoteType) => setCurrentNote(note),
           setRecoveryIsClicked,
-          stateContextMenu,
-          setStateContextMenu,
+          stateModalWindow,
+          setStateModalWindow,
+          ref,
+          setRef,
         }}>
         <FiltersContext.Provider
           value={{

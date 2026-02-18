@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import EditButton from "./editButton/editButton";
 import styles from "./note.module.css";
 import type { NoteType } from "../../../../types/note";
@@ -18,11 +18,13 @@ function Note({ note, isEdit, isView }: props) {
     switchViewMode,
     getCurrentNote,
     setRecoveryIsClicked,
-    setStateContextMenu,
+    setStateModalWindow,
+    setRef,
   } = useContext(NoteContext)!;
   const { showRemovedNotesIsActive } = useContext(FiltersContext)!;
-  const [dropdownIsClicked, setDropdownIsClicked] = useState<boolean>(false);
-  const buttonRef = useRef(null);
+  // const [dropdownIsClicked, setDropdownIsClicked] = useState<boolean>(false);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
   return (
     <>
       <div className={styles.container}>
@@ -79,10 +81,16 @@ function Note({ note, isEdit, isView }: props) {
         )}
         <button
           ref={buttonRef}
-          onClick={() => setStateContextMenu(true)}
+          onClick={() => {
+            setRef(buttonRef.current);
+            setStateModalWindow(true);
+          }}
           className={styles.button_dropdown}>
           <div className={styles.dots}>...</div>
         </button>
+        {/* // будем использовать getRef из кастомного хука, передадим туда
+        buttonRef, кастомный хук раскроем в header, header будет иметь доступ к
+        buttonRef, затем передаём его в modalWindow как пропс. */}
       </div>
     </>
   );
