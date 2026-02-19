@@ -2,13 +2,13 @@ import { useCallback, useContext, useRef } from "react";
 import styles from "./modalWindow.module.css";
 import NotesFilters from "./noteFilters/notesFilters";
 import SignOut from "./signOut/signOut";
-import { NoteContext } from "../../../../contexts/noteContext";
+import { NoteContext } from "../../../contexts/noteContext";
+import ActionsWithNote from "./actionsWithNote/actionsWithNote";
 //отвечает за появление contextMenu
 function ModalWindow() {
   const { stateModalWindow, setStateModalWindow, ref } =
     useContext(NoteContext)!;
   const modalWindowRef = useRef<HTMLDivElement>(null); //нужно для нажатия снаружи
-  console.log(stateModalWindow);
 
   const handleOnClickOutside = useCallback(
     (e: MouseEvent) => {
@@ -18,14 +18,18 @@ function ModalWindow() {
         ref !== null &&
         !ref.contains(e.target)
       ) {
+        console.log("клик снаружи");
         setStateModalWindow(false);
       }
     },
     [ref],
   );
   if (stateModalWindow) {
+    console.log("1. Добавляю обработчик");
     document.addEventListener("click", handleOnClickOutside);
   } else {
+    console.log("2. Удаляю обработчик");
+
     document.removeEventListener("click", handleOnClickOutside);
   }
   return (
@@ -33,17 +37,17 @@ function ModalWindow() {
       <div
         style={
           stateModalWindow
-            ? {
-                transform: "translate(-50%, -75%)",
-              }
+            ? ref?.className.includes("button_dropdown")
+              ? { transform: "translate(-50%, -53%)" }
+              : { transform: "translate(-50%, -75%)" }
             : {
-                transform: "translate(-50%, -600px)",
+                transform: "translate(-50%, -800px)",
               }
         }
         className={styles.modalWindow}
         tabIndex={0}
         ref={modalWindowRef}>
-        {ref?.className.includes("button_dropdown") && "knopka"}
+        {ref?.className.includes("button_dropdown") && <ActionsWithNote />}
         {ref?.className.includes("tribar") && <NotesFilters />}
         {ref?.className.includes("signOut") && (
           <SignOut setStateModalWindow={setStateModalWindow} />

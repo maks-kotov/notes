@@ -14,4 +14,6 @@ export type NoteContextType = {
     myRef: HTMLButtonElement | HTMLDivElement | HTMLImageElement | null,
   ) => void;
   ref: HTMLButtonElement | HTMLDivElement | HTMLImageElement | null;
+  setOperatingNote: (n: NoteType) => void;
+  operatingNote: NoteType | null;
 };

@@ -7,10 +7,9 @@ import { FiltersContext } from "../../../../contexts/filtersContext";
 interface props {
   note: NoteType;
   isEdit: boolean;
-  isView: boolean;
 }
 
-function Note({ note, isEdit, isView }: props) {
+function Note({ note, isEdit }: props) {
   const {
     remove,
     recover,
@@ -20,6 +19,7 @@ function Note({ note, isEdit, isView }: props) {
     setRecoveryIsClicked,
     setStateModalWindow,
     setRef,
+    setOperatingNote,
   } = useContext(NoteContext)!;
   const { showRemovedNotesIsActive } = useContext(FiltersContext)!;
   // const [dropdownIsClicked, setDropdownIsClicked] = useState<boolean>(false);
@@ -70,7 +70,7 @@ function Note({ note, isEdit, isView }: props) {
         </button>
         <button
           onClick={() => {
-            switchViewMode(!isView);
+            switchViewMode(true);
             getCurrentNote(note);
           }}
           className={styles.view}>
@@ -83,6 +83,7 @@ function Note({ note, isEdit, isView }: props) {
           ref={buttonRef}
           onClick={() => {
             setRef(buttonRef.current);
+            setOperatingNote(note);
             setStateModalWindow(true);
           }}
           className={styles.button_dropdown}>

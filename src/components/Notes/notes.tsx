@@ -9,6 +9,7 @@ import Viewing from "./viewing/viewing";
 import { FiltersContext } from "../../contexts/filtersContext";
 import useFilters from "../../hooks/useFilters";
 import useModalWindow from "../../hooks/useModalWindow";
+import ModalWindow from "./modalWindow/modalWindow";
 
 function Notes() {
   const {
@@ -60,8 +61,16 @@ function Notes() {
     temp_note_id: ".........",
     update_loading: false,
   });
-  const { stateModalWindow, setStateModalWindow, ref, setRef } =
-    useModalWindow();
+  const {
+    stateModalWindow,
+    setStateModalWindow,
+    ref,
+    setRef,
+    setOperatingNote,
+    operatingNote,
+  } = useModalWindow();
+  console.log(stateModalWindow);
+
   return (
     <>
       <NoteContext.Provider
@@ -78,6 +87,8 @@ function Notes() {
           setStateModalWindow,
           ref,
           setRef,
+          setOperatingNote,
+          operatingNote,
         }}>
         <FiltersContext.Provider
           value={{
@@ -113,13 +124,11 @@ function Notes() {
               gettingLoading={gettingLoading}
               displayedNotes={displayedNotes}
               isEdit={isEdit}
-              isView={isView}
               showRemovedNotesIsActive={showRemovedNotesIsActive}
             />
           )}
-          {!isEdit && isView && (
-            <Viewing currentNote={currentNote} isView={isView} />
-          )}
+          {!isEdit && isView && <Viewing currentNote={currentNote} />}
+          <ModalWindow />
         </FiltersContext.Provider>
       </NoteContext.Provider>
     </>

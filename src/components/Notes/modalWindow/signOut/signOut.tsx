@@ -1,5 +1,5 @@
-import { useAuth } from "../../../../../contexts/authContext";
-import Spinner from "../../../../Auth/spinner/spinner";
+import { useAuth } from "../../../../contexts/authContext";
+import Spinner from "../../../Auth/spinner/spinner";
 import styles from "./signOut.module.css";
 interface props {
   setStateModalWindow: (b: boolean) => void;

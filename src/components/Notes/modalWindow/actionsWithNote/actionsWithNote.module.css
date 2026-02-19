@@ -1,0 +1,94 @@
+.container {
+  padding: 10px;
+}
+
+.title {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.chooseAction {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.action {
+  display: flex;
+  gap: 0 5px;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 5px;
+  border: 2px solid #ccc;
+}
+
+.icon {
+  /* width: 38px; */
+  /* height: 38px; */
+  /* padding: 8px; */
+  padding: 8px;
+}
+
+.toggle {
+  color: #fff;
+  font-size: 18px;
+  background-color: #31a931;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+}
+
+.icon img {
+  width: 22px;
+  height: 22px;
+}
+
+.remove {
+  background-color: #fd2121;
+}
+
+
+.edit {
+  background-color: #ffff37;
+}
+
+.view {
+  background-color: #2666c3;
+}
+
+.recover {
+  background-color: #8f468f;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.plus {
+  font-size: 38px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-weight: 300;
+  top: 43%;
+  left: 50%;
+  color: #ffffff;
+}
+
+.exit {
+  width: 38px;
+  height: 38px;
+  border: 2px solid #858585;
+  position: relative;
+}
+
+.krestik {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  /* font-weight: 300; */
+  top: 43%;
+  left: 50%;
+  font-size: 25px;
+  color: #3d3d3d;
+}

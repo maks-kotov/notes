@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 interface props {
   displayedNotes: NoteType[];
   isEdit: boolean;
-  isView: boolean;
   gettingLoading: boolean;
   showRemovedNotesIsActive: boolean;
   recoveryIsClicked: boolean;
@@ -15,7 +14,6 @@ interface props {
 function NotesList({
   displayedNotes,
   isEdit,
-  isView,
   gettingLoading,
   showRemovedNotesIsActive,
   recoveryIsClicked,
@@ -48,7 +46,7 @@ function NotesList({
                       transition={{ duration: 0.3 }}
                       layout
                       key={note.temp_note_id}>
-                      <Note isEdit={isEdit} isView={isView} note={note} />
+                      <Note isEdit={isEdit} note={note} />
                     </motion.div>
                   );
                 }
@@ -64,7 +62,6 @@ function NotesList({
                       key={note.temp_note_id}>
                       <Note
                         isEdit={isEdit}
-                        isView={isView}
                         note={note}
                         key={note.temp_note_id}
                       />

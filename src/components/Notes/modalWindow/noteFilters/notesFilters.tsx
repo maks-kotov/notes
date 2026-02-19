@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styles from "./notesFilters.module.css";
-import { FiltersContext } from "../../../../../contexts/filtersContext";
+import { FiltersContext } from "../../../../contexts/filtersContext";
 function NotesFilters() {
   const {
     sortByNew,
