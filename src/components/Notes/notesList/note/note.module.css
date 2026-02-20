@@ -9,6 +9,26 @@
   overflow: hidden;
 }
 
+.strike {
+  position: relative;
+  display: inline-block;
+}
+
+.strike::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: var(--strike-width, 0);
+  height: 2px;
+  background: currentColor;
+  transition: width 0.1s ease-in;
+}
+
+.strike.completed::after {
+  --strike-width: 100%;
+}
+
 .text {
   flex-grow: 1;
   min-width: 0;
@@ -16,10 +36,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   padding: 5px;
-}
-
-.crossedOut {
-  text-decoration: line-through;
+  transition: opacity 1s ease;
 }
 
 .remove {

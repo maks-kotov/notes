@@ -28,15 +28,15 @@ function Note({ note }: props) {
     <>
       <div className={styles.container}>
         <div
-          style={
-            note.update_loading
-              ? { opacity: 0.2 }
-              : { transition: "opacity .3s ease", opacity: 1 }
-          }
-          className={
-            note.completed ? `${styles.text} ${styles.crossedOut}` : styles.text
-          }>
-          {note.title}
+          style={{
+            opacity: note.update_loading ? 0.2 : 1,
+            // textDecoration: note.completed ? "line-through" : "none",
+          }}
+          className={styles.text}>
+          <span
+            className={`${styles.strike} ${note.completed ? styles.completed : ""}`}>
+            {note.title}
+          </span>
         </div>
         {!showRemovedNotesIsActive && (
           <button
