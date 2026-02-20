@@ -25,11 +25,8 @@ function ModalWindow() {
     [ref],
   );
   if (stateModalWindow) {
-    console.log("1. Добавляю обработчик");
     document.addEventListener("click", handleOnClickOutside);
   } else {
-    console.log("2. Удаляю обработчик");
-
     document.removeEventListener("click", handleOnClickOutside);
   }
   return (

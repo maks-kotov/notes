@@ -15,7 +15,7 @@
 }
 
 @media screen and (max-width: 700px) {
-  .edit {
+  .hideOnMobile {
     display: none;
   }
 }

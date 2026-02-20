@@ -69,8 +69,6 @@ function Notes() {
     setOperatingNote,
     operatingNote,
   } = useModalWindow();
-  console.log(stateModalWindow);
-
   return (
     <>
       <NoteContext.Provider
@@ -89,6 +87,7 @@ function Notes() {
           setRef,
           setOperatingNote,
           operatingNote,
+          isEdit,
         }}>
         <FiltersContext.Provider
           value={{
@@ -123,7 +122,6 @@ function Notes() {
               recoveryIsClicked={recoveryIsClicked}
               gettingLoading={gettingLoading}
               displayedNotes={displayedNotes}
-              isEdit={isEdit}
               showRemovedNotesIsActive={showRemovedNotesIsActive}
             />
           )}

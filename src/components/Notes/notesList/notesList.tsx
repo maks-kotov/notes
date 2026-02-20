@@ -6,14 +6,12 @@ import { memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 interface props {
   displayedNotes: NoteType[];
-  isEdit: boolean;
   gettingLoading: boolean;
   showRemovedNotesIsActive: boolean;
   recoveryIsClicked: boolean;
 }
 function NotesList({
   displayedNotes,
-  isEdit,
   gettingLoading,
   showRemovedNotesIsActive,
   recoveryIsClicked,
@@ -46,7 +44,7 @@ function NotesList({
                       transition={{ duration: 0.3 }}
                       layout
                       key={note.temp_note_id}>
-                      <Note isEdit={isEdit} note={note} />
+                      <Note note={note} />
                     </motion.div>
                   );
                 }
@@ -60,11 +58,7 @@ function NotesList({
                       transition={{ duration: 0.3 }}
                       layout
                       key={note.temp_note_id}>
-                      <Note
-                        isEdit={isEdit}
-                        note={note}
-                        key={note.temp_note_id}
-                      />
+                      <Note note={note} key={note.temp_note_id} />
                     </motion.div>
                   );
                 }

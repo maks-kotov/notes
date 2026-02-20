@@ -36,10 +36,10 @@ function Create({
 
   // console.log(counter);
 
-  function changeValueTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
+  function changeContentValue(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setNote({ ...note, content: e.target.value });
   }
-  function changeValueInput(e: React.ChangeEvent<HTMLInputElement>) {
+  function changeTitleValue(e: React.ChangeEvent<HTMLInputElement>) {
     setNote({ ...note, title: e.target.value });
   }
   useEffect(() => {
@@ -65,14 +65,14 @@ function Create({
   return (
     <>
       <input
-        onChange={changeValueInput}
+        onChange={changeTitleValue}
         className={styles.makeTitle}
         type="text"
         placeholder="Заголовок..."
         value={note.title}
       />
       <textarea
-        onChange={changeValueTextarea}
+        onChange={changeContentValue}
         name="#"
         className={styles.makeText}
         placeholder="Основной текст... (необязательно)"
@@ -104,12 +104,7 @@ function Create({
             {addingLoading ? <Spinner /> : "Добавить"}
           </button>
         ) : (
-          <EditButton
-            isEdit={isEdit}
-            note={note}
-            id={currentNote.note_id}
-            changes={currentNote}
-          />
+          <EditButton note={note} hideOnMobile={false} />
         )}
       </div>
     </>

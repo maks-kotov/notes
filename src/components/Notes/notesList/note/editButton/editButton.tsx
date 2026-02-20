@@ -1,28 +1,28 @@
-import { useContext } from 'react'
-import styles from './editButton.module.css'
-import type { NoteType } from '../../../../../types/note'
-import { NoteContext } from '../../../../../contexts/noteContext'
+import { useContext } from "react";
+import styles from "./editButton.module.css";
+import type { NoteType } from "../../../../../types/note";
+import { NoteContext } from "../../../../../contexts/noteContext";
 interface props {
-    isEdit: boolean, //нужно для динамичной отрисовки и вставления текста в textarea
-    note: NoteType, 
-    id?: number,
-    changes?: NoteType
+  note: NoteType; // note - заметка на которую мы нажали если isEdit === false или note - видоизменённая заметка если isEdit === true
+  hideOnMobile: boolean;
 }
-function EditButton({note, id, isEdit}:props) {
-    const {getCurrentNote, switchEditMode, update} = useContext(NoteContext)!
-    return (
-                <button onClick={()=>{
-                    if (getCurrentNote) {
-                        getCurrentNote(note)
-                    }
-                    if(update && id) {
-                        update(id, note)
-                    }
-                    switchEditMode(!isEdit)
-                    }
-                } className={styles.edit}>
-                    <img src="./src/assets/icons/edit.png" alt="icon" />
-                </button>
-    )
+function EditButton({ note, hideOnMobile }: props) {
+  const { isEdit } = useContext(NoteContext)!;
+  const { getCurrentNote, switchEditMode, update } = useContext(NoteContext)!;
+
+  return (
+    <button
+      onClick={() => {
+        if (!isEdit) {
+          getCurrentNote(note);
+        } else {
+          update(note.note_id, note);
+        }
+        switchEditMode(!isEdit);
+      }}
+      className={`${styles.edit} ${hideOnMobile ? styles.hideOnMobile : ""}`}>
+      <img src="./src/assets/icons/edit.png" alt="icon" />
+    </button>
+  );
 }
-export default EditButton
+export default EditButton;

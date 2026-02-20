@@ -15,5 +15,6 @@ export type NoteContextType = {
   ) => void;
   ref: HTMLButtonElement | HTMLDivElement | HTMLImageElement | null;
   setOperatingNote: (n: NoteType) => void;
-  operatingNote: NoteType | null;
+  operatingNote: NoteType;
+  isEdit: boolean;
 };

@@ -6,10 +6,9 @@ import { NoteContext } from "../../../../contexts/noteContext";
 import { FiltersContext } from "../../../../contexts/filtersContext";
 interface props {
   note: NoteType;
-  isEdit: boolean;
 }
 
-function Note({ note, isEdit }: props) {
+function Note({ note }: props) {
   const {
     remove,
     recover,
@@ -77,7 +76,7 @@ function Note({ note, isEdit }: props) {
           <img src="./src/assets/icons/eye.png" alt="icon" />
         </button>
         {!showRemovedNotesIsActive && (
-          <EditButton isEdit={isEdit} note={note} />
+          <EditButton note={note} hideOnMobile={true} />
         )}
         <button
           ref={buttonRef}
