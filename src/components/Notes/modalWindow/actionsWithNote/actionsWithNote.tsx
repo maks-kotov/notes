@@ -3,6 +3,8 @@ import styles from "./actionsWithNote.module.css";
 import { NoteContext } from "../../../../contexts/noteContext";
 import EditButton from "../../notesList/note/editButton/editButton";
 import { FiltersContext } from "../../../../contexts/filtersContext";
+import bin from "../../../../assets/icons/bin.png";
+import eye from "../../../../assets/icons/eye.png";
 
 const ActionsWithNote = () => {
   const {
@@ -54,7 +56,7 @@ const ActionsWithNote = () => {
           }, 1);
         }}>
         <button className={`${styles.icon} ${styles.remove}`}>
-          <img src="./src/assets/icons/bin.png" alt="bin" />
+          <img src={bin} alt="bin" />
         </button>
         <span>Удалить</span>
       </div>
@@ -66,7 +68,7 @@ const ActionsWithNote = () => {
           operatingNote && getCurrentNote(operatingNote);
         }}>
         <button className={`${styles.icon} ${styles.view}`}>
-          <img src="./src/assets/icons/eye.png" alt="bin" />
+          <img src={eye} alt="eye" />
         </button>
         <span>Смотреть</span>
       </div>
