@@ -5,11 +5,3 @@ body {
   color: #f6f6f6f6;
   padding: 50px;
 }
-
-#root {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #3b3b3b;
-  border-radius: 7px;
-}

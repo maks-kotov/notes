@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NoteContext } from "../../contexts/noteContext";
+import styles from "./notes.module.css";
 import useNotes from "../../hooks/useNotes";
 import type { NoteType } from "../../types/note";
 import Create from "./create/create";
@@ -70,7 +71,7 @@ function Notes() {
     operatingNote,
   } = useModalWindow();
   return (
-    <>
+    <div className={styles.container}>
       <NoteContext.Provider
         value={{
           update,
@@ -129,7 +130,7 @@ function Notes() {
           <ModalWindow />
         </FiltersContext.Provider>
       </NoteContext.Provider>
-    </>
+    </div>
   );
 }
 export default Notes;

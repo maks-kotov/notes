@@ -1,25 +1,7 @@
-.makeTitle {
-    /* background-color: #fff; */
-    width: 100%;
-    /* min-height: 100px; */
-    padding: 10px;
-    margin-bottom: 10px;
-}
-.makeText {
-    background-color: #fff;
-    width: 100%;
-    min-height: 100px;
-    padding: 10px;
-}
-.button {
-    background-color: blue;
-    color: #fff;
-    padding: 5px 20px;
-    bottom: 5px;
-    right: 0;
-    float: inline-end;
-}
-.right {
-    display: flex;
-    justify-content: end;
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #3b3b3b;
+  border-radius: 7px;
 }
