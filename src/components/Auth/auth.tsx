@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { supabase } from "../../lib/supabase";
 import styles from "./auth.module.css";
 import Spinner from "./spinner/spinner";
+import gitHubIcon from "../../assets/icons/github.png";
 function Auth() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -131,11 +132,7 @@ function Auth() {
             onClick={() =>
               supabase.auth.signInWithOAuth({ provider: "github" })
             }>
-            <img
-              src="src/assets/icons/github.png"
-              alt="github"
-              className={styles.socialImg}
-            />
+            <img src={gitHubIcon} alt="github" className={styles.socialImg} />
             <span className={styles.socialText}>Войти через GitHub</span>
           </button>
         </div>
