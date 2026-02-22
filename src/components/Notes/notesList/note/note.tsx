@@ -4,6 +4,8 @@ import styles from "./note.module.css";
 import type { NoteType } from "../../../../types/note";
 import { NoteContext } from "../../../../contexts/noteContext";
 import { FiltersContext } from "../../../../contexts/filtersContext";
+import bin from "../../../../assets/icons/bin.png";
+import eye from "../../../../assets/icons/eye.png";
 interface props {
   note: NoteType;
 }
@@ -65,7 +67,7 @@ function Note({ note }: props) {
             }, 10);
           }}
           className={styles.remove}>
-          <img src="./src/assets/icons/bin.png" alt="icon" />
+          <img src={bin} alt="icon" />
         </button>
         <button
           onClick={() => {
@@ -73,7 +75,7 @@ function Note({ note }: props) {
             getCurrentNote(note);
           }}
           className={styles.view}>
-          <img src="./src/assets/icons/eye.png" alt="icon" />
+          <img src={eye} alt="icon" />
         </button>
         {!showRemovedNotesIsActive && (
           <EditButton note={note} hideOnMobile={true} />

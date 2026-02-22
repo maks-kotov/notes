@@ -2,6 +2,8 @@ import { useContext } from "react";
 import styles from "./editButton.module.css";
 import type { NoteType } from "../../../../../types/note";
 import { NoteContext } from "../../../../../contexts/noteContext";
+import edit from "../../../../../assets/icons/edit.png";
+
 interface props {
   note: NoteType; // note - заметка на которую мы нажали если isEdit === false или note - видоизменённая заметка если isEdit === true
   hideOnMobile: boolean;
@@ -21,7 +23,7 @@ function EditButton({ note, hideOnMobile }: props) {
         switchEditMode(!isEdit);
       }}
       className={`${styles.edit} ${hideOnMobile ? styles.hideOnMobile : ""}`}>
-      <img src="./src/assets/icons/edit.png" alt="icon" />
+      <img src={edit} alt="icon" />
     </button>
   );
 }

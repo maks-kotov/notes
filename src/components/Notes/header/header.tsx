@@ -1,6 +1,7 @@
 import { useContext, useRef } from "react";
 import styles from "./header.module.css";
 import { NoteContext } from "../../../contexts/noteContext";
+import opened_door from "../../../assets/icons/opened_door.png";
 function Header() {
   const { setStateModalWindow, setRef } = useContext(NoteContext)!;
   const tribarRef = useRef<HTMLDivElement>(null);
@@ -20,7 +21,7 @@ function Header() {
       <img
         ref={signOutRef}
         className={styles.signOut}
-        src="./src/assets/icons/opened_door.png"
+        src={opened_door}
         alt="sign out"
         onClick={() => {
           setRef(signOutRef.current);

@@ -3,6 +3,7 @@ import { supabase } from "../../lib/supabase";
 import styles from "./auth.module.css";
 import Spinner from "./spinner/spinner";
 import gitHubIcon from "../../assets/icons/github.png";
+import googleIcon from "../../assets/icons/google.png";
 function Auth() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -120,11 +121,7 @@ function Auth() {
             onClick={() =>
               supabase.auth.signInWithOAuth({ provider: "google" })
             }>
-            <img
-              src="src/assets/icons/google.png"
-              alt="google"
-              className={styles.socialImg}
-            />
+            <img src={googleIcon} alt="google" className={styles.socialImg} />
             <span className={styles.socialText}>Войти через Google</span>
           </button>
           <button
