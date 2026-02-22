@@ -56,7 +56,6 @@ function Auth() {
   }
   return (
     <>
-      <div className={styles.overlay}></div>
       <div className={styles.container}>
         <h2 className={styles.title}>{isLogin ? "Вход" : "Регистрация"}</h2>
 
