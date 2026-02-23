@@ -9,7 +9,7 @@
 
 ## ✨ Демо
 
-Посмотреть в действии: [(https://tiny-wisp-c079bb.netlify.app/)]
+Посмотреть в действии: <a href="https://tiny-wisp-c079bb.netlify.app/" target="_blank">https://tiny-wisp-c079bb.netlify.app</a>
 
 ## 🚀 Технологии
 
