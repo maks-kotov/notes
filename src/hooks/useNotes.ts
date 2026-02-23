@@ -110,7 +110,6 @@ export default function useNotes() {
         }
         setAllNotes((prev) => prev.filter((n) => n.note_id !== note_id));
 
-        console.log("code of removing");
         try {
           const { error } = await supabase
             .from("notes")
@@ -135,7 +134,6 @@ export default function useNotes() {
           ),
         );
 
-        console.log("code of updating");
         try {
           const { data, error } = await supabase
             .from("notes")
@@ -242,7 +240,6 @@ export default function useNotes() {
         ),
       );
 
-      console.log("code of editing");
       try {
         if (session?.user.id) {
           const { data, error } = await supabase

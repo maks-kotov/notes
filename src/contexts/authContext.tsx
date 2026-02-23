@@ -3,65 +3,72 @@ import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 
 const AuthContext = createContext<{
-  session: Session | null,
-  signInIsLoading: boolean,
-  signOut: null | (()=>void),
-  signOutIsLoading: boolean 
+  session: Session | null;
+  signInIsLoading: boolean;
+  signOut: null | (() => void);
+  signOutIsLoading: boolean;
 }>({
   session: null,
   signInIsLoading: true,
   signOut: null,
-  signOutIsLoading: false
+  signOutIsLoading: false,
 });
 
-export function AuthProvider({ children }: { children: React.ReactNode }) { // потом разберёмся как тут параметры работают
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  // потом разберёмся как тут параметры работают
   const [session, setSession] = useState<Session | null>(null);
   const [signInIsLoading, setSignInIsLoading] = useState(true);
   const [signOutIsLoading, setSignOutIsLoading] = useState(false);
   const prevUserIdRef = useRef<string | null>(null); // для избежания перерендера на alt + tab
   const signOut = async () => {
     try {
-      setSignOutIsLoading(true)
-      const { error } = await supabase.auth.signOut()
-      window.location.href = '/'
+      setSignOutIsLoading(true);
+      const { error } = await supabase.auth.signOut();
+      window.location.href = "/";
       if (error) {
-        console.error('Ошибка при выходе: ', error.message)
+        console.error("Ошибка при выходе: ", error.message);
       }
     } catch (error) {
-      console.log('ошибка при выходе: ', error);
-      window.location.href = '/'
+      console.log("ошибка при выходе: ", error);
+      window.location.href = "/";
     } finally {
-      setSignOutIsLoading(false)
+      setSignOutIsLoading(false);
     }
-  }
+  };
   useEffect(() => {
     // Получаем начальную сессию
     //не async await потму что это оч сильно усложнит
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setSignInIsLoading(false);
-      console.log('get');
     });
     // Слушаем изменения
-    const {data: {subscription} } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (_event === 'SIGNED_IN' && session?.user.id === prevUserIdRef.current) {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (
+        _event === "SIGNED_IN" &&
+        session?.user.id === prevUserIdRef.current
+      ) {
         return; // для избежания перерендера на alt + tab
       }
       if (session?.user.id !== undefined) {
         // console.log('игнор если сессия повторная');
         prevUserIdRef.current = session.user.id;
       }
-      if(_event !== 'INITIAL_SESSION') { //hz
+      if (_event !== "INITIAL_SESSION") {
+        //hz
         setSession(session);
         setSignInIsLoading(false);
       }
     });
-    
+
     return () => subscription.unsubscribe();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ session, signInIsLoading, signOut, signOutIsLoading }}>
+    <AuthContext.Provider
+      value={{ session, signInIsLoading, signOut, signOutIsLoading }}>
       {children}
     </AuthContext.Provider>
   );
@@ -69,7 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) { // �
 
 export const useAuth = () => useContext(AuthContext);
 
-/* 
+/*
 порядок выполнения:
 1. supabase.auth.onAuthStateChange (выполняется быстрее, тк запросы к бд асинхронны)
 2. supabase.auth.getSession() (выполнился, сменился session)
