@@ -18,7 +18,6 @@ function ModalWindow() {
         ref !== null &&
         !ref.contains(e.target)
       ) {
-        console.log("клик снаружи");
         setStateModalWindow(false);
       }
     },

@@ -131,7 +131,10 @@ function Auth() {
           <button
             className={styles.socialLogin}
             onClick={() =>
-              supabase.auth.signInWithOAuth({ provider: "github" })
+              supabase.auth.signInWithOAuth({
+                provider: "github",
+                options: { queryParams: { prompt: "consent" } },
+              })
             }>
             <img src={gitHubIcon} alt="github" className={styles.socialImg} />
             <span className={styles.socialText}>Войти через GitHub</span>

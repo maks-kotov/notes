@@ -16,7 +16,6 @@ function NotesList({
   showRemovedNotesIsActive,
   recoveryIsClicked,
 }: props) {
-  console.log("перерисовка. видоизменённый массив: ", displayedNotes);
   return (
     <>
       <span className={styles.title}>Список:</span>
