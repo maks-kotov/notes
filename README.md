@@ -9,7 +9,8 @@
 
 ## ✨ Демо
 
-Посмотреть в действии: <a href="https://tiny-wisp-c079bb.netlify.app/" target="_blank">https://tiny-wisp-c079bb.netlify.app</a>
+Посмотреть приложение в действии: [https://tiny-wisp-c079bb.netlify.app/](https://tiny-wisp-c079bb.netlify.app/)
+_💡 Совет: чтобы открыть в новой вкладке, нажми Ctrl+Click (Cmd+Click на Mac)_
 
 ## 🚀 Технологии
 
