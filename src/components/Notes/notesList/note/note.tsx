@@ -6,10 +6,10 @@ import { NoteContext } from "../../../../contexts/noteContext";
 import { FiltersContext } from "../../../../contexts/filtersContext";
 import bin from "../../../../assets/icons/bin.png";
 import eye from "../../../../assets/icons/eye.png";
+import { useMediaQuery } from "../../../../hooks/useMediaQuery";
 interface props {
   note: NoteType;
 }
-
 function Note({ note }: props) {
   const {
     remove,
@@ -25,6 +25,7 @@ function Note({ note }: props) {
   const { showRemovedNotesIsActive } = useContext(FiltersContext)!;
   // const [dropdownIsClicked, setDropdownIsClicked] = useState<boolean>(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const isMobile = useMediaQuery("(max-width: 700px)");
 
   return (
     <>
@@ -40,14 +41,16 @@ function Note({ note }: props) {
             {note.title}
           </span>
         </div>
-        {!showRemovedNotesIsActive && (
+
+        {!showRemovedNotesIsActive && !isMobile && (
           <button
             onClick={() => toggle(note.note_id, note.completed)}
             className={styles.toggle}>
             {note.completed ? "✘" : "✔"}
           </button>
         )}
-        {showRemovedNotesIsActive && (
+
+        {showRemovedNotesIsActive && !isMobile && (
           <button
             onClick={() => {
               setRecoveryIsClicked(true);
@@ -59,40 +62,42 @@ function Note({ note }: props) {
             <span className={styles.recoverPlus}>+</span>
           </button>
         )}
-        <button
-          onClick={() => {
-            setRecoveryIsClicked(false);
-            setTimeout(() => {
-              remove(note.note_id);
-            }, 10);
-          }}
-          className={styles.remove}>
-          <img src={bin} alt="icon" />
-        </button>
-        <button
-          onClick={() => {
-            switchViewMode(true);
-            getCurrentNote(note);
-          }}
-          className={styles.view}>
-          <img src={eye} alt="icon" />
-        </button>
-        {!showRemovedNotesIsActive && (
-          <EditButton note={note} hideOnMobile={true} />
+        {!isMobile && (
+          <button
+            onClick={() => {
+              setRecoveryIsClicked(false);
+              setTimeout(() => {
+                remove(note.note_id);
+              }, 10);
+            }}
+            className={styles.remove}>
+            <img src={bin} alt="bin" />
+          </button>
         )}
-        <button
-          ref={buttonRef}
-          onClick={() => {
-            setRef(buttonRef.current);
-            setOperatingNote(note);
-            setStateModalWindow(true);
-          }}
-          className={styles.button_dropdown}>
-          <div className={styles.dots}>...</div>
-        </button>
-        {/* // будем использовать getRef из кастомного хука, передадим туда
-        buttonRef, кастомный хук раскроем в header, header будет иметь доступ к
-        buttonRef, затем передаём его в modalWindow как пропс. */}
+        {!isMobile && (
+          <button
+            onClick={() => {
+              switchViewMode(true);
+              getCurrentNote(note);
+            }}
+            className={styles.view}>
+            <img src={eye} alt="icon" />
+          </button>
+        )}
+
+        {!showRemovedNotesIsActive && !isMobile && <EditButton note={note} />}
+        {isMobile && (
+          <button
+            ref={buttonRef}
+            onClick={() => {
+              setRef(buttonRef.current);
+              setOperatingNote(note);
+              setStateModalWindow(true);
+            }}
+            className={styles.button_dropdown}>
+            <div className={styles.dots}>...</div>
+          </button>
+        )}
       </div>
     </>
   );

@@ -80,7 +80,7 @@ const ActionsWithNote = () => {
             switchEditMode(true);
             getCurrentNote(operatingNote);
           }}>
-          <EditButton note={operatingNote} hideOnMobile={false} />
+          <EditButton note={operatingNote} />
           <span>Редактировать</span>
         </div>
       )}

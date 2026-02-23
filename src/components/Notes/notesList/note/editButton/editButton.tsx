@@ -6,9 +6,8 @@ import edit from "../../../../../assets/icons/edit.png";
 
 interface props {
   note: NoteType; // note - заметка на которую мы нажали если isEdit === false или note - видоизменённая заметка если isEdit === true
-  hideOnMobile: boolean;
 }
-function EditButton({ note, hideOnMobile }: props) {
+function EditButton({ note }: props) {
   const { isEdit } = useContext(NoteContext)!;
   const { getCurrentNote, switchEditMode, update } = useContext(NoteContext)!;
 
@@ -22,7 +21,7 @@ function EditButton({ note, hideOnMobile }: props) {
         }
         switchEditMode(!isEdit);
       }}
-      className={`${styles.edit} ${hideOnMobile ? styles.hideOnMobile : ""}`}>
+      className={`${styles.edit}`}>
       <img src={edit} alt="icon" />
     </button>
   );

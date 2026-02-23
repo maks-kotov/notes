@@ -104,7 +104,7 @@ function Create({
             {addingLoading ? <Spinner /> : "Добавить"}
           </button>
         ) : (
-          <EditButton note={note} hideOnMobile={false} />
+          <EditButton note={note} />
         )}
       </div>
     </>
