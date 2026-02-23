@@ -118,7 +118,12 @@ function Auth() {
           <button
             className={styles.socialLogin}
             onClick={() =>
-              supabase.auth.signInWithOAuth({ provider: "google" })
+              supabase.auth.signInWithOAuth({
+                provider: "google",
+                options: {
+                  queryParams: { prompt: "consent" },
+                },
+              })
             }>
             <img src={googleIcon} alt="google" className={styles.socialImg} />
             <span className={styles.socialText}>Войти через Google</span>
