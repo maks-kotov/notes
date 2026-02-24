@@ -133,7 +133,9 @@ function Auth() {
             onClick={() =>
               supabase.auth.signInWithOAuth({
                 provider: "github",
-                options: { queryParams: { prompt: "consent" } },
+                options: {
+                  queryParams: { prompt: "consent" },
+                },
               })
             }>
             <img src={gitHubIcon} alt="github" className={styles.socialImg} />

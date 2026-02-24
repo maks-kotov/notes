@@ -7,14 +7,12 @@
 }
 
 .tribar {
-  font-size: 35px;
-  font-weight: 700;
   position: absolute;
-  right: 30px;
-  top: -3px;
+  right: 25px;
+  top: 3px;
   cursor: pointer;
   z-index: 1;
-  color: #000000;
+  width: 30px;
 }
 
 .signOut {
