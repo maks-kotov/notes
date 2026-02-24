@@ -32,7 +32,6 @@ function Note({ note }: props) {
         <div
           style={{
             opacity: note.update_loading ? 0.2 : 1,
-            // textDecoration: note.completed ? "line-through" : "none",
           }}
           className={styles.text}>
           <span
