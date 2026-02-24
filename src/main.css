@@ -5,3 +5,9 @@ body {
   color: #f6f6f6f6;
   padding: 50px;
 }
+
+@media screen and (max-width: 600px) {
+  body {
+    padding: 0;
+  }
+}

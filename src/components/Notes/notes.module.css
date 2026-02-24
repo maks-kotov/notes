@@ -5,3 +5,9 @@
   background-color: #3b3b3b;
   border-radius: 7px;
 }
+
+@media screen and (max-width: 600px) {
+  .container {
+    border-radius: 0;
+  }
+}

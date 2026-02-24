@@ -23,9 +23,8 @@ function Note({ note }: props) {
     setOperatingNote,
   } = useContext(NoteContext)!;
   const { showRemovedNotesIsActive } = useContext(FiltersContext)!;
-  // const [dropdownIsClicked, setDropdownIsClicked] = useState<boolean>(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const isMobile = useMediaQuery("(max-width: 700px)");
+  const isMobile = useMediaQuery("(max-width: 600px)");
 
   return (
     <>
